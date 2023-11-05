@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.9
 
 //
 // This source file is part of the Stanford Spezi open-source project
@@ -14,8 +14,7 @@ import PackageDescription
 let package = Package(
     name: "SpeziMedication",
     platforms: [
-        .iOS(.v16),
-        .watchOS(.v9)
+        .iOS(.v16)
     ],
     products: [
         .library(name: "SpeziMedication", targets: ["SpeziMedication"])
