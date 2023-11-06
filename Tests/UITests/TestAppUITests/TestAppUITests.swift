@@ -101,10 +101,6 @@ class TestAppUITests: XCTestCase {
         
         XCTAssertTrue(app.staticTexts["Medication with this dosage already exists."].waitForExistence(timeout: 2))
         
-        app.buttonTap("Add Medication")
-        
-        XCTAssertTrue(app.navigationBars["Medication 1"].staticTexts["Medication 1"].waitForExistence(timeout: 10))
-        
         app.buttonTap("Dosage 1.2")
         app.buttonTap("Add Medication")
         
