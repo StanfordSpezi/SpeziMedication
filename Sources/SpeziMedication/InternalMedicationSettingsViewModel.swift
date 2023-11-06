@@ -25,6 +25,11 @@ class InternalMedicationSettingsViewModel<MI: MedicationInstance> {
         self.medicationOptions = medicationOptions
         self.createMedicationInstance = createMedicationInstance
     }
+    
+    
+    func duplicateOf(medication: MI.InstanceType, dosage: MI.InstanceDosage) -> Bool {
+        medicationInstances.contains(where: { $0.type == medication && $0.dosage == dosage })
+    }
 }
 
 

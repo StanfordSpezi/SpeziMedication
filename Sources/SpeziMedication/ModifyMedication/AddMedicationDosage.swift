@@ -20,7 +20,7 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     
     
     private var isDuplicate: Bool {
-        viewModel.medicationInstances.contains(viewModel.createMedicationInstance(medicationOption, dosage))
+        viewModel.duplicateOf(medication: medicationOption, dosage: dosage)
     }
     
     var body: some View {
