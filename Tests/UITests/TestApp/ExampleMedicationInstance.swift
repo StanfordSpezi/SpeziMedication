@@ -6,17 +6,15 @@
 // SPDX-License-Identifier: MIT
 //
 
+import Foundation
 import SpeziMedication
 
 
 struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitializable {
-    var type: ExampleMedication
+    let id: UUID
+    let type: ExampleMedication
     var dosage: ExampleDosage
     
-    
-    var id: String {
-        localizedDescription + dosage.localizedDescription
-    }
     
     var localizedDescription: String {
         type.localizedDescription
@@ -24,6 +22,7 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     
     
     init(type: ExampleMedication, dosage: ExampleDosage) {
+        self.id = UUID()
         self.type = type
         self.dosage = dosage
     }

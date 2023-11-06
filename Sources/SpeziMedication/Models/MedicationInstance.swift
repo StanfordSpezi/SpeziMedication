@@ -10,6 +10,8 @@ import Foundation
 
 
 /// Instance of a ``Medication``.
+///
+/// The ``MedicationInstance``'s identifier (`id`) must be stable across chances to the dosage and therefore should not be derived from a combination of values including the dosage.
 public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable where InstanceType.MedicationDosage == InstanceDosage {
     /// Associated dosage.
     associatedtype InstanceDosage: Dosage

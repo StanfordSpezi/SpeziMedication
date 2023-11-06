@@ -14,8 +14,21 @@ struct MedicationList<MI: MedicationInstance>: View {
     private let medicationOptions: Set<MI.InstanceType>
     
     
+    private var description: String {
+        guard !medicationInstances.isEmpty else {
+            return "No Medications"
+        }
+        
+        return medicationInstances
+            .map { medicationInstance in
+                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription)"
+            }
+            .joined(separator: ", ")
+    }
+    
     private var sortedMedicationInstances: [MI] {
-        Array(medicationInstances).sorted()
+        print(description)
+        return Array(medicationInstances).sorted()
     }
     
     
@@ -38,7 +51,7 @@ struct MedicationList<MI: MedicationInstance>: View {
                 }
                 .navigationDestination(for: MI.self) { medicationInstance in
                     EditMedication(
-                        medication: medicationInstance.id,
+                        medicationInstance: medicationInstance.id,
                         medicationInstances: $medicationInstances,
                         medicationOptions: medicationOptions
                     )

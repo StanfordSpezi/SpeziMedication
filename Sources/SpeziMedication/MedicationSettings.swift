@@ -91,9 +91,6 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 )
             }
             .interactiveDismissDisabled(isPresented == nil || modifiedMedications)
-            .onAppear {
-                medicationInstances = medicationSettingsViewModel.medicationInstances
-            }
     }
     
     @MainActor private var saveMedicationButton: some View {
