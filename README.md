@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
 # SpeziMedication
 
 [![Build and Test](https://github.com/StanfordSpezi/SwiftMedication/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/StanfordSpezi/SwiftMedication/actions/workflows/build-and-test.yml)
+[![codecov](https://codecov.io/gh/StanfordSpezi/SpeziMedication/graph/badge.svg?token=aBD6XR6PDp)](https://codecov.io/gh/StanfordSpezi/SpeziMedication)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziMedication%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/StanfordSpezi/SwiftMedication)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FStanfordSpezi%2FSpeziMedication%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/StanfordSpezi/SwiftMedication)
 
