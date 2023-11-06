@@ -81,7 +81,7 @@
         }
       }
     },
-    "EDIT_MEDICATION_DUPLICATE" : {
+    "MEDICATION_DUPLICATE" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {

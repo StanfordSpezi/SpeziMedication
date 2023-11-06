@@ -25,25 +25,19 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            dosageForm
+            Form {
+                EditDosageSection<MI>(dosage: $dosage, medication: medicationOption)
+            }
             actionSection
         }
             .navigationTitle(medicationOption.localizedDescription)
-    }
-    
-    @MainActor @ViewBuilder private var dosageForm: some View {
-        Form {
-            Section {
-                Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationOption.localizedDescription)", bundle: .module), selection: $dosage) {
-                    ForEach(medicationOption.dosages, id: \.self) { dosage in
-                        Text(dosage.localizedDescription)
-                            .tag(dosage)
-                    }
+            .onAppear {
+                if let nonUsedDosage = medicationOption.dosages.first(where: {
+                    !viewModel.duplicateOf(medication: medicationOption, dosage: $0)
+                }) {
+                    self.dosage = nonUsedDosage
                 }
-                    .pickerStyle(.inline)
-                    .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
             }
-        }
     }
     
     @MainActor @ViewBuilder private var actionSection: some View {
