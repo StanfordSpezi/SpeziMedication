@@ -1,0 +1,85 @@
+//
+// This source file is part of the Stanford Spezi open-source project
+//
+// SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+//
+// SPDX-License-Identifier: MIT
+//
+
+import SpeziViews
+import SwiftUI
+
+
+struct AddMedicationDosage<MI: MedicationInstance>: View {
+    @State private var dosage: MI.InstanceDosage
+    @Binding private var isPresented: Bool
+    @Binding private var medicationInstances: Set<MI>
+    
+    private let medicationOption: MI.InstanceType
+    private let createMedicationInstance: AddMedication<MI>.CreateMedicationInstance
+    
+    
+    private var isDuplicate: Bool {
+        medicationInstances.contains(createMedicationInstance(medicationOption, dosage))
+    }
+    
+    var body: some View {
+        VStack(spacing: 0) {
+            Form {
+                Section {
+                    Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationOption.localizedDescription)", bundle: .module), selection: $dosage) {
+                        ForEach(medicationOption.dosages, id: \.self) { dosage in
+                            Text(dosage.localizedDescription)
+                                .tag(dosage)
+                        }
+                    }
+                        .pickerStyle(.inline)
+                        .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
+                }
+            }
+            VStack(alignment: .center) {
+                if isDuplicate {
+                    Text("EDIT_DOSAGE_PUBLICET", bundle: .module)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
+                }
+                AsyncButton(
+                    action: {
+                        medicationInstances.insert(createMedicationInstance(medicationOption, dosage))
+                        isPresented = false
+                    },
+                    label: {
+                        Text("ADD_MEDICATION_TITLE", bundle: .module)
+                            .frame(maxWidth: .infinity, minHeight: 38)
+                    }
+                )
+                    .buttonStyle(.borderedProminent)
+            }
+                .disabled(isDuplicate)
+                .padding()
+                .background {
+                    Color(uiColor: .systemGroupedBackground)
+                        .edgesIgnoringSafeArea(.bottom)
+                }
+        }
+            .navigationTitle(medicationOption.localizedDescription)
+    }
+    
+    
+    init(
+        medicationInstances: Binding<Set<MI>>,
+        medicationOption: MI.InstanceType,
+        isPresented: Binding<Bool>,
+        createMedicationInstance: @escaping AddMedication<MI>.CreateMedicationInstance
+    ) {
+        self._medicationInstances = medicationInstances
+        self.medicationOption = medicationOption
+        self._isPresented = isPresented
+        self.createMedicationInstance = createMedicationInstance
+        
+        guard let initialDosage = medicationOption.dosages.first else {
+            fatalError("No dosage options for the medication: \(medicationOption)")
+        }
+        self._dosage = State(initialValue: initialDosage)
+    }
+}

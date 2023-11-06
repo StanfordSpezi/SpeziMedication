@@ -14,14 +14,27 @@ import PackageDescription
 let package = Package(
     name: "SpeziMedication",
     platforms: [
-        .iOS(.v16)
+        .iOS(.v17)
     ],
     products: [
         .library(name: "SpeziMedication", targets: ["SpeziMedication"])
     ],
+    dependencies: [
+        .package(url: "https://github.com/StanfordSpezi/Spezi", .upToNextMinor(from: "0.7.3")),
+        .package(url: "https://github.com/StanfordSpezi/SpeziStorage", .upToNextMinor(from: "0.4.3")),
+        .package(url: "https://github.com/StanfordSpezi/SpeziViews", .upToNextMinor(from: "0.6.0")),
+    ],
     targets: [
         .target(
-            name: "SpeziMedication"
+            name: "SpeziMedication",
+            dependencies: [
+                .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziViews", package: "SpeziViews"),
+                .product(name: "SpeziLocalStorage", package: "SpeziStorage")
+            ],
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "SpeziMedicationTests",
