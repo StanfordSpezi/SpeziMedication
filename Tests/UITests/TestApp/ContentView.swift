@@ -11,7 +11,7 @@ import SwiftUI
 
 
 struct ContentView: View {
-    @State private var presentSettings: Bool = false
+    @State private var presentSettings = false
     private var medicationSettingsViewModel = ExampleMedicationSettingsViewModel()
     
     
@@ -34,4 +34,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-

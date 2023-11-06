@@ -25,46 +25,53 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            Form {
-                Section {
-                    Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationOption.localizedDescription)", bundle: .module), selection: $dosage) {
-                        ForEach(medicationOption.dosages, id: \.self) { dosage in
-                            Text(dosage.localizedDescription)
-                                .tag(dosage)
-                        }
-                    }
-                        .pickerStyle(.inline)
-                        .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
-                }
-            }
-            VStack(alignment: .center) {
-                if isDuplicate {
-                    Text("EDIT_DOSAGE_PUBLICET", bundle: .module)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.secondary)
-                }
-                AsyncButton(
-                    action: {
-                        medicationInstances.insert(createMedicationInstance(medicationOption, dosage))
-                        isPresented = false
-                    },
-                    label: {
-                        Text("ADD_MEDICATION_TITLE", bundle: .module)
-                            .frame(maxWidth: .infinity, minHeight: 38)
-                    }
-                )
-                    .buttonStyle(.borderedProminent)
-            }
-                .disabled(isDuplicate)
-                .padding()
-                .background {
-                    Color(uiColor: .systemGroupedBackground)
-                        .edgesIgnoringSafeArea(.bottom)
-                }
+            dosageForm
+            actionSection
         }
             .navigationTitle(medicationOption.localizedDescription)
     }
     
+    @MainActor @ViewBuilder private var dosageForm: some View {
+        Form {
+            Section {
+                Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationOption.localizedDescription)", bundle: .module), selection: $dosage) {
+                    ForEach(medicationOption.dosages, id: \.self) { dosage in
+                        Text(dosage.localizedDescription)
+                            .tag(dosage)
+                    }
+                }
+                    .pickerStyle(.inline)
+                    .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
+            }
+        }
+    }
+    
+    @MainActor @ViewBuilder private var actionSection: some View {
+        VStack(alignment: .center) {
+            if isDuplicate {
+                Text("EDIT_DOSAGE_PUBLICET", bundle: .module)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.secondary)
+            }
+            AsyncButton(
+                action: {
+                    medicationInstances.insert(createMedicationInstance(medicationOption, dosage))
+                    isPresented = false
+                },
+                label: {
+                    Text("ADD_MEDICATION_TITLE", bundle: .module)
+                        .frame(maxWidth: .infinity, minHeight: 38)
+                }
+            )
+                .buttonStyle(.borderedProminent)
+        }
+            .disabled(isDuplicate)
+            .padding()
+            .background {
+                Color(uiColor: .systemGroupedBackground)
+                    .edgesIgnoringSafeArea(.bottom)
+            }
+    }
     
     init(
         medicationInstances: Binding<Set<MI>>,
