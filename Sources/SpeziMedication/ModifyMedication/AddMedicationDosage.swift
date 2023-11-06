@@ -11,16 +11,16 @@ import SwiftUI
 
 
 struct AddMedicationDosage<MI: MedicationInstance>: View {
+    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
+    
     @State private var dosage: MI.InstanceDosage
     @Binding private var isPresented: Bool
-    @Binding private var medicationInstances: Set<MI>
     
     private let medicationOption: MI.InstanceType
-    private let createMedicationInstance: AddMedication<MI>.CreateMedicationInstance
     
     
     private var isDuplicate: Bool {
-        medicationInstances.contains(createMedicationInstance(medicationOption, dosage))
+        viewModel.medicationInstances.contains(viewModel.createMedicationInstance(medicationOption, dosage))
     }
     
     var body: some View {
@@ -55,7 +55,7 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
             }
             AsyncButton(
                 action: {
-                    medicationInstances.insert(createMedicationInstance(medicationOption, dosage))
+                    viewModel.medicationInstances.insert(viewModel.createMedicationInstance(medicationOption, dosage))
                     isPresented = false
                 },
                 label: {
@@ -73,16 +73,9 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
             }
     }
     
-    init(
-        medicationInstances: Binding<Set<MI>>,
-        medicationOption: MI.InstanceType,
-        isPresented: Binding<Bool>,
-        createMedicationInstance: @escaping AddMedication<MI>.CreateMedicationInstance
-    ) {
-        self._medicationInstances = medicationInstances
+    init(medicationOption: MI.InstanceType, isPresented: Binding<Bool>) {
         self.medicationOption = medicationOption
         self._isPresented = isPresented
-        self.createMedicationInstance = createMedicationInstance
         
         guard let initialDosage = medicationOption.dosages.first else {
             fatalError("No dosage options for the medication: \(medicationOption)")

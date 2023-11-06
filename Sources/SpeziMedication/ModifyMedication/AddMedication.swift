@@ -13,19 +13,17 @@ struct AddMedication<MI: MedicationInstance>: View {
     typealias CreateMedicationInstance = (MI.InstanceType, MI.InstanceDosage) -> MI
     
     
+    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
+    
     @State private var searchText = ""
     @Binding private var isPresented: Bool
-    @Binding private var medicationInstances: Set<MI>
-    
-    private let medicationOptions: Set<MI.InstanceType>
-    private let createMedicationInstance: CreateMedicationInstance
     
     
     private var searchResults: [MI.InstanceType] {
         if searchText.isEmpty {
-            return medicationOptions.sorted()
+            return viewModel.medicationOptions.sorted()
         } else {
-            return medicationOptions
+            return viewModel.medicationOptions
                 .filter {
                     $0.localizedDescription.contains(searchText)
                 }
@@ -39,11 +37,9 @@ struct AddMedication<MI: MedicationInstance>: View {
             List {
                 ForEach(searchResults, id: \.self) { medicationOption in
                     NavigationLink {
-                        AddMedicationDosage(
-                            medicationInstances: $medicationInstances,
+                        AddMedicationDosage<MI>(
                             medicationOption: medicationOption,
-                            isPresented: $isPresented,
-                            createMedicationInstance: createMedicationInstance
+                            isPresented: $isPresented
                         )
                     } label: {
                         Text(medicationOption.localizedDescription)
@@ -63,15 +59,7 @@ struct AddMedication<MI: MedicationInstance>: View {
     }
     
     
-    init(
-        medicationInstances: Binding<Set<MI>>,
-        medicationOptions: Set<MI.InstanceType>,
-        createMedicationInstance: @escaping CreateMedicationInstance,
-        isPresented: Binding<Bool>
-    ) {
-        self._medicationInstances = medicationInstances
-        self.medicationOptions = medicationOptions
-        self.createMedicationInstance = createMedicationInstance
+    init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
     }
 }

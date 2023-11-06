@@ -20,11 +20,11 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     @State private var cancelAlert = false
     @State private var showAddMedicationSheet = false
     @State private var viewState: ViewState = .idle
-    @State private var medicationInstances: Set<MI>
+    private var viewModel: InternalMedicationSettingsViewModel<MI>
     
     
     private var modifiedMedications: Bool {
-        medicationSettingsViewModel.medicationInstances != medicationInstances
+        medicationSettingsViewModel.medicationInstances != viewModel.medicationInstances
     }
     
     private var medicationOptions: Set<MI.InstanceType> {
@@ -33,7 +33,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            if medicationInstances.isEmpty {
+            if viewModel.medicationInstances.isEmpty {
                 Spacer()
                 Text("NO_MEDICATION_DESCRIPTION", bundle: .module)
                     .multilineTextAlignment(.center)
@@ -41,10 +41,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                     .padding(.horizontal)
                 Spacer()
             } else {
-                MedicationList(
-                    medicationInstances: $medicationInstances,
-                    medicationOptions: medicationOptions
-                )
+                MedicationList<MI>()
             }
             saveMedicationButton
         }
@@ -91,11 +88,12 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 )
             }
             .interactiveDismissDisabled(isPresented == nil || modifiedMedications)
+            .environment(viewModel)
     }
     
     @MainActor private var saveMedicationButton: some View {
         let title: String
-        if medicationInstances.isEmpty, !modifiedMedications && allowEmtpySave {
+        if viewModel.medicationInstances.isEmpty, !modifiedMedications && allowEmtpySave {
             title = String(localized: "SAVE_NO_MEDICATIONS_BUTTON", bundle: .module)
         } else {
             title = String(localized: "SAVE_MEDICATIONS_BUTTON", bundle: .module)
@@ -105,8 +103,8 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             action: {
                 do {
                     viewState = .processing
-                    try await medicationSettingsViewModel.persist(medicationInstances: medicationInstances)
-                    medicationInstances = medicationSettingsViewModel.medicationInstances
+                    try await medicationSettingsViewModel.persist(medicationInstances: viewModel.medicationInstances)
+                    viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances
                     action()
                     isPresented?.wrappedValue = false
                     viewState = .idle
@@ -140,12 +138,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     }
     
     private var addMedicationView: some View {
-        AddMedication(
-            medicationInstances: $medicationInstances,
-            medicationOptions: medicationOptions,
-            createMedicationInstance: createMedicationInstance(medicationSettingsViewModel),
-            isPresented: $showAddMedicationSheet
-        )
+        AddMedication<MI>(isPresented: $showAddMedicationSheet)
     }
     
     
@@ -166,12 +159,12 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         self.allowEmtpySave = allowEmtpySave
         self.medicationSettingsViewModel = medicationSettingsViewModel
         self.action = action
-        self._medicationInstances = State(initialValue: medicationSettingsViewModel.medicationInstances)
+        self.viewModel = medicationSettingsViewModel.internalViewModel
     }
     
     
     private func discardChangesAction() {
-        medicationInstances = medicationSettingsViewModel.medicationInstances
+        viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances
         isPresented?.wrappedValue = false
     }
     

@@ -10,16 +10,15 @@ import SwiftUI
 
 
 struct MedicationList<MI: MedicationInstance>: View {
-    @Binding private var medicationInstances: Set<MI>
-    private let medicationOptions: Set<MI.InstanceType>
+    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
     
     private var description: String {
-        guard !medicationInstances.isEmpty else {
+        guard !viewModel.medicationInstances.isEmpty else {
             return "No Medications"
         }
         
-        return medicationInstances
+        return viewModel.medicationInstances
             .map { medicationInstance in
                 "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription)"
             }
@@ -28,14 +27,20 @@ struct MedicationList<MI: MedicationInstance>: View {
     
     private var sortedMedicationInstances: [MI] {
         print(description)
-        return Array(medicationInstances).sorted()
+        return Array(viewModel.medicationInstances).sorted()
     }
     
     
     var body: some View {
         List {
             ForEach(sortedMedicationInstances) { medicationInstance in
-                NavigationLink(value: medicationInstance) {
+                NavigationLink {
+                    EditMedication<MI>(
+                        medicationInstance: medicationInstance.id,
+                        initialDosage: medicationInstance.dosage
+                    )
+                        .environment(viewModel)
+                } label: {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(medicationInstance.localizedDescription)
                             .font(.headline)
@@ -46,25 +51,9 @@ struct MedicationList<MI: MedicationInstance>: View {
             }
                 .onDelete { offsets in
                     for offset in offsets {
-                        medicationInstances.remove(sortedMedicationInstances[offset])
+                        viewModel.medicationInstances.remove(sortedMedicationInstances[offset])
                     }
                 }
-                .navigationDestination(for: MI.self) { medicationInstance in
-                    EditMedication(
-                        medicationInstance: medicationInstance.id,
-                        medicationInstances: $medicationInstances,
-                        medicationOptions: medicationOptions
-                    )
-                }
         }
-    }
-    
-    
-    init(
-        medicationInstances: Binding<Set<MI>>,
-        medicationOptions: Set<MI.InstanceType>
-    ) {
-        self._medicationInstances = medicationInstances
-        self.medicationOptions = medicationOptions
     }
 }

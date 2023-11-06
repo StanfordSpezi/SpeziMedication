@@ -12,60 +12,63 @@ import SwiftUI
 
 struct EditMedication<MI: MedicationInstance>: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
-    @Binding private var medicationInstances: Set<MI>
     @State private var dosage: MI.InstanceDosage
     
-    private let medicationInstance: MI
-    private let medicationOptions: Set<MI.InstanceType>
+    private let medicationInstanceId: MI.ID
     
-    
-    var body: some View {
-        VStack {
-            Form {
-                Section {
-                    Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationInstance.localizedDescription)", bundle: .module), selection: $dosage) {
-                        ForEach(medicationInstance.type.dosages, id: \.self) { dosage in
-                            Text(dosage.localizedDescription)
-                                .tag(dosage)
-                        }
-                    }
-                        .pickerStyle(.inline)
-                        .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
-                }
-                Section {
-                    Button(String(localized: "DELETE_MEDICATION", bundle: .module), role: .destructive) {
-                        medicationInstances.remove(medicationInstance)
-                        dismiss()
-                    }
-                }
-            }
-        }
-            .navigationTitle(medicationInstance.localizedDescription)
-            .onChange(of: dosage) {
-                guard medicationInstance.dosage != dosage else {
-                    return
-                }
-                
-                medicationInstances.remove(medicationInstance)
-                
-                var modifiedMedication = medicationInstance
-                modifiedMedication.dosage = dosage
-                
-                medicationInstances.insert(modifiedMedication)
-            }
+    private var medicationInstance: MI? {
+        viewModel.medicationInstances.first(where: { $0.id == medicationInstanceId })
     }
     
     
-    init(medicationInstance medicationInstanceId: MI.ID, medicationInstances: Binding<Set<MI>>, medicationOptions: Set<MI.InstanceType>) {
-        guard let medicationInstance = medicationInstances.wrappedValue.first(where: { $0.id == medicationInstanceId }) else {
-            fatalError("Could not find medication instance in defined set of medication instances.")
+    var body: some View {
+        if let medicationInstance {
+            VStack {
+                Form {
+                    Section {
+                        Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationInstance.localizedDescription)", bundle: .module), selection: $dosage) {
+                            ForEach(medicationInstance.type.dosages, id: \.self) { dosage in
+                                Text(dosage.localizedDescription)
+                                    .tag(dosage)
+                            }
+                        }
+                        .pickerStyle(.inline)
+                        .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
+                    }
+                    Section {
+                        Button(String(localized: "DELETE_MEDICATION", bundle: .module), role: .destructive) {
+                            viewModel.medicationInstances.remove(medicationInstance)
+                            dismiss()
+                        }
+                    }
+                }
+            }
+                .navigationTitle(medicationInstance.localizedDescription)
+                .onChange(of: dosage) {
+                    guard medicationInstance.dosage != dosage else {
+                        return
+                    }
+                    
+                    viewModel.medicationInstances.remove(medicationInstance)
+                    
+                    var modifiedMedication = medicationInstance
+                    modifiedMedication.dosage = dosage
+                    
+                    viewModel.medicationInstances.insert(modifiedMedication)
+                }
+        } else {
+            ProgressView()
         }
-        
-        self.medicationInstance = medicationInstance
-        self._medicationInstances = medicationInstances
-        self.medicationOptions = medicationOptions
-        
-        self._dosage = State(wrappedValue: medicationInstance.dosage)
+    }
+    
+    
+    init(
+        medicationInstance medicationInstanceId: MI.ID,
+        initialDosage: MI.InstanceDosage
+    ) {
+        self.medicationInstanceId = medicationInstanceId
+        self._dosage = State(initialValue: initialDosage)
     }
 }
