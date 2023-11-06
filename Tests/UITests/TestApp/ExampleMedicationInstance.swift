@@ -15,7 +15,7 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     
     
     var id: String {
-        localizedDescription
+        localizedDescription + dosage.localizedDescription
     }
     
     var localizedDescription: String {

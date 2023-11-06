@@ -9,10 +9,16 @@
 import Foundation
 
 
+/// Defines a medication type.
+///
+/// ``Medication``'s are instanced as ``MedicationInstance``s.
 public protocol Medication: Codable, Comparable, Hashable {
+    /// The dosage type associated with the medication.
     associatedtype MedicationDosage: Dosage
     
     
+    /// Localized description of the medication.
     var localizedDescription: String { get }
+    /// Dosage options defining a set of options when instantiating a ``MedicationInstance``.
     var dosages: [MedicationDosage] { get }
 }

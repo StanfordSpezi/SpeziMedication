@@ -9,13 +9,19 @@
 import Foundation
 
 
+/// Instance of a ``Medication``.
 public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable where InstanceType.MedicationDosage == InstanceDosage {
+    /// Associated dosage.
     associatedtype InstanceDosage: Dosage
+    /// Associated medication type.
     associatedtype InstanceType: Medication
     
     
+    /// Localized description of the medication dosage.
     var localizedDescription: String { get }
+    /// Type of the medication instance.
     var type: InstanceType { get }
+    /// Dosage of the medication instance.
     var dosage: InstanceDosage { get set }
 }
 

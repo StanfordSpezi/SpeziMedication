@@ -9,6 +9,10 @@
 import Foundation
 
 
+/// Marks a ``MedicationInstance`` as being initiailzable using ``MedicationInstanceInitializable/init(type:dosage:)``.
 public protocol MedicationInstanceInitializable: MedicationInstance {
+    /// - Parameters:
+    ///   - type: Type of the medication.
+    ///   - dosage: Dosage of the medication.
     init(type: InstanceType, dosage: InstanceDosage)
 }
