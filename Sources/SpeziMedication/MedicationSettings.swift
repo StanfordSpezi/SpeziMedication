@@ -41,7 +41,10 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                     .padding(.horizontal)
                 Spacer()
             } else {
-                MedicationList(medicationInstances: $medicationInstances, medicationOptions: medicationOptions)
+                MedicationList(
+                    medicationInstances: $medicationInstances,
+                    medicationOptions: medicationOptions
+                )
             }
             saveMedicationButton
         }

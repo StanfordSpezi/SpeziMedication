@@ -12,7 +12,7 @@ import Observation
 /// Defines a unified interface to provide data and functionality of the ``MedicationSettings``
 ///
 /// The implementation needs to provide functionalities to manage medication instances and options and persist the medications.
-public protocol MedicationSettingsViewModel<Medications>: Observation.Observable {
+public protocol MedicationSettingsViewModel<Medications> {
     /// The ``MedicationInstance`` type that the ``MedicationSettingsViewModel`` implementation supports.
     associatedtype Medications: MedicationInstance
     

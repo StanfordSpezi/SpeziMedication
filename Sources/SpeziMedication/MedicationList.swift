@@ -22,9 +22,7 @@ struct MedicationList<MI: MedicationInstance>: View {
     var body: some View {
         List {
             ForEach(sortedMedicationInstances) { medicationInstance in
-                NavigationLink {
-                    EditMedication(medication: medicationInstance.id, medicationInstances: $medicationInstances, medicationOptions: medicationOptions)
-                } label: {
+                NavigationLink(value: medicationInstance) {
                     VStack(alignment: .leading, spacing: 0) {
                         Text(medicationInstance.localizedDescription)
                             .font(.headline)
@@ -38,11 +36,21 @@ struct MedicationList<MI: MedicationInstance>: View {
                         medicationInstances.remove(sortedMedicationInstances[offset])
                     }
                 }
+                .navigationDestination(for: MI.self) { medicationInstance in
+                    EditMedication(
+                        medication: medicationInstance.id,
+                        medicationInstances: $medicationInstances,
+                        medicationOptions: medicationOptions
+                    )
+                }
         }
     }
     
     
-    init(medicationInstances: Binding<Set<MI>>, medicationOptions: Set<MI.InstanceType>) {
+    init(
+        medicationInstances: Binding<Set<MI>>,
+        medicationOptions: Set<MI.InstanceType>
+    ) {
         self._medicationInstances = medicationInstances
         self.medicationOptions = medicationOptions
     }
