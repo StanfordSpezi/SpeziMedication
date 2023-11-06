@@ -1,15 +1,22 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "" : {
-
-    },
     "ADD_MEDICATION" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add a Medication"
+          }
+        }
+      }
+    },
+    "ADD_MEDICATION_DUPLICATE" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medication with this dosage already exists."
           }
         }
       }
@@ -74,12 +81,12 @@
         }
       }
     },
-    "EDIT_DOSAGE_PUBLICET" : {
+    "EDIT_MEDICATION_DUPLICATE" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Medication is a duplicate of an existing medication."
+            "value" : "Medication with this dosage already exists."
           }
         }
       }

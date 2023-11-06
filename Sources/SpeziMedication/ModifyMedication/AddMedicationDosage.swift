@@ -49,7 +49,7 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     @MainActor @ViewBuilder private var actionSection: some View {
         VStack(alignment: .center) {
             if isDuplicate {
-                Text("EDIT_DOSAGE_PUBLICET", bundle: .module)
+                Text("ADD_MEDICATION_DUPLICATE", bundle: .module)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
             }

@@ -30,8 +30,28 @@ struct EditMedication<MI: MedicationInstance>: View {
                     Section {
                         Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medicationInstance.localizedDescription)", bundle: .module), selection: $dosage) {
                             ForEach(medicationInstance.type.dosages, id: \.self) { dosage in
-                                Text(dosage.localizedDescription)
-                                    .tag(dosage)
+                                if viewModel.duplicateOf(medication: medicationInstance.type, dosage: dosage) && medicationInstance.dosage != dosage {
+                                    HStack {
+                                        VStack(alignment: .leading) {
+                                            Text(dosage.localizedDescription)
+                                            Text("EDIT_MEDICATION_DUPLICATE", bundle: .module)
+                                                .multilineTextAlignment(.leading)
+                                                .font(.caption)
+                                        }
+                                            .foregroundStyle(Color.secondary)
+                                            .disabled(true)
+                                        Spacer()
+                                    }
+                                        .padding(.vertical, 11) // Unfortunate workaround as we can not disable touch in Pickers.
+                                        .padding(.horizontal, 100)
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {}
+                                        .padding(.vertical, -11)
+                                        .padding(.horizontal, -100)
+                                } else {
+                                    Text(dosage.localizedDescription)
+                                        .tag(dosage)
+                                }
                             }
                         }
                         .pickerStyle(.inline)
