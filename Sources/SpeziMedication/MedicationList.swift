@@ -26,7 +26,7 @@ struct MedicationList<MI: MedicationInstance>: View {
     }
     
     private var sortedMedicationInstances: [MI] {
-        print(description)
+print(description)
         return Array(viewModel.medicationInstances).sorted()
     }
     

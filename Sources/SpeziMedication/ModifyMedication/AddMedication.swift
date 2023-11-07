@@ -12,7 +12,7 @@ import SwiftUI
 struct AddMedication<MI: MedicationInstance>: View {
     typealias CreateMedicationInstance = (MI.InstanceType, MI.InstanceDosage) -> MI
     
-    
+
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
     @State private var searchText = ""
@@ -60,6 +60,6 @@ struct AddMedication<MI: MedicationInstance>: View {
     
     
     init(isPresented: Binding<Bool>) {
-        self._isPresented = isPresented
+                self._isPresented = isPresented
     }
 }

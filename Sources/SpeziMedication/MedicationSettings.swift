@@ -52,7 +52,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             .navigationTitle(String(localized: "MEDICATION_SETTINGS", bundle: .module))
             .sheet(isPresented: $showAddMedicationSheet) {
                 addMedicationView
-            }
+                                }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     addMedicationButton
@@ -106,7 +106,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                     try await medicationSettingsViewModel.persist(medicationInstances: viewModel.medicationInstances)
                     viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances
                     action()
-                    isPresented?.wrappedValue = false
+isPresented?.wrappedValue = false
                     viewState = .idle
                 } catch let error as LocalizedError {
                     viewState = .error(error)

@@ -17,7 +17,7 @@ struct EditMedication<MI: MedicationInstance>: View {
     @State private var dosage: MI.InstanceDosage
     
     private let medicationInstanceId: MI.ID
-    
+        
     private var medicationInstance: MI? {
         viewModel.medicationInstances.first(where: { $0.id == medicationInstanceId })
     }
@@ -50,7 +50,10 @@ struct EditMedication<MI: MedicationInstance>: View {
                     viewModel.medicationInstances.insert(modifiedMedication)
                 }
         } else {
-            ProgressView()
+            ZStack {
+                Color(.systemGroupedBackground).ignoresSafeArea()
+                ProgressView()
+            }
         }
     }
     

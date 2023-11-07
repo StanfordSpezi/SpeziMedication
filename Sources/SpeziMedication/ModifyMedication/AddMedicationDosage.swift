@@ -10,14 +10,14 @@ import SpeziViews
 import SwiftUI
 
 
-struct AddMedicationDosage<MI: MedicationInstance>: View {
+struct AddMedicationDosage<MI: MedicationInstance>: View {  
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
     @State private var dosage: MI.InstanceDosage
     @Binding private var isPresented: Bool
-    
+        
     private let medicationOption: MI.InstanceType
-    
+        
     
     private var isDuplicate: Bool {
         viewModel.duplicateOf(medication: medicationOption, dosage: dosage)
@@ -37,40 +37,52 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
                 }) {
                     self.dosage = nonUsedDosage
                 }
+                    }
+                                    }
+
+    @MainActor @ViewBuilder private var actionSection: some View {
+            VStack(alignment: .center) {
+                if isDuplicate {
+                    Text("ADD_MEDICATION_DUPLICATE", bundle: .module)
+.multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
+                }
+                addMedicationSaveDosageButton
             }
+                .disabled(isDuplicate)
+                .padding()
+                .background {
+                    Color(uiColor: .systemGroupedBackground)
+                        .edgesIgnoringSafeArea(.bottom)
+                }
+        }
+            .navigationTitle(medicationOption.localizedDescription)
     }
     
-    @MainActor @ViewBuilder private var actionSection: some View {
-        VStack(alignment: .center) {
-            if isDuplicate {
-                Text("ADD_MEDICATION_DUPLICATE", bundle: .module)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.secondary)
+    private var addMedicationSaveDosageButton: some View {
+        NavigationLink(
+            destination: {
+                AddMedicationSchedule(
+                    medicationInstances: $medicationInstances,
+                    medicationOption: medicationOption,
+                    dosage: dosage,
+                    isPresented: $isPresented,
+                    createMedicationInstance: createMedicationInstance
+                )
+            },
+            label: {
+                Text("ADD_MEDICATION_SAVE_DOSAGE", bundle: .module)
+                    .frame(maxWidth: .infinity, minHeight: 38)
             }
-            AsyncButton(
-                action: {
-                    viewModel.medicationInstances.insert(viewModel.createMedicationInstance(medicationOption, dosage))
-                    isPresented = false
-                },
-                label: {
-                    Text("ADD_MEDICATION_TITLE", bundle: .module)
-                        .frame(maxWidth: .infinity, minHeight: 38)
-                }
-            )
-                .buttonStyle(.borderedProminent)
-        }
-            .disabled(isDuplicate)
-            .padding()
-            .background {
-                Color(uiColor: .systemGroupedBackground)
-                    .edgesIgnoringSafeArea(.bottom)
-            }
+        )
+            .buttonStyle(.borderedProminent)
     }
+    
     
     init(medicationOption: MI.InstanceType, isPresented: Binding<Bool>) {
-        self.medicationOption = medicationOption
+         self.medicationOption = medicationOption
         self._isPresented = isPresented
-        
+                
         guard let initialDosage = medicationOption.dosages.first else {
             fatalError("No dosage options for the medication: \(medicationOption)")
         }
