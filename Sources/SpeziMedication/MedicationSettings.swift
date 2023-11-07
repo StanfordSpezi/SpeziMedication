@@ -172,7 +172,7 @@ isPresented?.wrappedValue = false
         viewModel.medicationOptions
     }
     
-    private func createMedicationInstance(_ viewModel: some MedicationSettingsViewModel<MI>) -> (MI.InstanceType, MI.InstanceDosage) -> MI {
-        viewModel.createMedicationInstance(withType:dosage:)
+    private func createMedicationInstance(_ viewModel: some MedicationSettingsViewModel<MI>) -> (MI.InstanceType, MI.InstanceDosage, Schedule) -> MI {
+        viewModel.createMedicationInstance
     }
 }

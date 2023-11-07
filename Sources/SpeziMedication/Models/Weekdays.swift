@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct Weekdays: OptionSet, Codable {
+public struct Weekdays: OptionSet, Codable, Hashable {
     static let sunday = Weekdays(rawValue: 1 << 0)
     static let monday = Weekdays(rawValue: 1 << 1)
     static let tuesday = Weekdays(rawValue: 1 << 2)

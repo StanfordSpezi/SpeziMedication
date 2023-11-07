@@ -19,15 +19,15 @@ extension DateComponents: Identifiable {
 
 
 struct AddMedicationSchedule<MI: MedicationInstance>: View {
+    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     @Binding private var isPresented: Bool
-    @Binding private var medicationInstances: Set<MI>
+    
     @State private var schedule: Schedule = .regularDayIntervals(1)
     @State private var times: [DateComponents] = []
     @State private var showFrequencySheet: Bool = false
     
     private let medicationOption: MI.InstanceType
     private let dosage: MI.InstanceDosage
-    private let createMedicationInstance: AddMedication<MI>.CreateMedicationInstance
     
     
     var body: some View {
@@ -39,7 +39,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
             VStack(alignment: .center) {
                 AsyncButton(
                     action: {
-                        medicationInstances.insert(createMedicationInstance(medicationOption, dosage, schedule))
+                        viewModel.medicationInstances.insert(viewModel.createMedicationInstance(medicationOption, dosage, schedule))
                         isPresented = false
                     },
                     label: {
@@ -108,16 +108,12 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     
     
     init(
-        medicationInstances: Binding<Set<MI>>,
         medicationOption: MI.InstanceType,
         dosage: MI.InstanceDosage,
-        isPresented: Binding<Bool>,
-        createMedicationInstance: @escaping AddMedication<MI>.CreateMedicationInstance
+        isPresented: Binding<Bool>
     ) {
-        self._medicationInstances = medicationInstances
         self.medicationOption = medicationOption
         self.dosage = dosage
         self._isPresented = isPresented
-        self.createMedicationInstance = createMedicationInstance
     }
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-public enum Schedule: Codable, CustomStringConvertible {
+public enum Schedule: Codable, CustomStringConvertible, Equatable, Hashable {
     case regularDayIntervals(Int)
     case specificDaysOfWeek(Weekdays)
     case asNeeded

@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct AddMedication<MI: MedicationInstance>: View {
-    typealias CreateMedicationInstance = (MI.InstanceType, MI.InstanceDosage) -> MI
+    typealias CreateMedicationInstance = (MI.InstanceType, MI.InstanceDosage, Schedule) -> MI
     
 
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
