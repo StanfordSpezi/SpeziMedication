@@ -15,6 +15,10 @@ extension DateComponents: Identifiable {
     }
 }
 
+struct ScheduleTime: Identifiable, Hashable, Equatable {
+    let id: UUID
+    let time: DateComponents
+}
 
 
 

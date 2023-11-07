@@ -19,7 +19,7 @@ public enum Schedule: Codable, CustomStringConvertible, Equatable, Hashable {
     public var description: String {
         switch self {
         case let .regularDayIntervals(dayInterval):
-            String(localized: "Every \(dayInterval)", bundle: .module)
+            String(localized: "Every \(dayInterval) days", bundle: .module)
         case let .specificDaysOfWeek(weekdays):
             weekdays.localizedShortDescription
         case .asNeeded:
