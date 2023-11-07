@@ -35,6 +35,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
             Form {
                 titleSection
                 frequencySection
+                timesSection
             }
             VStack(alignment: .center) {
                 AsyncButton(
@@ -61,13 +62,21 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     private var titleSection: some View {
         Section {
             HStack {
-                Image(systemName: "calendar")
-                    .accessibilityHidden(true)
-                    .foregroundColor(.accentColor)
-                    .font(.largeTitle)
-                Text("When will you take the medication?")
-                    .font(.title)
-                Text(medicationOption.localizedDescription)
+                Spacer()
+                VStack(alignment: .center) {
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .accessibilityHidden(true)
+                        .foregroundColor(.accentColor)
+                        .scaledToFit()
+                        .frame(width: 70, height: 100)
+                    Text("When will you take the medication?")
+                        .multilineTextAlignment(.center)
+                        .font(.title2)
+                    Text(medicationOption.localizedDescription)
+                        .multilineTextAlignment(.center)
+                }
+                Spacer()
             }
         }
     }
@@ -81,9 +90,10 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                 label: {
                     HStack {
                         Text("Frequency")
+                            .foregroundStyle(Color.primary)
                         Spacer()
                         Text(schedule.description)
-                            .foregroundColor(.accentColor)
+                            .foregroundStyle(Color.accentColor)
                     }
                 }
             )
@@ -98,11 +108,32 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
             List {
                 ForEach(times) { time in
                     HStack {
-                        Text(time.debugDescription)
+                        Button(
+                            action: {
+                                times.removeAll(where: { $0 == time })
+                            },
+                            label: {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundStyle(Color.red)
+                            }
+                        )
+                        DatePicker("Time", selection: Binding(get: { .now }, set: { _ in }), displayedComponents: .hourAndMinute)
+                            .labelsHidden()
                     }
                 }
-                
             }
+            Button(
+                action: {
+                    times.append(DateComponents(hour: 13, minute: 30))
+                },
+                label: {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundStyle(Color.green)
+                        Text("Add a time")
+                    }
+                }
+            )
         }
     }
     

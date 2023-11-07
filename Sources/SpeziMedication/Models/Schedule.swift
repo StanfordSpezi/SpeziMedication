@@ -9,6 +9,7 @@
 import Foundation
 
 
+#warning("TODO: Rename this to frequency.")
 public enum Schedule: Codable, CustomStringConvertible, Equatable, Hashable {
     case regularDayIntervals(Int)
     case specificDaysOfWeek(Weekdays)

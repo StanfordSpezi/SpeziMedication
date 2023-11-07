@@ -68,7 +68,7 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
                 )
             },
             label: {
-                Text("ADD_MEDICATION_SAVE_DOSAGE", bundle: .module)
+                Text("Save Dosage", bundle: .module)
                     .frame(maxWidth: .infinity, minHeight: 38)
             }
         )

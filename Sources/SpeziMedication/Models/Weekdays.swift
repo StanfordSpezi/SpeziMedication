@@ -9,7 +9,9 @@
 import Foundation
 
 
-public struct Weekdays: OptionSet, Codable, Hashable {
+public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable {
+    public static var allCases: [Weekdays] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+    
     static let sunday = Weekdays(rawValue: 1 << 0)
     static let monday = Weekdays(rawValue: 1 << 1)
     static let tuesday = Weekdays(rawValue: 1 << 2)
@@ -18,12 +20,16 @@ public struct Weekdays: OptionSet, Codable, Hashable {
     static let friday = Weekdays(rawValue: 1 << 5)
     static let saturday = Weekdays(rawValue: 1 << 6)
     
-    static let all: Weekdays = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+    static let all: Weekdays = Weekdays(allCases)
     static let weekend: Weekdays = [.saturday, .sunday]
     
     
     public let rawValue: UInt8
     
+    
+    public var id: RawValue {
+        rawValue
+    }
     
     public var localizedDescription: String {
         guard let weekdays = DateFormatter().weekdaySymbols else {
@@ -48,14 +54,14 @@ public struct Weekdays: OptionSet, Codable, Hashable {
     
     
     private func descriptionFrom(weekdayDescriptions: [String]) -> String {
-        guard self == .all else {
-            return String(localized: "WEEKDAYS_EVERY_DAY", bundle: .module)
-        }
-        
-        guard self == .weekend else {
-            return String(localized: "WEEKDAYS_WEEKEND", bundle: .module)
-        }
-        
+//        guard self == .all else {
+//            return String(localized: "WEEKDAYS_EVERY_DAY", bundle: .module)
+//        }
+//        
+//        guard self == .weekend else {
+//            return String(localized: "WEEKDAYS_WEEKEND", bundle: .module)
+//        }
+//        
         guard weekdayDescriptions.count >= 7 else {
             return ""
         }
