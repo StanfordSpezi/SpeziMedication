@@ -12,7 +12,7 @@ import SwiftUI
 
 
 @Observable
-class ExampleMedicationSettingsViewModel: Component, MedicationSettingsViewModel, CustomStringConvertible {
+class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, CustomStringConvertible {
     var medicationInstances: Set<ExampleMedicationInstance> = []
     let medicationOptions: Set<ExampleMedication>
     
