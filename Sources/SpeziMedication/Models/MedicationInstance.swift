@@ -38,6 +38,7 @@ extension MedicationInstance {
 
 
 extension MedicationInstance {
+    /// See Equatable
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.type == rhs.type && lhs.dosage == rhs.dosage
     }

@@ -52,7 +52,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             .navigationTitle(String(localized: "Medication Settings", bundle: .module))
             .sheet(isPresented: $showAddMedicationSheet) {
                 addMedicationView
-                                }
+            }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     addMedicationButton

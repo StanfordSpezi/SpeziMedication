@@ -44,18 +44,7 @@ struct ScheduleFrequencyView: View {
                 }
             }
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(String(localized: "Cancel", bundle: .module)) {
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    Button(String(localized: "Done", bundle: .module)) {
-                        outsideFrequency = frequency
-                        dismiss()
-                    }
-                        .bold()
-                }
+                toolbar
             }
         }
     }
@@ -86,6 +75,7 @@ struct ScheduleFrequencyView: View {
                             .foregroundStyle(Color.primary)
                         Spacer()
                         Image(systemName: "checkmark")
+                            .accessibilityHidden(true)
                             .foregroundStyle(Color.accentColor)
                     }
                 } else {
@@ -108,6 +98,20 @@ struct ScheduleFrequencyView: View {
         }
     }
     
+    @ToolbarContentBuilder private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .cancellationAction) {
+            Button(String(localized: "Cancel", bundle: .module)) {
+                dismiss()
+            }
+        }
+        ToolbarItem(placement: .primaryAction) {
+            Button(String(localized: "Done", bundle: .module)) {
+                outsideFrequency = frequency
+                dismiss()
+            }
+                .bold()
+        }
+    }
     
     
     init(frequency: Binding<Frequency>) {

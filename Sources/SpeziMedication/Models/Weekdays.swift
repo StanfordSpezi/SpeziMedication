@@ -20,7 +20,7 @@ public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable
     static let friday = Weekdays(rawValue: 1 << 5)
     static let saturday = Weekdays(rawValue: 1 << 6)
     
-    static let all: Weekdays = Weekdays(allCases)
+    static let all = Weekdays(allCases)
     static let weekend: Weekdays = [.saturday, .sunday]
     
     

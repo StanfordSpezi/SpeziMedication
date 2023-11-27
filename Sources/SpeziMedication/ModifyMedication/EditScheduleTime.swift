@@ -24,26 +24,13 @@ struct EditScheduleTime: View {
                             },
                             label: {
                                 Image(systemName: "minus.circle.fill")
+                                    .accessibilityLabel(Text("Delete", bundle: .module))
                                     .foregroundStyle(Color.red)
                             }
                         )
                         DatePicker(
                             "Time",
-                            selection: Binding(
-                                get: {
-                                    time.date
-                                },
-                                set: { newValue in
-                                    times.removeAll(where: { $0 == time })
-                                    let newScheduleTime = ScheduleTime(date: newValue)
-                                    
-                                    guard !times.contains(newScheduleTime) else {
-                                        return
-                                    }
-                                    
-                                    times.append(newScheduleTime)
-                                }
-                            ),
+                            selection: dateBinding(time: time),
                             displayedComponents: .hourAndMinute
                         )
                             .labelsHidden()
@@ -57,6 +44,7 @@ struct EditScheduleTime: View {
                 label: {
                     HStack {
                         Image(systemName: "plus.circle.fill")
+                            .accessibilityHidden(true)
                             .foregroundStyle(Color.green)
                         Text("Add a time")
                     }
@@ -68,6 +56,25 @@ struct EditScheduleTime: View {
     
     init(times: Binding<[ScheduleTime]>) {
         self._times = times
+    }
+    
+    
+    private func dateBinding(time: ScheduleTime) -> Binding<Date> {
+        Binding(
+            get: {
+                time.date
+            },
+            set: { newValue in
+                times.removeAll(where: { $0 == time })
+                let newScheduleTime = ScheduleTime(date: newValue)
+                
+                guard !times.contains(newScheduleTime) else {
+                    return
+                }
+                
+                times.append(newScheduleTime)
+            }
+        )
     }
     
     

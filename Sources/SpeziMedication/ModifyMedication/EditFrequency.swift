@@ -11,7 +11,7 @@ import SwiftUI
 
 struct EditFrequency: View {
     @Binding private var frequency: Frequency
-    @State private var showFrequencySheet: Bool = false
+    @State private var showFrequencySheet = false
     
     
     var body: some View {
