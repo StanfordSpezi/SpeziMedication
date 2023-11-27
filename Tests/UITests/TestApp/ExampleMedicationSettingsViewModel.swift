@@ -24,7 +24,7 @@ class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, C
         
         return medicationInstances
             .map { medicationInstance in
-                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription)"
+                "\(medicationInstance.localizedDescription) - \(medicationInstance.dosage.localizedDescription) - \(medicationInstance.schedule)"
             }
             .joined(separator: ", ")
     }
