@@ -10,56 +10,11 @@ import SpeziViews
 import SwiftUI
 
 
-struct ScheduleTime: Identifiable, Hashable, Equatable, Comparable {
-    let uuid: UUID
-    let time: DateComponents
-    
-    
-    var id: String {
-        "\(time.hour ?? 0):\(time.minute ?? 0)"
-    }
-    
-    var date: Date {
-        Calendar.current.date(bySettingHour: self.time.hour ?? 0, minute: self.time.minute ?? 0, second: 0, of: .now) ?? .now
-    }
-    
-    
-    init(time: DateComponents) {
-        precondition(time.hour != nil && time.minute != nil)
-        
-        self.uuid = UUID()
-        self.time = time
-    }
-    
-    init(date: Date) {
-        self.init(time: Calendar.current.dateComponents([.hour, .minute], from: date))
-    }
-    
-    
-    static func == (lhs: ScheduleTime, rhs: ScheduleTime) -> Bool {
-        lhs.time.hour == rhs.time.hour && lhs.time.minute == rhs.time.minute
-    }
-    
-    static func < (lhs: ScheduleTime, rhs: ScheduleTime) -> Bool {
-        guard lhs.time.hour == rhs.time.hour else {
-            return lhs.time.hour ?? 0 < rhs.time.hour ?? 0
-        }
-        
-        return lhs.time.minute ?? 0 < rhs.time.minute ?? 0
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
-
-
 struct AddMedicationSchedule<MI: MedicationInstance>: View {
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     @Binding private var isPresented: Bool
     
-    @State private var schedule: Schedule = .regularDayIntervals(1)
+    @State private var frequency: Frequency = .regularDayIntervals(1)
     @State private var times: [ScheduleTime] = []
     @State private var showFrequencySheet: Bool = false
     
@@ -77,7 +32,13 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
             VStack(alignment: .center) {
                 AsyncButton(
                     action: {
-                        viewModel.medicationInstances.insert(viewModel.createMedicationInstance(medicationOption, dosage, schedule))
+                        viewModel.medicationInstances.insert(
+                            viewModel.createMedicationInstance(
+                                medicationOption,
+                                dosage,
+                                Schedule(frequency: frequency, times: times)
+                            )
+                        )
                         isPresented = false
                     },
                     label: {
@@ -127,14 +88,14 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                         Text("Frequency")
                             .foregroundStyle(Color.primary)
                         Spacer()
-                        Text(schedule.description)
+                        Text(frequency.description)
                             .foregroundStyle(Color.accentColor)
                     }
                 }
             )
         }
             .sheet(isPresented: $showFrequencySheet) {
-                ScheduleFrequencyView(schedule: $schedule)
+                ScheduleFrequencyView(frequency: $frequency)
             }
     }
     

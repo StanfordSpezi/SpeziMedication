@@ -12,8 +12,8 @@ import SwiftUI
 struct ScheduleFrequencyView: View {
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var outsideSchedule: Schedule
-    @State private var schedule: Schedule
+    @Binding var outsideFrequency: Frequency
+    @State private var frequency: Frequency
     @State private var regularInterval: Int = 1
     @State private var daysOfTheWeek: Weekdays = .all
     @State private var startDate: Date = .now
@@ -22,21 +22,21 @@ struct ScheduleFrequencyView: View {
         NavigationStack {
             Form {
                 Section {
-                    Picker("Frequency", selection: $schedule) {
+                    Picker("Frequency", selection: $frequency) {
                         Text("At Regular Intervals", bundle: .module)
-                            .tag(Schedule.regularDayIntervals(regularInterval))
+                            .tag(Frequency.regularDayIntervals(regularInterval))
                         Text("On Specific Days of the Week", bundle: .module)
-                            .tag(Schedule.specificDaysOfWeek(daysOfTheWeek))
+                            .tag(Frequency.specificDaysOfWeek(daysOfTheWeek))
                         Text("As Needed", bundle: .module)
-                            .tag(Schedule.asNeeded)
+                            .tag(Frequency.asNeeded)
                     }
                         .pickerStyle(.inline)
                         .labelsHidden()
                 }
-                if case .regularDayIntervals = schedule {
+                if case .regularDayIntervals = frequency {
                     regularDayIntervalsSection
                 }
-                if case .specificDaysOfWeek = schedule {
+                if case .specificDaysOfWeek = frequency {
                     specificDaysOfWeekSection
                 }
                 Section {
@@ -51,7 +51,7 @@ struct ScheduleFrequencyView: View {
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button(String(localized: "Done", bundle: .module)) {
-                        outsideSchedule = schedule
+                        outsideFrequency = frequency
                         dismiss()
                     }
                         .bold()
@@ -64,7 +64,7 @@ struct ScheduleFrequencyView: View {
         Section(String(localized: "Choose Interval", bundle: .module)) {
             Picker("Every", selection: $regularInterval) {
                 ForEach(1..<366) { day in
-                    Text(Schedule.regularDayIntervals(day).description)
+                    Text(Frequency.regularDayIntervals(day).description)
                         .tag(day)
                 }
             }
@@ -110,11 +110,11 @@ struct ScheduleFrequencyView: View {
     
     
     
-    init(schedule: Binding<Schedule>) {
-        self._outsideSchedule = schedule
-        self._schedule = State(wrappedValue: schedule.wrappedValue)
+    init(frequency: Binding<Frequency>) {
+        self._outsideFrequency = frequency
+        self._frequency = State(wrappedValue: frequency.wrappedValue)
         
-        switch schedule.wrappedValue {
+        switch frequency.wrappedValue {
         case let .specificDaysOfWeek(daysOfTheWeek):
             self._daysOfTheWeek = State(wrappedValue: daysOfTheWeek)
         case let .regularDayIntervals(regularDayIntervals):
@@ -136,11 +136,11 @@ struct ScheduleFrequencyView: View {
     }
     
     private func updateSchedule() {
-        switch schedule {
+        switch frequency {
         case .regularDayIntervals:
-            self.schedule = .regularDayIntervals(regularInterval)
+            self.frequency = .regularDayIntervals(regularInterval)
         case .specificDaysOfWeek:
-            self.schedule = .specificDaysOfWeek(daysOfTheWeek)
+            self.frequency = .specificDaysOfWeek(daysOfTheWeek)
         case .asNeeded:
             return
         }
@@ -148,7 +148,7 @@ struct ScheduleFrequencyView: View {
 }
 
 #Preview {
-    @State var schedule: Schedule = .specificDaysOfWeek(.all)
+    @State var frequency: Frequency = .specificDaysOfWeek(.all)
     
-    return ScheduleFrequencyView(schedule: $schedule)
+    return ScheduleFrequencyView(frequency: $frequency)
 }
