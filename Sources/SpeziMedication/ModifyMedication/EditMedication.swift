@@ -29,7 +29,7 @@ struct EditMedication<MI: MedicationInstance>: View {
                 Form {
                     EditDosageSection<MI>(dosage: $dosage, medication: medicationInstance.type, initialDosage: dosage)
                     Section {
-                        Button(String(localized: "DELETE_MEDICATION", bundle: .module), role: .destructive) {
+                        Button(String(localized: "Delete", bundle: .module), role: .destructive) {
                             viewModel.medicationInstances.remove(medicationInstance)
                             dismiss()
                         }

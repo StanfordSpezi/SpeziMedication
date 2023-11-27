@@ -46,11 +46,11 @@ struct AddMedication<MI: MedicationInstance>: View {
                     }
                 }
             }
-                .navigationTitle(String(localized: "ADD_MEDICATION", bundle: .module))
-                .searchable(text: $searchText, prompt: String(localized: "SEARCH_FOR_MEDICATION", bundle: .module))
+                .navigationTitle(String(localized: "Add a Medication", bundle: .module))
+                .searchable(text: $searchText, prompt: String(localized: "Search for a medication", bundle: .module))
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button(String(localized: "CANCEL", bundle: .module)) {
+                        Button(String(localized: "Cancel", bundle: .module)) {
                             isPresented = false
                         }
                     }

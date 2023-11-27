@@ -20,13 +20,13 @@ struct EditDosageSection<MI: MedicationInstance>: View {
     
     var body: some View {
         Section {
-            Picker(String(localized: "EDIT_DOSAGE_DESCRIPTION \(medication.localizedDescription)", bundle: .module), selection: $dosage) {
+            Picker(String(localized: "Dosage: \(medication.localizedDescription)", bundle: .module), selection: $dosage) {
                 ForEach(medication.dosages, id: \.self) { dosage in
                     if viewModel.duplicateOf(medication: medication, dosage: dosage) && initialDosage != dosage {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text(dosage.localizedDescription)
-                                Text("MEDICATION_DUPLICATE", bundle: .module)
+                                Text("Medication with this dosage already exists.", bundle: .module)
                                     .multilineTextAlignment(.leading)
                                     .font(.caption)
                             }
@@ -47,7 +47,7 @@ struct EditDosageSection<MI: MedicationInstance>: View {
                 }
             }
             .pickerStyle(.inline)
-            .accessibilityIdentifier(String(localized: "EDIT_DOSAGE_PICKER", bundle: .module))
+            .accessibilityIdentifier(String(localized: "Dosage Picker", bundle: .module))
         }
     }
     

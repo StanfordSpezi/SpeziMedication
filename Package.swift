@@ -13,6 +13,7 @@ import PackageDescription
 
 let package = Package(
     name: "SpeziMedication",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v17)
     ],

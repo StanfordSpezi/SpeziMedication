@@ -54,27 +54,41 @@ public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable
     
     
     private func descriptionFrom(weekdayDescriptions: [String]) -> String {
-//        guard self == .all else {
-//            return String(localized: "WEEKDAYS_EVERY_DAY", bundle: .module)
-//        }
-//        
-//        guard self == .weekend else {
-//            return String(localized: "WEEKDAYS_WEEKEND", bundle: .module)
-//        }
-//        
+        if self == .all {
+            return String(localized: "Every Day", bundle: .module)
+        }
+        
+        if self == .weekend {
+            return String(localized: "Weekend", bundle: .module)
+        }
+        
         guard weekdayDescriptions.count >= 7 else {
             return ""
         }
         
         var descriptions = [String]()
         
-        if contains(.sunday) { descriptions.append(weekdayDescriptions[0]) }
-        if contains(.monday) { descriptions.append(weekdayDescriptions[1]) }
-        if contains(.tuesday) { descriptions.append(weekdayDescriptions[2]) }
-        if contains(.wednesday) { descriptions.append(weekdayDescriptions[3]) }
-        if contains(.thursday) { descriptions.append(weekdayDescriptions[4]) }
-        if contains(.friday) { descriptions.append(weekdayDescriptions[5]) }
-        if contains(.saturday) { descriptions.append(weekdayDescriptions[6]) }
+        if contains(.sunday) {
+            descriptions.append(weekdayDescriptions[0])
+        }
+        if contains(.monday) {
+            descriptions.append(weekdayDescriptions[1])
+        }
+        if contains(.tuesday) {
+            descriptions.append(weekdayDescriptions[2])
+        }
+        if contains(.wednesday) {
+            descriptions.append(weekdayDescriptions[3])
+        }
+        if contains(.thursday) {
+            descriptions.append(weekdayDescriptions[4])
+        }
+        if contains(.friday) {
+            descriptions.append(weekdayDescriptions[5])
+        }
+        if contains(.saturday) {
+            descriptions.append(weekdayDescriptions[6])
+        }
         
         return descriptions.joined(separator: ", ")
     }

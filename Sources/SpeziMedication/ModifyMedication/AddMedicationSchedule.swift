@@ -48,7 +48,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                         isPresented = false
                     },
                     label: {
-                        Text("ADD_MEDICATION_TITLE", bundle: .module)
+                        Text("Add Medication", bundle: .module)
                             .frame(maxWidth: .infinity, minHeight: 38)
                     }
                 )
@@ -74,11 +74,9 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                         .foregroundColor(.accentColor)
                         .scaledToFit()
                         .frame(width: 70, height: 100)
-                    Text("When will you take the medication?")
+                    Text("When will you take \(medicationOption.localizedDescription) (\(dosage.localizedDescription))?", bundle: .module)
                         .multilineTextAlignment(.center)
                         .font(.title2)
-                    Text(medicationOption.localizedDescription)
-                        .multilineTextAlignment(.center)
                 }
                 Spacer()
             }
