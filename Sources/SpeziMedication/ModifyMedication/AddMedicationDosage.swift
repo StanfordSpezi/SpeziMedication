@@ -26,7 +26,9 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     var body: some View {
         VStack(spacing: 0) {
             Form {
-                EditDosageSection<MI>(dosage: $dosage, medication: medicationOption)
+                Section {
+                    EditDosage<MI>(dosage: $dosage, medication: medicationOption)
+                }
             }
             actionSection
         }

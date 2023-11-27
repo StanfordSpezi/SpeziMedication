@@ -9,7 +9,19 @@
 import Foundation
 
 
-public struct Schedule: Codable {
-    public let frequency: Frequency
-    public let times: [ScheduleTime]
+/// Schedule of a medication.
+public struct Schedule: Codable, Equatable {
+    /// The frequency of the Schedule, see ``Frequency`.`
+    public var frequency: Frequency
+    /// The times of the Schedule, that are associated with the ``Schedule/frequency`.`
+    public var times: [ScheduleTime]
+    
+    
+    /// - Parameters:
+    ///   - frequency: The frequency of the Schedule, see ``Frequency`.`
+    ///   - times: The times of the Schedule, that are associated with the ``Schedule/frequency`.`
+    init(frequency: Frequency, times: [ScheduleTime]) {
+        self.frequency = frequency
+        self.times = times
+    }
 }

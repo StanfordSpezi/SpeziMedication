@@ -16,7 +16,6 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     
     @State private var frequency: Frequency = .regularDayIntervals(1)
     @State private var times: [ScheduleTime] = []
-    @State private var showFrequencySheet: Bool = false
     
     private let medicationOption: MI.InstanceType
     private let dosage: MI.InstanceDosage
@@ -26,8 +25,8 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
         VStack(spacing: 0) {
             Form {
                 titleSection
-                frequencySection
-                timesSection
+                EditFrequency(frequency: $frequency)
+                EditScheduleTime(times: $times)
             }
             VStack(alignment: .center) {
                 AsyncButton(
@@ -77,80 +76,6 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
         }
     }
     
-    private var frequencySection: some View {
-        Section {
-            Button(
-                action: {
-                    showFrequencySheet.toggle()
-                },
-                label: {
-                    HStack {
-                        Text("Frequency")
-                            .foregroundStyle(Color.primary)
-                        Spacer()
-                        Text(frequency.description)
-                            .foregroundStyle(Color.accentColor)
-                    }
-                }
-            )
-        }
-            .sheet(isPresented: $showFrequencySheet) {
-                ScheduleFrequencyView(frequency: $frequency)
-            }
-    }
-    
-    private var timesSection: some View {
-        Section {
-            List {
-                ForEach(times.sorted()) { time in
-                    HStack {
-                        Button(
-                            action: {
-                                times.removeAll(where: { $0 == time })
-                            },
-                            label: {
-                                Image(systemName: "minus.circle.fill")
-                                    .foregroundStyle(Color.red)
-                            }
-                        )
-                        DatePicker(
-                            "Time",
-                            selection: Binding(
-                                get: {
-                                    time.date
-                                },
-                                set: { newValue in
-                                    times.removeAll(where: { $0 == time })
-                                    let newScheduleTime = ScheduleTime(date: newValue)
-                                    
-                                    guard !times.contains(newScheduleTime) else {
-                                        return
-                                    }
-                                    
-                                    times.append(newScheduleTime)
-                                }
-                            ),
-                            displayedComponents: .hourAndMinute
-                        )
-                            .labelsHidden()
-                    }
-                }
-            }
-            Button(
-                action: {
-                    addNewTime()
-                },
-                label: {
-                    HStack {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundStyle(Color.green)
-                        Text("Add a time")
-                    }
-                }
-            )
-        }
-    }
-    
     
     init(
         medicationOption: MI.InstanceType,
@@ -160,25 +85,5 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
         self.medicationOption = medicationOption
         self.dosage = dosage
         self._isPresented = isPresented
-    }
-    
-    
-    private func addNewTime() {
-        var endlessLoopCounter = 0
-        var newTimeAdded = times.last?.time.date?.addingTimeInterval(60) ?? Date.now
-        
-        // We assume that a user doesn't take a single medication more than the loop limit.
-        while endlessLoopCounter < 100 {
-            let newScheduleTime = ScheduleTime(time: Calendar.current.dateComponents([.hour, .minute], from: newTimeAdded))
-            
-            guard !times.contains(newScheduleTime) else {
-                newTimeAdded.addTimeInterval(60)
-                endlessLoopCounter += 1
-                continue
-            }
-            
-            times.append(newScheduleTime)
-            return
-        }
     }
 }

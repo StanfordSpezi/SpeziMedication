@@ -40,6 +40,9 @@
     "Done" : {
 
     },
+    "Dosage" : {
+
+    },
     "Dosage Picker" : {
 
     },
@@ -96,6 +99,12 @@
 
     },
     "Save Medications" : {
+
+    },
+    "Schedule" : {
+
+    },
+    "Schedule Times" : {
 
     },
     "Search for a medication" : {
