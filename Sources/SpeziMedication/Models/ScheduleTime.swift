@@ -23,14 +23,14 @@ public struct ScheduleTime: Codable, Identifiable, Hashable, Equatable, Comparab
     }
     
     
-    init(time: DateComponents) {
+    public init(time: DateComponents) {
         precondition(time.hour != nil && time.minute != nil)
         
         self.uuid = UUID()
         self.time = time
     }
     
-    init(date: Date) {
+    public init(date: Date) {
         self.init(time: Calendar.current.dateComponents([.hour, .minute], from: date))
     }
     
