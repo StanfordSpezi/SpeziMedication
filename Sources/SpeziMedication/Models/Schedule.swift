@@ -11,7 +11,7 @@ import Foundation
 
 /// Schedule of a medication.
 @Observable
-public class Schedule: Codable, Equatable {
+public class Schedule: Codable, Equatable, Hashable {
     /// The frequency of the Schedule, see ``Frequency`.`.
     public var frequency: Frequency
     /// The times of the Schedule, that are associated with the ``Schedule/frequency`.`.
@@ -59,5 +59,11 @@ public class Schedule: Codable, Equatable {
             
             return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: date)
         }
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(frequency)
+        hasher.combine(times.sorted())
+        hasher.combine(startDate)
     }
 }
