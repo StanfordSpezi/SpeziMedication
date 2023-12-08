@@ -7,12 +7,12 @@
 //
 
 import Foundation
+import SwiftUI
 
 
-public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable {
-    public let uuid: UUID
-    public let time: DateComponents
-    public let dosage: Double
+public class ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable {
+    public var time: DateComponents
+    public var dosage: Double
     
     
     public var id: String {
@@ -23,16 +23,26 @@ public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Compara
         Calendar.current.date(bySettingHour: self.time.hour ?? 0, minute: self.time.minute ?? 0, second: 0, of: .now) ?? .now
     }
     
+    var dateBinding: Binding<Date> {
+        Binding(
+            get: {
+                self.date
+            },
+            set: { newValue in
+                self.time = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+            }
+        )
+    }
+    
     
     public init(time: DateComponents, dosage: Double = 1.0) {
         precondition(time.hour != nil && time.minute != nil)
         
-        self.uuid = UUID()
         self.time = time
         self.dosage = dosage
     }
     
-    public init(date: Date, dosage: Double = 1.0) {
+    public convenience init(date: Date, dosage: Double = 1.0) {
         self.init(time: Calendar.current.dateComponents([.hour, .minute], from: date), dosage: dosage)
     }
     
