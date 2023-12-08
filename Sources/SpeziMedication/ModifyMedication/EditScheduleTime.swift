@@ -66,7 +66,7 @@ struct EditScheduleTime: View {
             },
             set: { newValue in
                 times.removeAll(where: { $0 == time })
-                let newScheduleTime = ScheduleTime(date: newValue)
+                let newScheduleTime = ScheduleTime(date: newValue, dosage: time.dosage)
                 
                 guard !times.contains(newScheduleTime) else {
                     return

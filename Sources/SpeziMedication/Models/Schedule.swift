@@ -20,7 +20,7 @@ public struct Schedule: Codable, Equatable {
     /// - Parameters:
     ///   - frequency: The frequency of the Schedule, see ``Frequency`.`
     ///   - times: The times of the Schedule, that are associated with the ``Schedule/frequency`.`
-    public init(frequency: Frequency, times: [ScheduleTime]) {
+    public init(frequency: Frequency = .asNeeded, times: [ScheduleTime] = []) {
         self.frequency = frequency
         self.times = times
     }

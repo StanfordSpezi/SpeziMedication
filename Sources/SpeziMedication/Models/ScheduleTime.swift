@@ -12,6 +12,7 @@ import Foundation
 public struct ScheduleTime: Codable, Identifiable, Hashable, Equatable, Comparable {
     public let uuid: UUID
     public let time: DateComponents
+    public let dosage: Double
     
     
     public var id: String {
@@ -23,15 +24,16 @@ public struct ScheduleTime: Codable, Identifiable, Hashable, Equatable, Comparab
     }
     
     
-    public init(time: DateComponents) {
+    public init(time: DateComponents, dosage: Double = 1.0) {
         precondition(time.hour != nil && time.minute != nil)
         
         self.uuid = UUID()
         self.time = time
+        self.dosage = dosage
     }
     
-    public init(date: Date) {
-        self.init(time: Calendar.current.dateComponents([.hour, .minute], from: date))
+    public init(date: Date, dosage: Double = 1.0) {
+        self.init(time: Calendar.current.dateComponents([.hour, .minute], from: date), dosage: dosage)
     }
     
     
