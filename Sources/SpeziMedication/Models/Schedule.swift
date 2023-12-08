@@ -10,6 +10,7 @@ import Foundation
 
 
 /// Schedule of a medication.
+@Observable
 public class Schedule: Codable, Equatable {
     /// The frequency of the Schedule, see ``Frequency`.`.
     public var frequency: Frequency

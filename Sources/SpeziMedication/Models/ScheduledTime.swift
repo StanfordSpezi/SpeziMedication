@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 
 
+@Observable
 public class ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable {
     public var time: DateComponents
     public var dosage: Double
@@ -52,11 +53,11 @@ public class ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparab
     }
     
     public static func < (lhs: ScheduledTime, rhs: ScheduledTime) -> Bool {
-        guard lhs.time.hour == rhs.time.hour else {
-            return lhs.time.hour ?? 0 < rhs.time.hour ?? 0
+        if lhs.time.hour == rhs.time.hour {
+            return lhs.time.minute ?? 0 < rhs.time.minute ?? 0
         }
         
-        return lhs.time.minute ?? 0 < rhs.time.minute ?? 0
+        return lhs.time.hour ?? 0 < rhs.time.hour ?? 0
     }
     
     public func hash(into hasher: inout Hasher) {

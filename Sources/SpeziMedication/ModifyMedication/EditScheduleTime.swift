@@ -31,14 +31,17 @@ struct EditScheduleTime: View {
                 addTimeButton
             }
         }
+            .onChange(of: times, initial: true) {
+                withAnimation {
+                    times.sort()
+                }
+            }
     }
     
     
     private var timesList: some View {
         List($times) { $time in
-            EditScheduleTimeRow(time: $time, excludedDates: times.map(\.date)) {
-                times.removeAll(where: { $0 == $time.wrappedValue })
-            }
+            EditScheduleTimeRow(time: $time, times: $times, excludedDates: times.map(\.date))
         }
     }
     
@@ -61,26 +64,6 @@ struct EditScheduleTime: View {
     
     init(times: Binding<[ScheduledTime]>) {
         self._times = times
-    }
-    
-    
-    private func dateBinding(time: ScheduledTime) -> Binding<Date> {
-        Binding(
-            get: {
-                time.date
-            },
-            set: { newValue in
-                times.removeAll(where: { $0 == time })
-                let newScheduleTime = ScheduledTime(date: newValue, dosage: time.dosage)
-                
-                guard !times.contains(newScheduleTime) else {
-                    return
-                }
-                
-                times.append(newScheduleTime)
-                times.sort()
-            }
-        )
     }
     
     

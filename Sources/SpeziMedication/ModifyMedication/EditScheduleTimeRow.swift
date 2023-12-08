@@ -11,9 +11,9 @@ import SwiftUI
 
 struct EditScheduleTimeRow: View {
     @Binding var time: ScheduledTime
+    @Binding var times: [ScheduledTime]
     
     let excludedDates: [Date]
-    let removeAction: () -> Void
     
     @FocusState private var dosageFieldIsFocused: Bool
     
@@ -29,7 +29,7 @@ struct EditScheduleTimeRow: View {
         HStack {
             Button(
                 action: {
-                    removeAction()
+                    times.removeAll(where: { $0 == $time.wrappedValue })
                 },
                 label: {
                     Image(systemName: "minus.circle.fill")
@@ -62,6 +62,11 @@ struct EditScheduleTimeRow: View {
                         dosageFieldIsFocused = false
                     }
                     .padding(-32)
+            }
+            .onChange(of: time.time) {
+                withAnimation {
+                    times.sort()
+                }
             }
     }
 }
