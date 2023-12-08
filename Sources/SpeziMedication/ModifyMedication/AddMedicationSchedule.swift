@@ -15,7 +15,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     @Binding private var isPresented: Bool
     
     @State private var frequency: Frequency = .regularDayIntervals(1)
-    @State private var times: [ScheduleTime] = []
+    @State private var times: [ScheduledTime] = []
     
     private let medicationOption: MI.InstanceType
     private let dosage: MI.InstanceDosage

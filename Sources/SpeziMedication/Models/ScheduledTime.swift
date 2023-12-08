@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct ScheduleTime: Codable, Identifiable, Hashable, Equatable, Comparable {
+public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable {
     public let uuid: UUID
     public let time: DateComponents
     public let dosage: Double
@@ -37,11 +37,11 @@ public struct ScheduleTime: Codable, Identifiable, Hashable, Equatable, Comparab
     }
     
     
-    public static func == (lhs: ScheduleTime, rhs: ScheduleTime) -> Bool {
+    public static func == (lhs: ScheduledTime, rhs: ScheduledTime) -> Bool {
         lhs.time.hour == rhs.time.hour && lhs.time.minute == rhs.time.minute
     }
     
-    public static func < (lhs: ScheduleTime, rhs: ScheduleTime) -> Bool {
+    public static func < (lhs: ScheduledTime, rhs: ScheduledTime) -> Bool {
         guard lhs.time.hour == rhs.time.hour else {
             return lhs.time.hour ?? 0 < rhs.time.hour ?? 0
         }

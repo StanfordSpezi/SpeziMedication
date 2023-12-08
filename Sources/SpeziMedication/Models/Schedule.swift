@@ -14,13 +14,13 @@ public struct Schedule: Codable, Equatable {
     /// The frequency of the Schedule, see ``Frequency`.`
     public var frequency: Frequency
     /// The times of the Schedule, that are associated with the ``Schedule/frequency`.`
-    public var times: [ScheduleTime]
+    public var times: [ScheduledTime]
     
     
     /// - Parameters:
     ///   - frequency: The frequency of the Schedule, see ``Frequency`.`
     ///   - times: The times of the Schedule, that are associated with the ``Schedule/frequency`.`
-    public init(frequency: Frequency = .asNeeded, times: [ScheduleTime] = []) {
+    public init(frequency: Frequency = .asNeeded, times: [ScheduledTime] = []) {
         self.frequency = frequency
         self.times = times
     }

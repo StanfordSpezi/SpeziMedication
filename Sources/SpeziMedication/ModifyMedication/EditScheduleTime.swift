@@ -10,7 +10,7 @@ import SwiftUI
 
 
 struct EditScheduleTime: View {
-    @Binding private var times: [ScheduleTime]
+    @Binding private var times: [ScheduledTime]
     
     
     var body: some View {
@@ -54,19 +54,19 @@ struct EditScheduleTime: View {
     }
     
     
-    init(times: Binding<[ScheduleTime]>) {
+    init(times: Binding<[ScheduledTime]>) {
         self._times = times
     }
     
     
-    private func dateBinding(time: ScheduleTime) -> Binding<Date> {
+    private func dateBinding(time: ScheduledTime) -> Binding<Date> {
         Binding(
             get: {
                 time.date
             },
             set: { newValue in
                 times.removeAll(where: { $0 == time })
-                let newScheduleTime = ScheduleTime(date: newValue, dosage: time.dosage)
+                let newScheduleTime = ScheduledTime(date: newValue, dosage: time.dosage)
                 
                 guard !times.contains(newScheduleTime) else {
                     return
@@ -84,7 +84,7 @@ struct EditScheduleTime: View {
         
         // We assume that a user doesn't take a single medication more than the loop limit.
         while endlessLoopCounter < 100 {
-            let newScheduleTime = ScheduleTime(time: Calendar.current.dateComponents([.hour, .minute], from: newTimeAdded))
+            let newScheduleTime = ScheduledTime(time: Calendar.current.dateComponents([.hour, .minute], from: newTimeAdded))
             
             guard !times.contains(newScheduleTime) else {
                 newTimeAdded.addTimeInterval(60)
