@@ -12,6 +12,13 @@ import Foundation
 /// Schedule of a medication.
 @Observable
 public class Schedule: Codable, Equatable, Hashable {
+    enum CodingKeys: CodingKey {
+        case frequency
+        case times
+        case startDate
+    }
+    
+    
     /// The frequency of the Schedule, see ``Frequency`.`.
     public var frequency: Frequency
     /// The times of the Schedule, that are associated with the ``Schedule/frequency`.`.
@@ -27,6 +34,13 @@ public class Schedule: Codable, Equatable, Hashable {
         self.frequency = frequency
         self.times = times
         self.startDate = startDate
+    }
+    
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.frequency = try container.decode(Frequency.self, forKey: .frequency)
+        self.times = try container.decode([ScheduledTime].self, forKey: .times)
+        self.startDate = try container.decode(Date.self, forKey: .startDate)
     }
     
     
@@ -65,5 +79,12 @@ public class Schedule: Codable, Equatable, Hashable {
         hasher.combine(frequency)
         hasher.combine(times.sorted())
         hasher.combine(startDate)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.frequency, forKey: .frequency)
+        try container.encode(self.times, forKey: .times)
+        try container.encode(self.startDate, forKey: .startDate)
     }
 }
