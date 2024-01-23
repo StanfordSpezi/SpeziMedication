@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 
 
-@Observable
 public class ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable {
     enum CodingKeys: CodingKey {
         case time
