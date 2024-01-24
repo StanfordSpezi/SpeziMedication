@@ -10,8 +10,8 @@ import SwiftUI
 
 
 struct EditScheduleTimeRow: View {
-    @Binding var time: ScheduledTime
-    @Binding var times: [ScheduledTime]
+    private let time: ScheduledTime
+    @Binding private var times: [ScheduledTime]
     
     let excludedDates: [Date]
     
@@ -26,10 +26,11 @@ struct EditScheduleTimeRow: View {
     
     
     var body: some View {
+        @Bindable var time = self.time
         HStack {
             Button(
                 action: {
-                    times.removeAll(where: { $0 == $time.wrappedValue })
+                    times.removeAll(where: { $0 == time })
                 },
                 label: {
                     Image(systemName: "minus.circle.fill")
@@ -39,7 +40,7 @@ struct EditScheduleTimeRow: View {
             )
                 .buttonStyle(.borderless)
             ScheduledTimeDatePicker(
-                date: $time.wrappedValue.dateBinding,
+                date: time.dateBinding,
                 excludedDates: excludedDates
             )
                 .frame(width: 100)
@@ -68,5 +69,13 @@ struct EditScheduleTimeRow: View {
                     times.sort()
                 }
             }
+    }
+    
+    
+    init(time: ScheduledTime, times: Binding<[ScheduledTime]>, excludedDates: [Date]) {
+        self.time = time
+        self._times = times
+        self.excludedDates = excludedDates
+        self.dosageFieldIsFocused = dosageFieldIsFocused
     }
 }
