@@ -77,7 +77,27 @@ class InternalMedicationSettingsViewModel<MI: MedicationInstance> {
 
 extension MedicationSettingsViewModel {
     var internalViewModel: InternalMedicationSettingsViewModel<Medications> {
-        InternalMedicationSettingsViewModel(
+        let medicationInstances: Set<Medications>
+        if Medications.self is AnyClass {
+            guard Medications.self is Observation.Observable.Type else {
+                preconditionFailure("If \(String(describing: Medications.self)) is a class type, it must conform to `Observable` using the `@Observable` macro.")
+            }
+            
+            // If the medication instances are classes we need to make copies of them to ensure that we don't modify the original instances before the user presses save.
+            medicationInstances = Set(
+                self.medicationInstances.map { medicationInstance in
+                    createMedicationInstance(
+                        withType: medicationInstance.type,
+                        dosage: medicationInstance.dosage,
+                        schedule: medicationInstance.schedule
+                    )
+                }
+            )
+        } else {
+            medicationInstances = self.medicationInstances
+        }
+        
+        return InternalMedicationSettingsViewModel(
             medicationInstances: medicationInstances,
             medicationOptions: medicationOptions,
             createMedicationInstance: createMedicationInstance

@@ -30,7 +30,7 @@ struct EditScheduleTime: View {
     
     private var timesList: some View {
         List(times.sorted()) { time in
-            EditScheduleTimeRow(time: time, times: $times, excludedDates: times.map(\.date))
+            EditScheduleTimeRow(time: time.id, times: $times)
         }
     }
     

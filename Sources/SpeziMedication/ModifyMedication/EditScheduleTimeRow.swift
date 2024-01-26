@@ -10,10 +10,9 @@ import SwiftUI
 
 
 struct EditScheduleTimeRow: View {
-    private let time: ScheduledTime
-    @Binding private var times: [ScheduledTime]
+    let index: Int
     
-    let excludedDates: [Date]
+    @Binding private var times: [ScheduledTime]
     
     @FocusState private var dosageFieldIsFocused: Bool
     
@@ -26,11 +25,10 @@ struct EditScheduleTimeRow: View {
     
     
     var body: some View {
-        @Bindable var time = self.time
         HStack {
             Button(
                 action: {
-                    times.removeAll(where: { $0 == time })
+                    times.removeAll(where: { $0.id == times[index].id })
                 },
                 label: {
                     Image(systemName: "minus.circle.fill")
@@ -40,14 +38,14 @@ struct EditScheduleTimeRow: View {
             )
                 .buttonStyle(.borderless)
             ScheduledTimeDatePicker(
-                date: time.dateBinding,
-                excludedDates: excludedDates
+                date: $times[index].date,
+                excludedDates: times.map(\.date)
             )
                 .frame(width: 100)
             Spacer()
             TextField(
                 String(localized: "Quantity", bundle: .module),
-                value: $time.dosage,
+                value: $times[index].dosage,
                 formatter: numberOfDosageFormatter
             )
                 .focused($dosageFieldIsFocused)
@@ -67,10 +65,14 @@ struct EditScheduleTimeRow: View {
     }
     
     
-    init(time: ScheduledTime, times: Binding<[ScheduledTime]>, excludedDates: [Date]) {
-        self.time = time
+    init(time: ScheduledTime.ID, times: Binding<[ScheduledTime]>) {
+        guard let index = times.wrappedValue.firstIndex(where: { $0.id == time }) else {
+            preconditionFailure("An EditScheduleTimeRow must be initialized with a time id that is part of the times collection.")
+        }
+        
         self._times = times
-        self.excludedDates = excludedDates
+        self.index = index
+        
         self.dosageFieldIsFocused = dosageFieldIsFocused
     }
 }
