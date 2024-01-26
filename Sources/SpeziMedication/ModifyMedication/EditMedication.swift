@@ -14,22 +14,22 @@ struct EditMedication<MI: MedicationInstance>: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
+    private let medicationInstanceId: MI.ID
+    
     @State private var dosage: MI.InstanceDosage
     @State private var schedule: Schedule
     
-    private let medicationInstanceId: MI.ID
-        
+    
     private var medicationInstance: MI? {
         viewModel.medicationInstances.first(where: { $0.id == medicationInstanceId })
     }
-    
     
     var body: some View {
         if let medicationInstance {
             VStack {
                 Form {
                     Section(String(localized: "Dosage", bundle: .module)) {
-                        EditDosage<MI>(dosage: $dosage, medication: medicationInstance.type, initialDosage: dosage)
+                        EditDosage<MI>(dosage: $dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
                             .labelsHidden()
                     }
                     Section(String(localized: "Schedule", bundle: .module)) {
@@ -40,36 +40,22 @@ struct EditMedication<MI: MedicationInstance>: View {
                     }
                     Section {
                         Button(String(localized: "Delete", bundle: .module), role: .destructive) {
-                            viewModel.medicationInstances.remove(medicationInstance)
+                            viewModel.remove(medicationInstance: medicationInstance)
                             dismiss()
                         }
                     }
                 }
             }
                 .navigationTitle(medicationInstance.localizedDescription)
-                .onChange(of: dosage) {
-                    guard medicationInstance.dosage != dosage else {
-                        return
-                    }
-                    
-                    viewModel.medicationInstances.remove(medicationInstance)
-                    
-                    var modifiedMedication = medicationInstance
-                    modifiedMedication.dosage = dosage
-                    
-                    viewModel.medicationInstances.insert(modifiedMedication)
-                }
                 .onChange(of: schedule) {
-                    guard medicationInstance.schedule != schedule else {
+                    viewModel.edit(schedule: schedule, of: medicationInstance)
+                }
+                .onChange(of: dosage) {
+                    guard dosage != medicationInstance.dosage else {
                         return
                     }
                     
-                    viewModel.medicationInstances.remove(medicationInstance)
-                    
-                    var modifiedMedication = medicationInstance
-                    modifiedMedication.schedule = schedule
-                    
-                    viewModel.medicationInstances.insert(modifiedMedication)
+                    viewModel.edit(dosage: dosage, of: medicationInstance)
                 }
         } else {
             ZStack {
@@ -83,10 +69,10 @@ struct EditMedication<MI: MedicationInstance>: View {
     init(
         medicationInstance medicationInstanceId: MI.ID,
         initialDosage: MI.InstanceDosage,
-        initialSchedule: Schedule
+        schedule: Schedule
     ) {
         self.medicationInstanceId = medicationInstanceId
         self._dosage = State(initialValue: initialDosage)
-        self._schedule = State(initialValue: initialSchedule)
+        self._schedule = State(initialValue: schedule)
     }
 }

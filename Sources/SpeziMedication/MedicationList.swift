@@ -25,7 +25,7 @@ struct MedicationList<MI: MedicationInstance>: View {
                     EditMedication<MI>(
                         medicationInstance: medicationInstance.id,
                         initialDosage: medicationInstance.dosage,
-                        initialSchedule: medicationInstance.schedule
+                        schedule: medicationInstance.schedule
                     )
                         .environment(viewModel)
                 } label: {
@@ -39,7 +39,7 @@ struct MedicationList<MI: MedicationInstance>: View {
             }
                 .onDelete { offsets in
                     for offset in offsets {
-                        viewModel.medicationInstances.remove(sortedMedicationInstances[offset])
+                        viewModel.remove(medicationInstance: sortedMedicationInstances[offset])
                     }
                 }
         }

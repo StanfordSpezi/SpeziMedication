@@ -25,16 +25,11 @@ struct EditScheduleTime: View {
                 addTimeButton
             }
         }
-            .onChange(of: times, initial: true) {
-                withAnimation {
-                    times.sort()
-                }
-            }
     }
     
     
     private var timesList: some View {
-        List(times) { time in
+        List(times.sorted()) { time in
             EditScheduleTimeRow(time: time, times: $times, excludedDates: times.map(\.date))
         }
     }

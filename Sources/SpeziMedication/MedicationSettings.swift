@@ -24,7 +24,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     
     
     private var modifiedMedications: Bool {
-        medicationSettingsViewModel.medicationInstances != viewModel.medicationInstances
+        medicationSettingsViewModel.medicationInstances.sorted() != viewModel.medicationInstances.sorted()
     }
     
     private var medicationOptions: Set<MI.InstanceType> {
@@ -111,8 +111,8 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             action: {
                 do {
                     viewState = .processing
-                    try await medicationSettingsViewModel.persist(medicationInstances: viewModel.medicationInstances)
-                    viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances
+                    try await medicationSettingsViewModel.persist(medicationInstances: Set(viewModel.medicationInstances))
+                    viewModel.set(medicationInstances: medicationSettingsViewModel.medicationInstances)
                     action()
 isPresented?.wrappedValue = false
                     viewState = .idle
@@ -172,7 +172,7 @@ isPresented?.wrappedValue = false
     
     
     private func discardChangesAction() {
-        viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances
+        viewModel.set(medicationInstances: medicationSettingsViewModel.medicationInstances)
         isPresented?.wrappedValue = false
     }
     

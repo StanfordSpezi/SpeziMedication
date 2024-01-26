@@ -36,7 +36,9 @@ public class ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparab
                 self.date
             },
             set: { newValue in
-                self.time = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+                withAnimation {
+                    self.time = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+                }
             }
         )
     }

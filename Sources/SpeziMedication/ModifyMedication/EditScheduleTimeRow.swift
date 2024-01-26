@@ -64,11 +64,6 @@ struct EditScheduleTimeRow: View {
                     }
                     .padding(-32)
             }
-            .onChange(of: time.time) {
-                withAnimation {
-                    times.sort()
-                }
-            }
     }
     
     
