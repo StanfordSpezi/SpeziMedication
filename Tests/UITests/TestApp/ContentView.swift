@@ -7,6 +7,7 @@
 //
 
 import SpeziMedication
+import SpeziMedicationSettings
 import SwiftUI
 
 

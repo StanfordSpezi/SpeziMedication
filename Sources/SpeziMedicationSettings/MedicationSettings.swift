@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import SpeziMedication
 import SpeziViews
 import SwiftUI
 
@@ -116,10 +117,8 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                     action()
 isPresented?.wrappedValue = false
                     viewState = .idle
-                } catch let error as LocalizedError {
-                    viewState = .error(error)
                 } catch {
-                    viewState = .error(error.localizedDescription)
+                    viewState = .error(AnyLocalizedError(error: error))
                 }
             },
             label: {

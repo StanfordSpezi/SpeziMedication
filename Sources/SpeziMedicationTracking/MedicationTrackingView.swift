@@ -6,11 +6,15 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
+import SwiftUI
 
 
-extension String: LocalizedError {
-    public var errorDescription: String? {
-        self
+struct MedicationTrackingView: View {
+    var body: some View {
+        Text("Hello, World!")
     }
+}
+
+#Preview {
+    MedicationTrackingView()
 }

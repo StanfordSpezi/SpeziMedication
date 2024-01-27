@@ -12,16 +12,16 @@ import Foundation
 public struct Weekdays: OptionSet, Codable, Hashable, CaseIterable, Identifiable {
     public static var allCases: [Weekdays] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     
-    static let sunday = Weekdays(rawValue: 1 << 0)
-    static let monday = Weekdays(rawValue: 1 << 1)
-    static let tuesday = Weekdays(rawValue: 1 << 2)
-    static let wednesday = Weekdays(rawValue: 1 << 3)
-    static let thursday = Weekdays(rawValue: 1 << 4)
-    static let friday = Weekdays(rawValue: 1 << 5)
-    static let saturday = Weekdays(rawValue: 1 << 6)
+    public static let sunday = Weekdays(rawValue: 1 << 0)
+    public static let monday = Weekdays(rawValue: 1 << 1)
+    public static let tuesday = Weekdays(rawValue: 1 << 2)
+    public static let wednesday = Weekdays(rawValue: 1 << 3)
+    public static let thursday = Weekdays(rawValue: 1 << 4)
+    public static let friday = Weekdays(rawValue: 1 << 5)
+    public static let saturday = Weekdays(rawValue: 1 << 6)
     
-    static let all = Weekdays(allCases)
-    static let weekend: Weekdays = [.saturday, .sunday]
+    public static let all = Weekdays(allCases)
+    public static let weekend: Weekdays = [.saturday, .sunday]
     
     
     public let rawValue: UInt8

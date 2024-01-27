@@ -18,11 +18,12 @@ let package = Package(
         .iOS(.v17)
     ],
     products: [
-        .library(name: "SpeziMedication", targets: ["SpeziMedication"])
+        .library(name: "SpeziMedication", targets: ["SpeziMedication"]),
+        .library(name: "SpeziMedicationSettings", targets: ["SpeziMedicationSettings"]),
+        .library(name: "SpeziMedicationTracking", targets: ["SpeziMedicationTracking"])
     ],
     dependencies: [
         .package(url: "https://github.com/StanfordSpezi/Spezi", .upToNextMinor(from: "0.8.0")),
-        .package(url: "https://github.com/StanfordSpezi/SpeziStorage", .upToNextMinor(from: "0.5.0")),
         .package(url: "https://github.com/StanfordSpezi/SpeziViews", .upToNextMinor(from: "0.6.2"))
     ],
     targets: [
@@ -30,8 +31,29 @@ let package = Package(
             name: "SpeziMedication",
             dependencies: [
                 .product(name: "Spezi", package: "Spezi"),
-                .product(name: "SpeziViews", package: "SpeziViews"),
-                .product(name: "SpeziLocalStorage", package: "SpeziStorage")
+                .product(name: "SpeziViews", package: "SpeziViews")
+            ],
+            resources: [
+                .process("Resources")
+            ]
+        ),
+        .target(
+            name: "SpeziMedicationSettings",
+            dependencies: [
+                .target(name: "SpeziMedication"),
+                .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziViews", package: "SpeziViews")
+            ],
+            resources: [
+                .process("Resources")
+            ]
+        ),
+        .target(
+            name: "SpeziMedicationTracking",
+            dependencies: [
+                .target(name: "SpeziMedication"),
+                .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziViews", package: "SpeziViews")
             ],
             resources: [
                 .process("Resources")
@@ -40,7 +62,9 @@ let package = Package(
         .testTarget(
             name: "SpeziMedicationTests",
             dependencies: [
-                .target(name: "SpeziMedication")
+                .target(name: "SpeziMedication"),
+                .target(name: "SpeziMedicationSettings"),
+                .target(name: "SpeziMedicationTracking")
             ]
         )
     ]

@@ -17,6 +17,8 @@
 		2FADBE9C2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FADBE9B2AF8761B0003EC4E /* XCUIApplication+ButtonTap.swift */; };
 		2FE5BC612AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE5BC602AF86C5E0089B6C0 /* ExampleMedicationSettingsViewModel.swift */; };
 		2FE5BC632AF86CA20089B6C0 /* ExampleMedicationInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FE5BC622AF86CA20089B6C0 /* ExampleMedicationInstance.swift */; };
+		2FE5C78E2B65B98F00669FBF /* SpeziMedicationSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 2FE5C78D2B65B98F00669FBF /* SpeziMedicationSettings */; };
+		2FE5C7902B65B98F00669FBF /* SpeziMedicationTracking in Frameworks */ = {isa = PBXBuildFile; productRef = 2FE5C78F2B65B98F00669FBF /* SpeziMedicationTracking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FE5C7902B65B98F00669FBF /* SpeziMedicationTracking in Frameworks */,
+				2FE5C78E2B65B98F00669FBF /* SpeziMedicationSettings in Frameworks */,
 				2F68C3C8292EA52000B3E12C /* SpeziMedication in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -148,6 +152,8 @@
 			name = TestApp;
 			packageProductDependencies = (
 				2F68C3C7292EA52000B3E12C /* SpeziMedication */,
+				2FE5C78D2B65B98F00669FBF /* SpeziMedicationSettings */,
+				2FE5C78F2B65B98F00669FBF /* SpeziMedicationTracking */,
 			);
 			productName = Example;
 			productReference = 2F6D139228F5F384007C25D6 /* TestApp.app */;
@@ -687,6 +693,14 @@
 		2F68C3C7292EA52000B3E12C /* SpeziMedication */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SpeziMedication;
+		};
+		2FE5C78D2B65B98F00669FBF /* SpeziMedicationSettings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SpeziMedicationSettings;
+		};
+		2FE5C78F2B65B98F00669FBF /* SpeziMedicationTracking */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SpeziMedicationTracking;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
