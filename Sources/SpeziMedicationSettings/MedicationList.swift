@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import SpeziMedication
 import SwiftUI
 
 
@@ -22,7 +23,7 @@ struct MedicationList<MI: MedicationInstance>: View {
                         .environment(viewModel)
                 } label: {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text(medicationInstance.wrappedValue.localizedDescription)
+                        Text(medicationInstance.wrappedValue.type.localizedDescription)
                             .font(.headline)
                         Text(medicationInstance.wrappedValue.dosage.localizedDescription)
                             .font(.subheadline)

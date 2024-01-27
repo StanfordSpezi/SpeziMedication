@@ -7,6 +7,7 @@
 //
 
 import Observation
+import SpeziMedication
 
 
 @Observable

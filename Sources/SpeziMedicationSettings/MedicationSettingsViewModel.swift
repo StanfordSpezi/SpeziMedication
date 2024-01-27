@@ -7,6 +7,7 @@
 //
 
 import Observation
+import SpeziMedication
 
 
 /// Defines a unified interface to provide data and functionality of the ``MedicationSettings``

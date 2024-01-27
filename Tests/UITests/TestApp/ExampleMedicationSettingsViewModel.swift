@@ -8,6 +8,7 @@
 
 import Spezi
 import SpeziMedication
+import SpeziMedicationSettings
 import SwiftUI
 
 

@@ -19,15 +19,43 @@ let package = Package(
         .iOS(.v17)
     ],
     products: [
-        .library(name: "SpeziMedication", targets: ["SpeziMedication"])
+        .library(name: "SpeziMedication", targets: ["SpeziMedication"]),
+        .library(name: "SpeziMedicationSettings", targets: ["SpeziMedicationSettings"]),
+        .library(name: "SpeziMedicationTracking", targets: ["SpeziMedicationTracking"])
     ],
     dependencies: [
+        .package(url: "https://github.com/StanfordSpezi/Spezi", from: "1.8.0"),
         .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", from: "1.7.0")
     ] + swiftLintPackage(),
     targets: [
         .target(
             name: "SpeziMedication",
             dependencies: [
+                .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziViews", package: "SpeziViews")
+            ],
+            resources: [
+                .process("Resources")
+            ],
+            plugins: [] + swiftLintPlugin()
+        ),
+        .target(
+            name: "SpeziMedicationSettings",
+            dependencies: [
+                .target(name: "SpeziMedication"),
+                .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziViews", package: "SpeziViews")
+            ],
+            resources: [
+                .process("Resources")
+            ],
+            plugins: [] + swiftLintPlugin()
+        ),
+        .target(
+            name: "SpeziMedicationTracking",
+            dependencies: [
+                .target(name: "SpeziMedication"),
+                .product(name: "Spezi", package: "Spezi"),
                 .product(name: "SpeziViews", package: "SpeziViews")
             ],
             resources: [
@@ -38,7 +66,9 @@ let package = Package(
         .testTarget(
             name: "SpeziMedicationTests",
             dependencies: [
-                .target(name: "SpeziMedication")
+                .target(name: "SpeziMedication"),
+                .target(name: "SpeziMedicationSettings"),
+                .target(name: "SpeziMedicationTracking")
             ],
             plugins: [] + swiftLintPlugin()
         )

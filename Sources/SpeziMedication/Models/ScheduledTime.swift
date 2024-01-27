@@ -22,16 +22,6 @@ public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Compara
     public var dosage: Double
     
     
-    var date: Date {
-        get {
-            Calendar.current.date(bySettingHour: self.time.hour ?? 0, minute: self.time.minute ?? 0, second: 0, of: .now) ?? .now
-        }
-        set {
-            self.time = Calendar.current.dateComponents([.hour, .minute], from: newValue)
-        }
-    }
-    
-    
     public init(time: DateComponents, dosage: Double = 1.0) {
         precondition(time.hour != nil && time.minute != nil)
         

@@ -1,4 +1,4 @@
-# ``SpeziMedication``
+# ``SpeziMedicationSettings``
 
 <!--
 #
@@ -10,7 +10,7 @@
 #       
 -->
 
-Spezi Medication 
+Spezi Medication Settings 
 
 ## Overview
 
@@ -18,6 +18,6 @@ Please follow the steps in the README.md file to customize the code to your need
 
 ## Types
 
-### Spezi Medication
+### Spezi Medication Settings
 
-- ``Medication``
+- ``MedicationSettings``
