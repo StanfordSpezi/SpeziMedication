@@ -10,8 +10,7 @@ import SwiftUI
 
 
 struct EditScheduleTimeRow: View {
-    let index: Int
-    
+    @Binding private var time: ScheduledTime
     @Binding private var times: [ScheduledTime]
     
     @FocusState private var dosageFieldIsFocused: Bool
@@ -28,7 +27,7 @@ struct EditScheduleTimeRow: View {
         HStack {
             Button(
                 action: {
-                    times.removeAll(where: { $0.id == times[index].id })
+                    times.removeAll(where: { $0.id == time.id })
                 },
                 label: {
                     Image(systemName: "minus.circle.fill")
@@ -38,14 +37,14 @@ struct EditScheduleTimeRow: View {
             )
                 .buttonStyle(.borderless)
             ScheduledTimeDatePicker(
-                date: $times[index].date.animation(),
+                date: $time.date.animation(),
                 excludedDates: times.map(\.date)
             )
                 .frame(width: 100)
             Spacer()
             TextField(
                 String(localized: "Quantity", bundle: .module),
-                value: $times[index].dosage,
+                value: $time.dosage,
                 formatter: numberOfDosageFormatter
             )
                 .focused($dosageFieldIsFocused)
@@ -62,7 +61,7 @@ struct EditScheduleTimeRow: View {
                     }
                     .padding(-32)
             }
-            .onChange(of: times[index].date) {
+            .onChange(of: time.date) {
                 withAnimation {
                     times.sort()
                 }
@@ -70,14 +69,8 @@ struct EditScheduleTimeRow: View {
     }
     
     
-    init(time: ScheduledTime.ID, times: Binding<[ScheduledTime]>) {
-        guard let index = times.wrappedValue.firstIndex(where: { $0.id == time }) else {
-            preconditionFailure("An EditScheduleTimeRow must be initialized with a time id that is part of the times collection.")
-        }
-        
+    init(time: Binding<ScheduledTime>, times: Binding<[ScheduledTime]>) {
+        self._time = time
         self._times = times
-        self.index = index
-        
-        self.dosageFieldIsFocused = dosageFieldIsFocused
     }
 }

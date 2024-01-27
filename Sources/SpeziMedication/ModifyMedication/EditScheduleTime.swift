@@ -13,26 +13,20 @@ struct EditScheduleTime: View {
     // We assume that a user doesn't take a single medication more than the number of possible times which are 12 * 24 for 5 minute intervals.
     private static let maxTimesCount = (60 / ScheduledTimeDatePicker.minuteInterval) * 24
     
+    
     @Binding private var times: [ScheduledTime]
     
     
     var body: some View {
-        Self._printChanges()
-        return Section {
+        Section {
             if !times.isEmpty {
-                timesList
+                List($times) { time in
+                    EditScheduleTimeRow(time: time, times: $times)
+                }
             }
             if times.count < Self.maxTimesCount {
                 addTimeButton
             }
-        }
-    }
-    
-    
-    private var timesList: some View {
-        #warning("Check if we can also just pass $time bindings down to the EditScheduleTimeRow view ...")
-        return List(times) { time in
-            EditScheduleTimeRow(time: time.id, times: $times)
         }
     }
     

@@ -19,8 +19,7 @@ struct EditDosage<MI: MedicationInstance>: View {
     
     
     var body: some View {
-        Self._printChanges()
-        return Picker(String(localized: "Dosage: \(medication.localizedDescription)", bundle: .module), selection: $dosage) {
+        Picker(String(localized: "Dosage: \(medication.localizedDescription)", bundle: .module), selection: $dosage) {
             ForEach(medication.dosages, id: \.self) { dosage in
                 if viewModel.duplicateOf(medication: medication, dosage: dosage) && initialDosage != dosage {
                     HStack {

@@ -18,8 +18,7 @@ struct EditMedication<MI: MedicationInstance>: View {
     
     
     var body: some View {
-        Self._printChanges()
-        return VStack {
+        VStack {
             Form {
                 Section(String(localized: "Dosage", bundle: .module)) {
                     EditDosage<MI>(dosage: $medicationInstance.dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
