@@ -22,3 +22,11 @@ public protocol Medication: Codable, Comparable, Hashable {
     /// Dosage options defining a set of options when instantiating a ``MedicationInstance``.
     var dosages: [MedicationDosage] { get }
 }
+
+
+extension Medication {
+    /// See Comparable
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.localizedDescription < rhs.localizedDescription
+    }
+}

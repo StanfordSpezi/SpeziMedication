@@ -17,20 +17,10 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     var schedule: Schedule
     
     
-    var localizedDescription: String {
-        type.localizedDescription
-    }
-    
-    
     init(type: ExampleMedication, dosage: ExampleDosage, schedule: Schedule) {
         self.id = UUID()
         self.type = type
         self.dosage = dosage
         self.schedule = schedule
-    }
-    
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
     }
 }

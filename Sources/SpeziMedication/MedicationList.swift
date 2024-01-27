@@ -16,7 +16,7 @@ struct MedicationList<MI: MedicationInstance>: View {
     var body: some View {
         @Bindable var viewModel = viewModel
         List {
-             ForEach($viewModel.medicationInstances) { medicationInstance in
+            ForEach($viewModel.medicationInstances) { medicationInstance in
                 NavigationLink {
                     EditMedication(medicationInstance: medicationInstance)
                         .environment(viewModel)
@@ -28,7 +28,7 @@ struct MedicationList<MI: MedicationInstance>: View {
                             .font(.subheadline)
                     }
                 }
-             }
+            }
                 .onDelete { offsets in
                     for offset in offsets {
                         withAnimation {

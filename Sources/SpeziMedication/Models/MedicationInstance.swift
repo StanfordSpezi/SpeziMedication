@@ -51,4 +51,9 @@ extension MedicationInstance {
         
         return lhs.dosage.localizedDescription < rhs.dosage.localizedDescription
     }
+    
+    /// See Hashable
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
