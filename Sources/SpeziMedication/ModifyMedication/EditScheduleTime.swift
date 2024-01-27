@@ -17,7 +17,8 @@ struct EditScheduleTime: View {
     
     
     var body: some View {
-        Section {
+        Self._printChanges()
+        return Section {
             if !times.isEmpty {
                 timesList
             }
@@ -29,7 +30,8 @@ struct EditScheduleTime: View {
     
     
     private var timesList: some View {
-        List(times.sorted()) { time in
+        #warning("Check if we can also just pass $time bindings down to the EditScheduleTimeRow view ...")
+        return List(times) { time in
             EditScheduleTimeRow(time: time.id, times: $times)
         }
     }
@@ -78,7 +80,10 @@ struct EditScheduleTime: View {
                 continue
             }
             
-            times.append(newScheduleTime)
+            withAnimation {
+                times.append(newScheduleTime)
+                times.sort()
+            }
             return
         }
     }

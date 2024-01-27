@@ -30,10 +30,6 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     }
     
     
-    static func < (lhs: ExampleMedicationInstance, rhs: ExampleMedicationInstance) -> Bool {
-        lhs.localizedDescription < rhs.localizedDescription
-    }
-    
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }

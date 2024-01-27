@@ -14,65 +14,36 @@ struct EditMedication<MI: MedicationInstance>: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
-    private let medicationInstanceId: MI.ID
+    @Binding private var medicationInstance: MI
     
-    @State private var dosage: MI.InstanceDosage
-    @State private var schedule: Schedule
-    
-    
-    private var medicationInstance: MI? {
-        viewModel.medicationInstances.first(where: { $0.id == medicationInstanceId })
-    }
     
     var body: some View {
-        if let medicationInstance {
-            VStack {
-                Form {
-                    Section(String(localized: "Dosage", bundle: .module)) {
-                        EditDosage<MI>(dosage: $dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
-                            .labelsHidden()
-                    }
-                    Section(String(localized: "Schedule", bundle: .module)) {
-                        EditFrequency(frequency: $schedule.frequency, startDate: $schedule.startDate)
-                    }
-                    Section(String(localized: "Schedule Times", bundle: .module)) {
-                        EditScheduleTime(times: $schedule.times)
-                    }
-                    Section {
-                        Button(String(localized: "Delete", bundle: .module), role: .destructive) {
-                            viewModel.remove(medicationInstance: medicationInstance)
-                            dismiss()
-                        }
+        Self._printChanges()
+        return VStack {
+            Form {
+                Section(String(localized: "Dosage", bundle: .module)) {
+                    EditDosage<MI>(dosage: $medicationInstance.dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
+                        .labelsHidden()
+                }
+                Section(String(localized: "Schedule", bundle: .module)) {
+                    EditFrequency(frequency: $medicationInstance.schedule.frequency, startDate: $medicationInstance.schedule.startDate)
+                }
+                Section(String(localized: "Schedule Times", bundle: .module)) {
+                    EditScheduleTime(times: $medicationInstance.schedule.times)
+                }
+                Section {
+                    Button(String(localized: "Delete", bundle: .module), role: .destructive) {
+                        viewModel.medicationInstances.removeAll(where: { $0.id == medicationInstance.id })
+                        dismiss()
                     }
                 }
-            }
-                .navigationTitle(medicationInstance.localizedDescription)
-                .onChange(of: schedule) {
-                    viewModel.edit(schedule: schedule, of: medicationInstance)
-                }
-                .onChange(of: dosage) {
-                    guard dosage != medicationInstance.dosage else {
-                        return
-                    }
-                    
-                    viewModel.edit(dosage: dosage, of: medicationInstance)
-                }
-        } else {
-            ZStack {
-                Color(.systemGroupedBackground).ignoresSafeArea()
-                ProgressView()
             }
         }
+            .navigationTitle(medicationInstance.localizedDescription)
     }
     
     
-    init(
-        medicationInstance medicationInstanceId: MI.ID,
-        initialDosage: MI.InstanceDosage,
-        schedule: Schedule
-    ) {
-        self.medicationInstanceId = medicationInstanceId
-        self._dosage = State(initialValue: initialDosage)
-        self._schedule = State(initialValue: schedule)
+    init(medicationInstance: Binding<MI>) {
+        self._medicationInstance = medicationInstance
     }
 }

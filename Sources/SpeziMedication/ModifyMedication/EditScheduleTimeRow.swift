@@ -38,7 +38,7 @@ struct EditScheduleTimeRow: View {
             )
                 .buttonStyle(.borderless)
             ScheduledTimeDatePicker(
-                date: $times[index].date,
+                date: $times[index].date.animation(),
                 excludedDates: times.map(\.date)
             )
                 .frame(width: 100)
@@ -61,6 +61,11 @@ struct EditScheduleTimeRow: View {
                         dosageFieldIsFocused = false
                     }
                     .padding(-32)
+            }
+            .onChange(of: times[index].date) {
+                withAnimation {
+                    times.sort()
+                }
             }
     }
     

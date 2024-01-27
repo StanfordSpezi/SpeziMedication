@@ -16,7 +16,8 @@ struct EditFrequency: View {
     
     
     var body: some View {
-        Section {
+        Self._printChanges()
+        return Section {
             Button(
                 action: {
                     showFrequencySheet.toggle()

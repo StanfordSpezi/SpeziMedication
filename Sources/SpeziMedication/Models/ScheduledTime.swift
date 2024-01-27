@@ -53,7 +53,7 @@ public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Compara
     
     
     public static func == (lhs: ScheduledTime, rhs: ScheduledTime) -> Bool {
-        lhs.time.hour == rhs.time.hour && lhs.time.minute == rhs.time.minute
+        lhs.time.hour == rhs.time.hour && lhs.time.minute == rhs.time.minute && lhs.dosage == rhs.dosage
     }
     
     public static func < (lhs: ScheduledTime, rhs: ScheduledTime) -> Bool {
