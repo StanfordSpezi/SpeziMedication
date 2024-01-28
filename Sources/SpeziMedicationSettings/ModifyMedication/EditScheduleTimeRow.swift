@@ -43,15 +43,7 @@ struct EditScheduleTimeRow: View {
             )
                 .frame(width: 100)
             Spacer()
-            TextField(
-                String(localized: "Quantity", bundle: .module),
-                value: $time.dosage,
-                formatter: numberOfDosageFormatter
-            )
-                .focused($dosageFieldIsFocused)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.decimalPad)
-                .frame(maxWidth: 90)
+            dosageTextField
         }
             .background {
                 Color.clear
@@ -67,6 +59,31 @@ struct EditScheduleTimeRow: View {
                     times.sort()
                 }
             }
+    }
+    
+    private var dosageTextField: some View {
+        TextField(
+            String(localized: "Quantity", bundle: .module),
+            value: $time.dosage,
+            formatter: numberOfDosageFormatter
+        )
+            .focused($dosageFieldIsFocused)
+            .textFieldStyle(.roundedBorder)
+            .keyboardType(.decimalPad)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button(
+                        action: {
+                            dosageFieldIsFocused = false
+                        },
+                        label: {
+                            Text("Done")
+                        }
+                    )
+                }
+            }
+            .frame(maxWidth: 90)
     }
     
     

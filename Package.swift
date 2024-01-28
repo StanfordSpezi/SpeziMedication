@@ -23,6 +23,7 @@ let package = Package(
         .library(name: "SpeziMedicationTracking", targets: ["SpeziMedicationTracking"])
     ],
     dependencies: [
+        .package(url: "https://github.com/StanfordSpezi/SpeziFoundation", .upToNextMinor(from: "0.1.0")),
         .package(url: "https://github.com/StanfordSpezi/Spezi", .upToNextMinor(from: "0.8.0")),
         .package(url: "https://github.com/StanfordSpezi/SpeziViews", .upToNextMinor(from: "0.6.2"))
     ],
@@ -53,6 +54,7 @@ let package = Package(
             dependencies: [
                 .target(name: "SpeziMedication"),
                 .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziFoundation", package: "SpeziFoundation"),
                 .product(name: "SpeziViews", package: "SpeziViews")
             ],
             resources: [
