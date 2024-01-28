@@ -15,6 +15,7 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
     let type: ExampleMedication
     var dosage: ExampleDosage
     var schedule: Schedule
+    var logEntries: [LogEntry]
     
     
     init(type: ExampleMedication, dosage: ExampleDosage, schedule: Schedule) {
@@ -22,5 +23,6 @@ struct ExampleMedicationInstance: MedicationInstance, MedicationInstanceInitiali
         self.type = type
         self.dosage = dosage
         self.schedule = schedule
+        self.logEntries = []
     }
 }

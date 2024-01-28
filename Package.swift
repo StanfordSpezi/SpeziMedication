@@ -24,7 +24,8 @@ let package = Package(
         .library(name: "SpeziMedicationTracking", targets: ["SpeziMedicationTracking"])
     ],
     dependencies: [
-        .package(url: "https://github.com/StanfordSpezi/Spezi", from: "1.8.0"),
+        .package(url: "https://github.com/StanfordSpezi/SpeziFoundation.git", from: "2.0.0"),
+        .package(url: "https://github.com/StanfordSpezi/Spezi.git", from: "1.8.0"),
         .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", from: "1.7.0")
     ] + swiftLintPackage(),
     targets: [
@@ -56,6 +57,7 @@ let package = Package(
             dependencies: [
                 .target(name: "SpeziMedication"),
                 .product(name: "Spezi", package: "Spezi"),
+                .product(name: "SpeziFoundation", package: "SpeziFoundation"),
                 .product(name: "SpeziViews", package: "SpeziViews")
             ],
             resources: [

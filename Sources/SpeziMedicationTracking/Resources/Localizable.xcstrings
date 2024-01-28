@@ -1,6 +1,31 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "..." : {
+
+    },
+    "%@ Medications" : {
+
+    },
+    "%lf at %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lf at %2$@"
+          }
+        }
+      }
+    },
+    "%lld Medications" : {
+
+    },
+    "All Medications" : {
+
+    },
+    "As Needed Medications" : {
+
+    },
     "Cancel" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -12,6 +37,9 @@
         }
       }
     },
+    "Canel" : {
+
+    },
     "Close" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -22,6 +50,12 @@
           }
         }
       }
+    },
+    "Done" : {
+
+    },
+    "Dosage" : {
+
     },
     "Every %lld days" : {
       "extractionState" : "stale",
@@ -46,7 +80,13 @@
         }
       }
     },
-    "Hello, World!" : {
+    "Log" : {
+
+    },
+    "Log Details" : {
+
+    },
+    "Time" : {
 
     }
   },

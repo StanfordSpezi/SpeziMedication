@@ -27,6 +27,8 @@ public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable 
     var dosage: InstanceDosage { get set }
     /// Schedule of the medication.
     var schedule: Schedule { get set }
+    /// Log entries of the medication
+    var logEntries: [LogEntry] { get set }
 }
 
 
