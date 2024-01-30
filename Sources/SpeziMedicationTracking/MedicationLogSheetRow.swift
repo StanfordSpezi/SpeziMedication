@@ -8,15 +8,35 @@
 
 import SpeziMedication
 import SwiftUI
+@_implementationOnly import XCTSpeziMedication
 
 
-struct LogEntryChangedKey: PreferenceKey {
-    static var defaultValue = false
-
-    static func reduce(value: inout Bool, nextValue: () -> Bool) {
-        value = value || nextValue()
+#warning("Remove Any once we move to a concrete medication type ...")
+class LogEntryPersistor: Equatable {
+    let medication: AnyObject
+    let logEntry: LogEntry?
+    
+    
+    init<MI: MedicationInstance>(medication: Binding<MI>, logEntry: LogEntry?) {
+        self.medication = medication as AnyObject
+        self.logEntry = logEntry
+    }
+    
+    
+    static func == (lhs: LogEntryPersistor, rhs: LogEntryPersistor) -> Bool {
+        lhs.logEntry == rhs.logEntry
     }
 }
+
+struct LogEntryChangedKey: PreferenceKey {
+    static var defaultValue: [LogEntryPersistor] = []
+    
+    
+    static func reduce(value: inout [LogEntryPersistor], nextValue: () -> [LogEntryPersistor]) {
+        value.append(contentsOf: nextValue())
+    }
+}
+
 
 struct MedicationLogSheetRow<MI: MedicationInstance>: View {
     private let asNeeded: Bool
@@ -31,48 +51,84 @@ struct MedicationLogSheetRow<MI: MedicationInstance>: View {
     @State private var showDosageAndDateSheet = false
     
     
-    private var logEntryChanged: Bool {
-        guard let logEntryEvent else {
-            return existingLogEntry == nil
+    private var changedLogEntry: [LogEntryPersistor] {
+        let changed: Bool
+        if logEntryEvent != existingLogEntry?.event {
+            changed = true
+        } else if let existingLogEntry, (logEntryDosage != existingLogEntry.dosage || logEntryDate != existingLogEntry.date) && logEntryEvent != nil {
+            changed = true
+        } else {
+            changed = false
         }
         
-        return LogEntry(scheduledTime: date, event: logEntryEvent, date: logEntryDate, dosage: logEntryDosage) == existingLogEntry
+        guard changed else {
+            return []
+        }
+        
+        var logEntryDate = Calendar.current.date(bySetting: .nanosecond, value: 0, of: logEntryDate)
+        logEntryDate = Calendar.current.date(bySetting: .second, value: 0, of: logEntryDate ?? self.logEntryDate)
+        
+        return [
+            LogEntryPersistor(
+                medication: $medication,
+                logEntry: logEntryEvent.map {
+                    LogEntry(
+                        scheduledTime: date,
+                        event: $0,
+                        date: logEntryDate ?? self.logEntryDate,
+                        dosage: logEntryDosage
+                    )
+                }
+            )
+        ]
     }
     
     
     var body: some View {
-        VStack {
-            HStack {
+        VStack(spacing: 0) {
+            HStack(alignment: .center) {
                 Image(systemName: "pills.circle.fill")
+                    .resizable()
+                    .aspectRatio(1.0, contentMode: .fit)
                     .symbolRenderingMode(.monochrome)
                     .accessibilityHidden(true)
-                    .frame(width: 100, height: 100)
-                VStack {
+                    .frame(width: 60)
+                    .foregroundColor(Color(UIColor.systemGray3))
+                    .padding(8)
+                VStack(alignment: .leading) {
                     Text(medication.type.localizedDescription)
                         .font(.title3.bold())
                     Text(medication.dosage.localizedDescription)
                         .foregroundStyle(.secondary)
                     dosageAndTimeSelector
-                    HStack {
-                        if !asNeeded {
-                            LogEntryEventButton(role: .skipped, logEntryEvent: $logEntryEvent)
-                        }
-                        LogEntryEventButton(role: .taken, logEntryEvent: $logEntryEvent)
-                    }
                 }
+                Spacer()
             }
+                .padding([.top, .horizontal])
+            HStack {
+                if !asNeeded {
+                    LogEntryEventButton(role: .skipped, logEntryEvent: $logEntryEvent)
+                }
+                LogEntryEventButton(role: .taken, logEntryEvent: $logEntryEvent)
+            }
+                .padding()
         }
-            .preference(key: LogEntryChangedKey.self, value: logEntryChanged)
+            .background {
+                RoundedRectangle(cornerRadius: 10)
+                    .foregroundStyle(.background)
+            }
+            .preference(key: LogEntryChangedKey.self, value: changedLogEntry)
     }
     
     private var dosageAndTimeSelector: some View {
-        HStack {
-            Text("\(logEntryDosage) at \(Text(logEntryDate, style: .time))")
+        HStack(spacing: 4) {
+            Text("\(logEntryDosage, format: .number) pill at \(Text(logEntryDate, style: .time))")
                 .bold()
                 .foregroundColor(.accentColor)
             Image(systemName: "chevron.right")
+                .font(.caption)
                 .accessibilityHidden(true)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.secondary.opacity(0.6))
         }
             .contentShape(Rectangle())
             .onTapGesture {
@@ -92,16 +148,48 @@ struct MedicationLogSheetRow<MI: MedicationInstance>: View {
         self.asNeeded = asNeeded
         self.date = date
         self._medication = medication
-        let existingLogEntry = medication.wrappedValue.logEntries.first {
-            if asNeeded {
-                $0.scheduledTime == nil && $0.date == date
-            } else {
-                $0.scheduledTime == date
-            }
-        }
+        let existingLogEntry = medication.wrappedValue.logEntry(date: date, asNeeded: asNeeded)
         self.existingLogEntry = existingLogEntry
         self._logEntryEvent = State(wrappedValue: existingLogEntry?.event)
         self._logEntryDosage = State(wrappedValue: existingLogEntry?.dosage ?? 1)
         self._logEntryDate = State(wrappedValue: existingLogEntry?.date ?? .now)
     }
+}
+
+
+#Preview {
+    ScrollView {
+        VStack {
+            MedicationLogSheetRow( // Scheduled & taken
+                asNeeded: false,
+                date: Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: .now) ?? .now,
+                medication: .constant(Mock.medicationInstances.sorted()[0])
+            )
+            MedicationLogSheetRow( // Scheduled & not taken
+                asNeeded: false,
+                date: Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: .now) ?? .now,
+                medication: .constant(Mock.medicationInstances.sorted()[0])
+            )
+            MedicationLogSheetRow( // Scheduled & skipped
+                asNeeded: false,
+                date: Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: .now) ?? .now,
+                medication: .constant(Mock.medicationInstances.sorted()[0])
+            )
+            MedicationLogSheetRow( // As needed & taken
+                asNeeded: true,
+                date: Calendar.current.date(bySettingHour: 10, minute: 0, second: 0, of: .now) ?? .now,
+                medication: .constant(Mock.medicationInstances.sorted()[0])
+            )
+            MedicationLogSheetRow( // As needed & not taken
+                asNeeded: true,
+                date: Calendar.current.date(bySettingHour: 11, minute: 0, second: 0, of: .now) ?? .now,
+                medication: .constant(Mock.medicationInstances.sorted()[0])
+            )
+        }
+            .padding()
+    }
+        .background {
+            Color(UIColor.systemGroupedBackground)
+                .edgesIgnoringSafeArea(.all)
+        }
 }

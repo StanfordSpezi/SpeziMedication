@@ -1,32 +1,8 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@ (Skipped)" : {
-
-    },
-    "%@ Medications" : {
-
-    },
-    "%@ pill at %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ pill at %2$@"
-          }
-        }
-      }
-    },
-    "%lld Medications" : {
-
-    },
-    "All Medications" : {
-
-    },
-    "As Needed Medications" : {
-
-    },
     "Cancel" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -46,12 +22,6 @@
           }
         }
       }
-    },
-    "Done" : {
-
-    },
-    "Dosage" : {
-
     },
     "Every %lld days" : {
       "extractionState" : "stale",
@@ -75,18 +45,6 @@
           }
         }
       }
-    },
-    "Log" : {
-
-    },
-    "Log Details" : {
-
-    },
-    "Logged" : {
-
-    },
-    "Time" : {
-
     }
   },
   "version" : "1.0"

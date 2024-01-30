@@ -35,7 +35,7 @@ public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable 
 extension MedicationInstance {
     /// See Equatable
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.type == rhs.type && lhs.dosage == rhs.dosage && lhs.schedule == rhs.schedule
+        lhs.type == rhs.type && lhs.dosage == rhs.dosage && lhs.schedule == rhs.schedule && lhs.logEntries == rhs.logEntries
     }
     
     /// See Comparable

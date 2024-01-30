@@ -21,7 +21,8 @@ let package = Package(
     products: [
         .library(name: "SpeziMedication", targets: ["SpeziMedication"]),
         .library(name: "SpeziMedicationSettings", targets: ["SpeziMedicationSettings"]),
-        .library(name: "SpeziMedicationTracking", targets: ["SpeziMedicationTracking"])
+        .library(name: "SpeziMedicationTracking", targets: ["SpeziMedicationTracking"]),
+        .library(name: "XCTSpeziMedication", targets: ["XCTSpeziMedication"])
     ],
     dependencies: [
         .package(url: "https://github.com/StanfordSpezi/SpeziFoundation.git", from: "2.0.0"),
@@ -56,6 +57,7 @@ let package = Package(
             name: "SpeziMedicationTracking",
             dependencies: [
                 .target(name: "SpeziMedication"),
+                .target(name: "XCTSpeziMedication"),
                 .product(name: "Spezi", package: "Spezi"),
                 .product(name: "SpeziFoundation", package: "SpeziFoundation"),
                 .product(name: "SpeziViews", package: "SpeziViews")
@@ -64,6 +66,15 @@ let package = Package(
                 .process("Resources")
             ],
             plugins: [] + swiftLintPlugin()
+        ),
+        .target(
+            name: "XCTSpeziMedication",
+            dependencies: [
+                .target(name: "SpeziMedication")
+            ],
+            resources: [
+                .process("Resources")
+            ]
         ),
         .testTarget(
             name: "SpeziMedicationTests",

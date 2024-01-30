@@ -7,15 +7,8 @@
 //
 
 import SpeziMedication
-import SwiftUI
 
 
-struct MedicationLogLoggedRow<MI: MedicationInstance>: View {
-    @Binding private var medicationInstances: [MI]
-    private var selectedDate: Date = .now
-    
-    
-    var body: some View {
-        Text("...")
-    }
+public struct MockDosage: Dosage {
+    public var localizedDescription: String
 }

@@ -28,14 +28,20 @@ struct LogEntryEventButton: View {
             },
             label: {
                 HStack {
+                    Spacer()
                     if logEntryEvent == role {
-                        Image(systemName: "checkmark.circle.fill")
+                        role.icon
                             .accessibilityHidden(true)
                     }
                     Text(role.localizedDescription)
+                        .foregroundStyle(logEntryEvent == role ? .white : .accentColor)
+                        .fontWeight(.medium)
+                    Spacer()
                 }
             }
         )
+            .tint(.accentColor.opacity(logEntryEvent == role ? 1.0 : 0.2))
+            .buttonStyle(.borderedProminent)
     }
     
     
@@ -43,4 +49,15 @@ struct LogEntryEventButton: View {
         self.role = role
         self._logEntryEvent = logEntryEvent
     }
+}
+
+
+#Preview {
+    @State var logEntryEvent: LogEntryEvent?
+    
+    return HStack {
+        LogEntryEventButton(role: .skipped, logEntryEvent: $logEntryEvent)
+        LogEntryEventButton(role: .taken, logEntryEvent: $logEntryEvent)
+    }
+        .padding()
 }
