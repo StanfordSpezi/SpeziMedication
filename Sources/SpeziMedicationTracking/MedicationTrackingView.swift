@@ -9,6 +9,7 @@
 import SpeziFoundation
 import SpeziMedication
 import SwiftUI
+@_implementationOnly import XCTSpeziMedication
 
 
 private let dateFormatter: DateFormatter = {
@@ -19,54 +20,52 @@ private let dateFormatter: DateFormatter = {
 }()
 
 
-struct MedicationTrackingView<MI: MedicationInstance>: View {
+public struct MedicationTrackingView<MI: MedicationInstance>: View {
     @Binding private var medicationInstances: [MI]
     @State private var selectedDate: Date = .now
     
     
-    var body: some View {
+    public var body: some View {
         VStack {
             Text(selectedDate, formatter: dateFormatter)
+                .font(.title2.bold())
+                .multilineTextAlignment(.center)
             Divider()
-            Text("Log")
-                .font(.title2)
-            ForEach(allScheduledTimes) { medicationLogRowModel in
-                let medicationLogRowModel = medicationLogRowModel.filter(basedOn: $medicationInstances, logEntryEvent: nil)
+            HStack {
+                Text("Log")
+                    .font(.title2.bold())
+                Spacer()
+            }
+            ForEach(medicationLogRowModels) { medicationLogRowModel in
+                let medicationLogRowModel = medicationLogRowModel.filter(basedOn: $medicationInstances, logEntryEvents: nil)
                 if !medicationLogRowModel.medications.isEmpty {
                     MedicationLogRow(medicationLogRowModel: medicationLogRowModel)
                 }
             }
             MedicationLogRow(medicationLogRowModel: MedicationLogRowModel<MI>(date: nil, medications: $medicationInstances.compactMap { $0 }))
+            MedicationLogLogged(
+                medicationInstances: $medicationInstances,
+                selectedDate: selectedDate
+            )
         }
+            .padding(.horizontal)
+    }
+    
+    private var medicationLogRowModels: [MedicationLogRowModel<MI>] {
+        MedicationLogRowModel.allScheduledTimes(basedOn: $medicationInstances, on: selectedDate)
     }
     
     
-    private var allScheduledTimes: [MedicationLogRowModel<MI>] {
-        Dictionary(
-            grouping: $medicationInstances
-                .flatMap { medicationInstance -> [(Date, Binding<MI>)] in
-                    medicationInstance.wrappedValue.schedule.timesScheduled(onDay: selectedDate)
-                        .map {
-                            ($0, medicationInstance)
-                        }
-                },
-            by: {
-                $0.0
-            }
-        )
-            .mapValues {
-                $0.map { $0.1 }
-            }
-            .sorted {
-                $0.key < $1.key
-            }
-            .map {
-                MedicationLogRowModel(date: $0.0, medications: $0.1)
-            }
-    }
-    
-    
-    init(medicationInstances: Binding<[MI]>) {
+    public init(medicationInstances: Binding<[MI]>) {
         self._medicationInstances = medicationInstances
+    }
+}
+
+
+#Preview {
+    @State var medicationInstances = Mock.medicationInstances
+    
+    return ScrollView {
+        MedicationTrackingView(medicationInstances: $medicationInstances)
     }
 }

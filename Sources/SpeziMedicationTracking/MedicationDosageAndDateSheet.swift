@@ -8,6 +8,7 @@
 
 import SpeziMedication
 import SwiftUI
+@_implementationOnly import XCTSpeziMedication
 
 
 private let numberOfDosageFormatter: NumberFormatter = {
@@ -28,27 +29,13 @@ struct MedicationDosageAndDateSheet<MI: MedicationInstance>: View {
     
     var body: some View {
         NavigationStack {
-            HStack {
-                Text(medicationInstance.type.localizedDescription)
-                    .bold()
-                Text(medicationInstance.dosage.localizedDescription)
-                    .foregroundStyle(.secondary)
+            VStack {
                 Form {
-                    Section {
-                        TextField(
-                            "Dosage",
-                            value: $logEntryDosage,
-                            formatter: numberOfDosageFormatter
-                        )
-                    }
-                    Section {
-                        DatePicker(
-                            "Time",
-                            selection: $logEntryDate,
-                            displayedComponents: .hourAndMinute
-                        )
-                    }
+                    titleSection
+                    dosageSection
+                    timeSection
                 }
+                    .listSectionSpacing(20)
             }
                 .toolbar {
                     ToolbarItem(placement: .primaryAction) {
@@ -57,7 +44,57 @@ struct MedicationDosageAndDateSheet<MI: MedicationInstance>: View {
                         }
                     }
                 }
+                .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle("Log Details")
+        }
+    }
+    
+    private var titleSection: some View {
+        Section {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(medicationInstance.type.localizedDescription)
+                    .font(.title3)
+                    .bold()
+                Text(medicationInstance.dosage.localizedDescription)
+                    .foregroundStyle(.secondary)
+            }
+        }
+            .listRowBackground(Color.clear)
+            .listRowSeparator(.hidden)
+            .listRowInsets(
+                EdgeInsets(
+                    top: 0,
+                    leading: 0,
+                    bottom: 0,
+                    trailing: 0
+                )
+            )
+    }
+    
+    private var dosageSection: some View {
+        Section {
+            HStack {
+                Text("Dosage")
+                Spacer()
+                TextField(
+                    "Dosage",
+                    value: $logEntryDosage,
+                    formatter: numberOfDosageFormatter
+                )
+                    .multilineTextAlignment(.trailing)
+                    .foregroundColor(.accentColor)
+            }
+        }
+    }
+    
+    private var timeSection: some View {
+        Section {
+            DatePicker(
+                "Time",
+                selection: $logEntryDate,
+                displayedComponents: .hourAndMinute
+            )
+                .datePickerStyle(.wheel)
         }
     }
     
@@ -67,4 +104,16 @@ struct MedicationDosageAndDateSheet<MI: MedicationInstance>: View {
         self._logEntryDosage = logEntryDosage
         self._logEntryDate = logEntryDate
     }
+}
+
+
+#Preview {
+    @State var logEntryDosage = 1.0
+    @State var logEntryDate = Date.now
+    
+    return MedicationDosageAndDateSheet(
+        medicationInstance: Mock.medicationInstances.sorted()[0],
+        logEntryDosage: $logEntryDosage,
+        logEntryDate: $logEntryDate
+    )
 }
