@@ -9,7 +9,6 @@
 import SpeziMedication
 
 
-struct ExampleMedication: Medication, Comparable {
-    var localizedDescription: String
-    var dosages: [ExampleDosage]
+public struct MockDosage: Dosage {
+    public var localizedDescription: String
 }

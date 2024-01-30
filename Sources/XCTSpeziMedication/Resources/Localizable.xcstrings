@@ -1,9 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "As Needed" : {
-
-    },
     "Cancel" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -27,6 +24,7 @@
       }
     },
     "Every %lld days" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -47,21 +45,6 @@
           }
         }
       }
-    },
-    "Every Day" : {
-
-    },
-    "Every other Day" : {
-
-    },
-    "Skipped" : {
-
-    },
-    "Taken" : {
-
-    },
-    "Weekend" : {
-
     }
   },
   "version" : "1.0"

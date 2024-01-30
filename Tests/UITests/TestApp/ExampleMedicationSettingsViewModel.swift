@@ -8,13 +8,15 @@
 
 import Spezi
 import SpeziMedication
+import SpeziMedicationSettings
 import SwiftUI
+import XCTSpeziMedication
 
 
 @Observable
 class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, CustomStringConvertible {
-    var medicationInstances: Set<ExampleMedicationInstance> = []
-    let medicationOptions: Set<ExampleMedication>
+    var medicationInstances: Set<MockMedicationInstance> = []
+    let medicationOptions: Set<MockMedication>
     
     
     var description: String {
@@ -41,33 +43,11 @@ class ExampleMedicationSettingsViewModel: Module, MedicationSettingsViewModel, C
     
     
     init() {
-        self.medicationOptions = [
-            ExampleMedication(
-                localizedDescription: "Medication 1",
-                dosages: [
-                    ExampleDosage(localizedDescription: "Dosage 1.1"),
-                    ExampleDosage(localizedDescription: "Dosage 1.2"),
-                    ExampleDosage(localizedDescription: "Dosage 1.3")
-                ]
-            ),
-            ExampleMedication(
-                localizedDescription: "Medication 2",
-                dosages: [
-                    ExampleDosage(localizedDescription: "Dosage 2.1")
-                ]
-            ),
-            ExampleMedication(
-                localizedDescription: "Medication 3",
-                dosages: [
-                    ExampleDosage(localizedDescription: "Dosage 3.1"),
-                    ExampleDosage(localizedDescription: "Dosage 3.2")
-                ]
-            )
-        ]
+        self.medicationOptions = Set(Mock.medications)
     }
     
     
-    func persist(medicationInstances: Set<ExampleMedicationInstance>) async throws {
+    func persist(medicationInstances: Set<MockMedicationInstance>) async throws {
         try await Task.sleep(for: .seconds(2))
         self.medicationInstances = medicationInstances
     }

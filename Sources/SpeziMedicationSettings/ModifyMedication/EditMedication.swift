@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import SpeziMedication
 import SpeziViews
 import SwiftUI
 
@@ -38,7 +39,7 @@ struct EditMedication<MI: MedicationInstance>: View {
                 }
             }
         }
-            .navigationTitle(medicationInstance.localizedDescription)
+            .navigationTitle(medicationInstance.type.localizedDescription)
     }
     
     

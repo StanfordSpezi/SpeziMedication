@@ -7,6 +7,7 @@
 //
 
 import Observation
+import SpeziMedication
 
 
 @Observable
@@ -41,6 +42,12 @@ extension MedicationSettingsViewModel {
                 preconditionFailure("If \(String(describing: Medications.self)) is a class type, it must conform to `Observable` using the `@Observable` macro.")
             }
             
+            #warning(
+                """
+                TODO: If Medications have an ID, we would always override all IDs when we replace the medications,
+                we might need to replace them step by step and modify the fileds of existing medications ...
+                """
+            )
             // If the medication instances are classes we need to make copies of them to ensure that we don't modify the original instances before the user presses save.
             medicationInstances = Set(
                 self.medicationInstances.map { medicationInstance in

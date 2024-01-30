@@ -27,20 +27,15 @@ public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable 
     var dosage: InstanceDosage { get set }
     /// Schedule of the medication.
     var schedule: Schedule { get set }
-}
-
-
-extension MedicationInstance {
-    var localizedDescription: String {
-        type.localizedDescription
-    }
+    /// Log entries of the medication
+    var logEntries: [LogEntry] { get set }
 }
 
 
 extension MedicationInstance {
     /// See Equatable
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.type == rhs.type && lhs.dosage == rhs.dosage && lhs.schedule == rhs.schedule
+        lhs.type == rhs.type && lhs.dosage == rhs.dosage && lhs.schedule == rhs.schedule && lhs.logEntries == rhs.logEntries
     }
     
     /// See Comparable

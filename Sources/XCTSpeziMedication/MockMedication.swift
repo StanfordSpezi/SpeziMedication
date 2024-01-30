@@ -6,11 +6,10 @@
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
+import SpeziMedication
 
 
-extension String: LocalizedError {
-    public var errorDescription: String? {
-        self
-    }
+public struct MockMedication: Medication, Comparable {
+    public var localizedDescription: String
+    public var dosages: [MockDosage]
 }
