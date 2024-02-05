@@ -21,17 +21,13 @@ let package = Package(
         .library(name: "SpeziMedication", targets: ["SpeziMedication"])
     ],
     dependencies: [
-        .package(url: "https://github.com/StanfordSpezi/Spezi", from: "1.1.0"),
-        .package(url: "https://github.com/StanfordSpezi/SpeziStorage", from: "1.0.0"),
         .package(url: "https://github.com/StanfordSpezi/SpeziViews", from: "1.2.0")
     ],
     targets: [
         .target(
             name: "SpeziMedication",
             dependencies: [
-                .product(name: "Spezi", package: "Spezi"),
-                .product(name: "SpeziViews", package: "SpeziViews"),
-                .product(name: "SpeziLocalStorage", package: "SpeziStorage")
+                .product(name: "SpeziViews", package: "SpeziViews")
             ],
             resources: [
                 .process("Resources")
