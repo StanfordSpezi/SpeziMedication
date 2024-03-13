@@ -11,7 +11,6 @@ import XCTest
 
 
 final class SpeziMedicationTests: XCTestCase {
-    
     func testScheduleDecodingWithAndWithoutTimes() throws {
         let jsonDecoder = JSONDecoder()
         jsonDecoder.dateDecodingStrategy = .iso8601
@@ -24,8 +23,12 @@ final class SpeziMedicationTests: XCTestCase {
             },
             "startDate": "2023-12-07T08:00:00Z"
         }
-        """.data(using: .utf8)!
-        let noTimesSchedule = try jsonDecoder.decode(Schedule.self, from: noTimesJSON)
+        """
+        guard let data = noTimesJSON.data(using: .utf8) else {
+            XCTFail("Failed to encode JSON string to Data")
+            return
+        }
+        let noTimesSchedule = try jsonDecoder.decode(Schedule.self, from: data)
         XCTAssertEqual(noTimesSchedule.times, [])
 
         // Test decoding with times
@@ -52,8 +55,12 @@ final class SpeziMedicationTests: XCTestCase {
                 }
             ]
         }
-        """.data(using: .utf8)!
-        let withTimesSchedule = try jsonDecoder.decode(Schedule.self, from: withTimesJSON)
+        """
+        guard let dataWithTimes = withTimesJSON.data(using: .utf8) else {
+            XCTFail("Failed to encode JSON string to Data")
+            return
+        }
+        let withTimesSchedule = try jsonDecoder.decode(Schedule.self, from: dataWithTimes)
         XCTAssertNotNil(withTimesSchedule.times)
     }
     
