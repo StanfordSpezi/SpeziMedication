@@ -12,6 +12,51 @@ import XCTest
 
 final class SpeziMedicationTests: XCTestCase {
     // swiftlint:disable:next function_body_length
+    
+    func testScheduleDecodingWithAndWithoutTimes() throws {
+        let jsonDecoder = JSONDecoder()
+        jsonDecoder.dateDecodingStrategy = .iso8601
+
+        // Test decoding without times
+        let noTimesJSON = """
+        {
+            "frequency": {
+                "asNeeded": true
+            },
+            "startDate": "2023-12-07T08:00:00Z"
+        }
+        """.data(using: .utf8)!
+        let noTimesSchedule = try jsonDecoder.decode(Schedule.self, from: noTimesJSON)
+        XCTAssertEqual(noTimesSchedule.times, nil)
+
+        // Test decoding with times
+        let withTimesJSON = """
+        {
+            "frequency": {
+                "regularDayIntervals": 2
+            },
+            "startDate": "2023-12-07T08:00:00Z",
+            "times": [
+                {
+                    "time": {
+                        "hour": 8,
+                        "minute": 0
+                    }
+                },
+                {
+                    "time": {
+                        "hour": 15,
+                        "minute": 0
+                    }
+                }
+            ]
+        }
+        """.data(using: .utf8)!
+        let withTimesSchedule = try jsonDecoder.decode(Schedule.self, from: withTimesJSON)
+        XCTAssertNotNil(withTimesSchedule.times)
+    }
+    
+    
     func testScheduleEncoding() throws {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
