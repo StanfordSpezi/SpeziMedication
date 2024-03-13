@@ -11,7 +11,6 @@ import XCTest
 
 
 final class SpeziMedicationTests: XCTestCase {
-    // swiftlint:disable:next function_body_length
     
     func testScheduleDecodingWithAndWithoutTimes() throws {
         let jsonDecoder = JSONDecoder()
@@ -58,7 +57,7 @@ final class SpeziMedicationTests: XCTestCase {
         XCTAssertNotNil(withTimesSchedule.times)
     }
     
-    
+    // swiftlint:disable:next function_body_length
     func testScheduleEncoding() throws {
         let jsonEncoder = JSONEncoder()
         jsonEncoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
