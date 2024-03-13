@@ -27,7 +27,7 @@ final class SpeziMedicationTests: XCTestCase {
         }
         """.data(using: .utf8)!
         let noTimesSchedule = try jsonDecoder.decode(Schedule.self, from: noTimesJSON)
-        XCTAssertEqual(noTimesSchedule.times, nil)
+        XCTAssertEqual(noTimesSchedule.times, [])
 
         // Test decoding with times
         let withTimesJSON = """
@@ -41,13 +41,15 @@ final class SpeziMedicationTests: XCTestCase {
                     "time": {
                         "hour": 8,
                         "minute": 0
-                    }
+                    },
+                    "dosage": 5.0
                 },
                 {
                     "time": {
                         "hour": 15,
                         "minute": 0
-                    }
+                    },
+                    "dosage": 5.0
                 }
             ]
         }
