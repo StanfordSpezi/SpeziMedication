@@ -22,7 +22,7 @@ let package = Package(
         .library(name: "SpeziMedication", targets: ["SpeziMedication"])
     ],
     dependencies: [
-        .package(url: "https://github.com/StanfordSpezi/SpeziViews", from: "1.7.0")
+        .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", from: "1.7.0")
     ] + swiftLintPackage(),
     targets: [
         .target(
