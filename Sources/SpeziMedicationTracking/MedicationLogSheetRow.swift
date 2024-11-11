@@ -29,8 +29,10 @@ class LogEntryPersistor: Equatable {
 }
 
 struct LogEntryChangedKey: PreferenceKey {
-    static var defaultValue: [LogEntryPersistor] = []
-    
+    static var defaultValue: [LogEntryPersistor] {
+        []
+    }
+
     
     static func reduce(value: inout [LogEntryPersistor], nextValue: () -> [LogEntryPersistor]) {
         value.append(contentsOf: nextValue())

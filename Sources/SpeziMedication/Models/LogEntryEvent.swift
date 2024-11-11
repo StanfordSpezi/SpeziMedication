@@ -1,14 +1,15 @@
 //
-//  File.swift
-//  
+// This source file is part of the Stanford Spezi open-source project
 //
-//  Created by Paul Shmiedmayer on 1/28/24.
+// SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+//
+// SPDX-License-Identifier: MIT
 //
 
 import SwiftUI
 
 
-public enum LogEntryEvent: Codable, CaseIterable {
+public enum LogEntryEvent: Codable, CaseIterable, Sendable {
     case skipped
     case taken
     

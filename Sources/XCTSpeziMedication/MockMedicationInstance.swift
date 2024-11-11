@@ -10,7 +10,7 @@ import Foundation
 import SpeziMedication
 
 
-public struct MockMedicationInstance: MedicationInstance, MedicationInstanceInitializable {
+public struct MockMedicationInstance: MedicationInstance, MedicationInstanceInitializable, Sendable {
     public let id: UUID
     public let type: MockMedication
     public var dosage: MockDosage

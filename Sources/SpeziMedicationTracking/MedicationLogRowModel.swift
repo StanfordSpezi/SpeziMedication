@@ -48,7 +48,7 @@ final class MedicationLogRowModel<MI: MedicationInstance>: Comparable, Identifia
                 .map {
                     // var date = Calendar.current.date(bySetting: .nanosecond, value: 0, of: $0.date)
                     // date = Calendar.current.date(bySetting: .second, value: 0, of: date ?? $0.date)
-                    return ($0.date, medicationInstanceBinding)
+                    ($0.date, medicationInstanceBinding)
                 }
         }
     }

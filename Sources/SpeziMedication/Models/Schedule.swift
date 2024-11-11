@@ -10,7 +10,7 @@ import Foundation
 
 
 /// Schedule of a medication.
-public struct Schedule: Codable, Equatable, Hashable {
+public struct Schedule: Codable, Equatable, Hashable, Sendable {
     enum CodingKeys: CodingKey {
         case frequency
         case times

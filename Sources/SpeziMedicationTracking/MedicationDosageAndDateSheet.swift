@@ -108,10 +108,10 @@ struct MedicationDosageAndDateSheet<MI: MedicationInstance>: View {
 
 
 #Preview {
-    @State var logEntryDosage = 1.0
-    @State var logEntryDate = Date.now
-    
-    return MedicationDosageAndDateSheet(
+    @Previewable @State var logEntryDosage = 1.0
+    @Previewable @State var logEntryDate = Date.now
+
+    MedicationDosageAndDateSheet(
         medicationInstance: Mock.medicationInstances.sorted()[0],
         logEntryDosage: $logEntryDosage,
         logEntryDate: $logEntryDate

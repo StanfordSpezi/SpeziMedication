@@ -53,9 +53,9 @@ struct LogEntryEventButton: View {
 
 
 #Preview {
-    @State var logEntryEvent: LogEntryEvent?
-    
-    return HStack {
+    @Previewable @State var logEntryEvent: LogEntryEvent?
+
+    HStack {
         LogEntryEventButton(role: .skipped, logEntryEvent: $logEntryEvent)
         LogEntryEventButton(role: .taken, logEntryEvent: $logEntryEvent)
     }

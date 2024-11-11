@@ -9,6 +9,6 @@
 import SpeziMedication
 
 
-public struct MockDosage: Dosage {
+public struct MockDosage: Dosage, Sendable {
     public var localizedDescription: String
 }

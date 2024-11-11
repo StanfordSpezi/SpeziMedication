@@ -10,7 +10,7 @@ import Foundation
 
 
 /// Defines the frequency of a schedule.
-public enum Frequency: Codable, CustomStringConvertible, Equatable, Hashable {
+public enum Frequency: Codable, CustomStringConvertible, Equatable, Hashable, Sendable {
     case regularDayIntervals(Int)
     case specificDaysOfWeek(Weekdays)
     case asNeeded

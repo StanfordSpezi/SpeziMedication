@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct LogEntry: Codable, Equatable {
+public struct LogEntry: Codable, Equatable, Sendable {
     public let scheduledTime: Date?
     public var event: LogEntryEvent
     public var date: Date

@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 
-public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable {
+public struct ScheduledTime: Codable, Identifiable, Hashable, Equatable, Comparable, Sendable {
     enum CodingKeys: CodingKey {
         case time
         case dosage

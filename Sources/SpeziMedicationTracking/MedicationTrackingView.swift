@@ -63,9 +63,9 @@ public struct MedicationTrackingView<MI: MedicationInstance>: View {
 
 
 #Preview {
-    @State var medicationInstances = Mock.medicationInstances
+    @Previewable @State var medicationInstances = Mock.medicationInstances
 
-    return ScrollView {
+    ScrollView {
         MedicationTrackingView(medicationInstances: $medicationInstances)
     }
 }
