@@ -13,9 +13,8 @@ import SwiftUI
 
 struct AddMedicationDosage<MI: MedicationInstance>: View {
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
-    
+
     @State private var dosage: MI.InstanceDosage
-    @Binding private var isPresented: Bool
     
     private let medicationOption: MI.InstanceType
     
@@ -66,8 +65,7 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
             destination: {
                 AddMedicationSchedule<MI>(
                     medicationOption: medicationOption,
-                    dosage: dosage,
-                    isPresented: $isPresented
+                    dosage: dosage
                 )
             },
             label: {
@@ -79,9 +77,8 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     }
     
     
-    init(medicationOption: MI.InstanceType, isPresented: Binding<Bool>) {
+    init(medicationOption: MI.InstanceType) {
         self.medicationOption = medicationOption
-        self._isPresented = isPresented
         
         guard let initialDosage = medicationOption.dosages.first else {
             fatalError("No dosage options for the medication: \(medicationOption)")

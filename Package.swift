@@ -16,7 +16,7 @@ let package = Package(
     name: "SpeziMedication",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v17)
+        .iOS(.v18)
     ],
     products: [
         .library(name: "SpeziMedication", targets: ["SpeziMedication"]),
@@ -27,14 +27,16 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/StanfordSpezi/SpeziFoundation.git", from: "2.0.0"),
         .package(url: "https://github.com/StanfordSpezi/Spezi.git", from: "1.8.0"),
-        .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", from: "1.7.0")
+        .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", from: "1.7.0"),
+        .package(url: "https://github.com/StanfordSpezi/SpeziScheduler.git", from: "1.1.0")
     ] + swiftLintPackage(),
     targets: [
         .target(
             name: "SpeziMedication",
             dependencies: [
                 .product(name: "Spezi", package: "Spezi"),
-                .product(name: "SpeziViews", package: "SpeziViews")
+                .product(name: "SpeziViews", package: "SpeziViews"),
+                .product(name: "SpeziScheduler", package: "SpeziScheduler")
             ],
             resources: [
                 .process("Resources")

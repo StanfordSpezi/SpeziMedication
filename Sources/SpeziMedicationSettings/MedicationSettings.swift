@@ -13,7 +13,7 @@ import SwiftUI
 
 /// Present medication settings including mechanisms to add, edit, and delete medications.
 public struct MedicationSettings<MI: MedicationInstance>: View {
-    private let isPresented: Binding<Bool>?
+    private let isPresented: Binding<Bool>? // TODO: cancelBehaviro/dismissBehavior or similar? using dismiss environment key!
     private let allowEmptySave: Bool
     private let medicationSettingsViewModel: any MedicationSettingsViewModel<MI>
     private let action: () -> Void
@@ -80,7 +80,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 }
             }
             .viewStateAlert(state: $viewState)
-            .alert(isPresented: $cancelAlert) {
+            .alert(isPresented: $cancelAlert) { // TODO: migrate to confirmation dialog!
                 Alert(
                     title: Text("Discard Changes", bundle: .module),
                     message: Text("You are about to leave the medication settings view without saving your settings.", bundle: .module),
@@ -107,25 +107,16 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         } else {
             title = String(localized: "Save Medications", bundle: .module)
         }
-        
-        return AsyncButton(
-            action: {
-                do {
-                    viewState = .processing
-                    try await medicationSettingsViewModel.persist(medicationInstances: Set(viewModel.medicationInstances))
-                    viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances.sorted()
-                    action()
-isPresented?.wrappedValue = false
-                    viewState = .idle
-                } catch {
-                    viewState = .error(AnyLocalizedError(error: error))
-                }
-            },
-            label: {
-                Text(title)
-                    .frame(maxWidth: .infinity, minHeight: 38)
-            }
-        )
+
+        return AsyncButton(state: $viewState) {
+            try await medicationSettingsViewModel.persist(medicationInstances: Set(viewModel.medicationInstances))
+            viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances.sorted()
+            action()
+            isPresented?.wrappedValue = false
+        } label: {
+            Text(title)
+                .frame(maxWidth: .infinity, minHeight: 38)
+        }
             .buttonStyle(.borderedProminent)
             .disabled(!modifiedMedications && !allowEmptySave)
             .padding()
@@ -137,7 +128,7 @@ isPresented?.wrappedValue = false
     
     private var addMedicationButton: some View {
         Button {
-            showAddMedicationSheet.toggle()
+            showAddMedicationSheet = true
         } label: {
             Image(systemName: "plus")
                 .accessibilityLabel(String(localized: "Add New Medication", bundle: .module))
@@ -145,7 +136,7 @@ isPresented?.wrappedValue = false
     }
     
     private var addMedicationView: some View {
-        AddMedication<MI>(isPresented: $showAddMedicationSheet)
+        AddMedication<MI>()
     }
     
     

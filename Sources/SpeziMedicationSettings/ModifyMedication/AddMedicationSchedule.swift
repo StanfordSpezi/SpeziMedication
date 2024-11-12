@@ -13,8 +13,10 @@ import SwiftUI
 
 struct AddMedicationSchedule<MI: MedicationInstance>: View {
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
-    @Binding private var isPresented: Bool
-    
+
+    @Environment(\.dismiss)
+    private var dismiss
+
     @State private var frequency: Frequency = .regularDayIntervals(1)
     @State private var startDate: Date = .now
     @State private var times: [ScheduledTime] = []
@@ -44,7 +46,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                             )
                         )
                         viewModel.medicationInstances.sort()
-                        isPresented = false
+                        dismiss()
                     },
                     label: {
                         Text("Add Medication", bundle: .module)
@@ -85,11 +87,9 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     
     init(
         medicationOption: MI.InstanceType,
-        dosage: MI.InstanceDosage,
-        isPresented: Binding<Bool>
+        dosage: MI.InstanceDosage
     ) {
         self.medicationOption = medicationOption
         self.dosage = dosage
-        self._isPresented = isPresented
     }
 }

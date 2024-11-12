@@ -15,9 +15,11 @@ struct AddMedication<MI: MedicationInstance>: View {
     
 
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
-    
+
+    @Environment(\.dismiss)
+    private var dismiss
+
     @State private var searchText = ""
-    @Binding private var isPresented: Bool
     
     
     private var searchResults: [MI.InstanceType] {
@@ -38,10 +40,7 @@ struct AddMedication<MI: MedicationInstance>: View {
             List {
                 ForEach(searchResults, id: \.self) { medicationOption in
                     NavigationLink {
-                        AddMedicationDosage<MI>(
-                            medicationOption: medicationOption,
-                            isPresented: $isPresented
-                        )
+                        AddMedicationDosage<MI>(medicationOption: medicationOption)
                     } label: {
                         Text(medicationOption.localizedDescription)
                     }
@@ -52,7 +51,7 @@ struct AddMedication<MI: MedicationInstance>: View {
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button(String(localized: "Cancel", bundle: .module)) {
-                            isPresented = false
+                            dismiss()
                         }
                     }
                 }
@@ -60,7 +59,5 @@ struct AddMedication<MI: MedicationInstance>: View {
     }
     
     
-    init(isPresented: Binding<Bool>) {
-                self._isPresented = isPresented
-    }
+    init() {}
 }
