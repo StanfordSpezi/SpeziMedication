@@ -6,10 +6,13 @@
 // SPDX-License-Identifier: MIT
 //
 
-import SpeziMedication
+import SpeziScheduler
 
 
-public struct MockMedication: LegacyMedication, Comparable, Sendable {
-    public var localizedDescription: String
-    public var dosages: [MockDosage]
+extension Task.Context {
+    @Property var medication: MedicationDescription?
+}
+
+extension Outcome {
+    @Property var logEntry: LogEntry?
 }

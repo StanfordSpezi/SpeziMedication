@@ -4,6 +4,30 @@
     "As Needed" : {
 
     },
+    "capsule" : {
+      "comment" : "Medication Type",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Capsule"
+          }
+        }
+      }
+    },
+    "drops" : {
+      "comment" : "Medication Type",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Drops"
+          }
+        }
+      }
+    },
     "Every %lld days" : {
       "localizations" : {
         "en" : {
@@ -32,8 +56,47 @@
     "Every other Day" : {
 
     },
+    "gel" : {
+      "comment" : "Medication Type",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Gel"
+          }
+        }
+      }
+    },
+    "liquid" : {
+      "comment" : "Medication Type",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Liquid"
+          }
+        }
+      }
+    },
+    "Medication" : {
+
+    },
     "Skipped" : {
 
+    },
+    "tablet" : {
+      "comment" : "Medication Type",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tablet"
+          }
+        }
+      }
     },
     "Taken" : {
 

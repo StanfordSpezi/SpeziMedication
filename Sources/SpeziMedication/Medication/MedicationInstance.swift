@@ -8,17 +8,17 @@
 
 import Foundation
 
-
 /// Instance of a ``Medication``.
 ///
 /// The ``MedicationInstance``'s identifier (`id`) must be stable across chances to the dosage and therefore should not be derived from a combination of values including the dosage.
 ///
 /// > Important: We recommend making the Medication Instance a value type (`struct`) to best work within the ``MedicationSettings``.
+@available(*, deprecated, message: "This will be removed")
 public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable where InstanceType.MedicationDosage == InstanceDosage {
     /// Associated dosage.
-    associatedtype InstanceDosage: Dosage
+    associatedtype InstanceDosage: LegacyDosage
     /// Associated medication type.
-    associatedtype InstanceType: Medication
+    associatedtype InstanceType: LegacyMedication
     
     
     /// Type of the medication instance.
@@ -52,3 +52,4 @@ extension MedicationInstance {
         hasher.combine(id)
     }
 }
+

@@ -10,12 +10,11 @@ import SpeziMedication
 import SwiftUI
 
 
-struct MedicationList<MI: MedicationInstance>: View {
-    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
-    
-    
+struct MedicationList: View {
     var body: some View {
-        @Bindable var viewModel = viewModel
+        Text("Hello World")
+        /*
+         TODO: replace
         List {
             ForEach($viewModel.medicationInstances) { medicationInstance in
                 NavigationLink {
@@ -38,5 +37,6 @@ struct MedicationList<MI: MedicationInstance>: View {
                     }
                 }
         }
+         */
     }
 }

@@ -10,27 +10,25 @@ import SpeziMedication
 import SwiftUI
 
 
-struct AddMedication<MI: MedicationInstance>: View {
-    typealias CreateMedicationInstance = (MI.InstanceType, MI.InstanceDosage, Schedule) -> MI
-    
-
-    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
+struct AddMedication: View {
+    private let options: [MedicationOption]
 
     @Environment(\.dismiss)
     private var dismiss
 
     @State private var searchText = ""
+    @State private var isSearching = false
+
     
-    
-    private var searchResults: [MI.InstanceType] {
-        if searchText.isEmpty {
-            return viewModel.medicationOptions.sorted()
+    private var searchResults: [MedicationOption] {
+        // TODO: make it sorted again!
+        if isSearching && !searchText.isEmpty {
+            options.filter {
+                // TODO: what locale is used here?
+                String(localized: $0.label).contains(searchText)
+            }
         } else {
-            return viewModel.medicationOptions
-                .filter {
-                    $0.localizedDescription.contains(searchText)
-                }
-                .sorted()
+            options
         }
     }
     
@@ -38,16 +36,17 @@ struct AddMedication<MI: MedicationInstance>: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(searchResults, id: \.self) { medicationOption in
+                ForEach(searchResults) { medicationOption in
                     NavigationLink {
-                        AddMedicationDosage<MI>(medicationOption: medicationOption)
+                        AddMedicationDosage(medicationOption)
                     } label: {
-                        Text(medicationOption.localizedDescription)
+                        Text(medicationOption.label)
                     }
                 }
             }
                 .navigationTitle(String(localized: "Add a Medication", bundle: .module))
-                .searchable(text: $searchText, prompt: String(localized: "Search for a medication", bundle: .module))
+                .searchable(text: $searchText, isPresented: $isSearching, prompt: String(localized: "Search for a medication", bundle: .module))
+            // TODO: promt localzanb!
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
                         Button(String(localized: "Cancel", bundle: .module)) {
@@ -59,5 +58,10 @@ struct AddMedication<MI: MedicationInstance>: View {
     }
     
     
-    init() {}
+    init(from options: [MedicationOption]) {
+        self.options = options
+    }
 }
+
+
+// TODO: preview!

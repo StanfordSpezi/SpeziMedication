@@ -12,24 +12,20 @@ import SwiftUI
 
 
 /// Present medication settings including mechanisms to add, edit, and delete medications.
-public struct MedicationSettings<MI: MedicationInstance>: View {
+public struct MedicationSettings: View {
+    private let medicationOptions: [MedicationOption] // TODO: was a Set previously?
     private let isPresented: Binding<Bool>? // TODO: cancelBehaviro/dismissBehavior or similar? using dismiss environment key!
     private let allowEmptySave: Bool
-    private let medicationSettingsViewModel: any MedicationSettingsViewModel<MI>
     private let action: () -> Void
         
     @State private var cancelAlert = false
     @State private var showAddMedicationSheet = false
     @State private var viewState: ViewState = .idle
-    private var viewModel: InternalMedicationSettingsViewModel<MI>
     
     
     private var modifiedMedications: Bool {
-        medicationSettingsViewModel.medicationInstances.sorted() != viewModel.medicationInstances
-    }
-    
-    private var medicationOptions: Set<MI.InstanceType> {
-        medicationOptions(medicationSettingsViewModel)
+        false
+        // TODO: medicationSettingsViewModel.medicationInstances.sorted() != viewModel.medicationInstances
     }
     
     private var cancelButtonTitie: String {
@@ -42,15 +38,16 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
     
     public var body: some View {
         VStack(spacing: 0) {
-            if viewModel.medicationInstances.isEmpty {
+            if false { // TODO: how to get the list of persisted medications? just filter after the fact?
                 Spacer()
+                // TODO: conent unavaialbel view (as an overlay?)
                 Text("Use the \"+\" button at the top to add all the medications you take.", bundle: .module)
                     .multilineTextAlignment(.center)
                     .font(.title3)
                     .padding(.horizontal)
                 Spacer()
             } else {
-                MedicationList<MI>()
+                MedicationList()
             }
             saveMedicationButton
         }
@@ -60,7 +57,7 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
             }
             .navigationTitle(String(localized: "Medication Settings", bundle: .module))
             .sheet(isPresented: $showAddMedicationSheet) {
-                addMedicationView
+                AddMedication(from: medicationOptions)
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -97,20 +94,22 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
                 )
             }
             .interactiveDismissDisabled(isPresented == nil || modifiedMedications)
-            .environment(viewModel)
     }
     
     @MainActor private var saveMedicationButton: some View {
         let title: String
+        title = String(localized: "Save Medications", bundle: .module) // TODO: restore previous functionality
+        /*
         if viewModel.medicationInstances.isEmpty, !modifiedMedications && allowEmptySave {
             title = String(localized: "Continue with no Medications", bundle: .module)
         } else {
             title = String(localized: "Save Medications", bundle: .module)
         }
+         */
 
         return AsyncButton(state: $viewState) {
-            try await medicationSettingsViewModel.persist(medicationInstances: Set(viewModel.medicationInstances))
-            viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances.sorted()
+            // TODO: try await medicationSettingsViewModel.persist(medicationInstances: Set(viewModel.medicationInstances))
+            // TODO: viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances.sorted()
             action()
             isPresented?.wrappedValue = false
         } label: {
@@ -135,10 +134,6 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         }
     }
     
-    private var addMedicationView: some View {
-        AddMedication<MI>()
-    }
-    
     
     /// Initializes a new ``MedicationSettings`` view.
     /// - Parameters:
@@ -150,27 +145,18 @@ public struct MedicationSettings<MI: MedicationInstance>: View {
         // We disable the default parameter order here to ensure that the action can be a trailing closure but only needs to be optionally provided.
         isPresented: Binding<Bool>? = nil,
         allowEmptySave: Bool = false,
-        medicationSettingsViewModel: any MedicationSettingsViewModel<MI>,
+        options: [MedicationOption],
         action: @escaping () -> Void = {}
     ) {
         self.isPresented = isPresented
         self.allowEmptySave = allowEmptySave
-        self.medicationSettingsViewModel = medicationSettingsViewModel
+        self.medicationOptions = options
         self.action = action
-        self.viewModel = medicationSettingsViewModel.internalViewModel
     }
     
     
     private func discardChangesAction() {
-        viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances.sorted()
+        // TODO: viewModel.medicationInstances = medicationSettingsViewModel.medicationInstances.sorted()
         isPresented?.wrappedValue = false
-    }
-    
-    private func medicationOptions(_ viewModel: some MedicationSettingsViewModel<MI>) -> Set<MI.InstanceType> {
-        viewModel.medicationOptions
-    }
-    
-    private func createMedicationInstance(_ viewModel: some MedicationSettingsViewModel<MI>) -> (MI.InstanceType, MI.InstanceDosage, Schedule) -> MI {
-        viewModel.createMedicationInstance
     }
 }

@@ -54,7 +54,7 @@ extension Locale.Weekday { // TODO: combine and move to Scheduler!
 
 public struct CreateScheduleViewModel {
     public var selection: MedicationScheduleSelection = .daily
-    public var dayInterval = 2
+    public var dayInterval = 1
     public var times: [Date] = []
 
     public var weekdays: [Calendar.RecurrenceRule.Weekday] = []

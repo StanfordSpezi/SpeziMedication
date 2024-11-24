@@ -150,11 +150,15 @@ struct MedicationLogSheetRow<MI: MedicationInstance>: View {
         self.asNeeded = asNeeded
         self.date = date
         self._medication = medication
-        let existingLogEntry = medication.wrappedValue.logEntry(date: date, asNeeded: asNeeded)
-        self.existingLogEntry = existingLogEntry
-        self._logEntryEvent = State(wrappedValue: existingLogEntry?.event)
-        self._logEntryDosage = State(wrappedValue: existingLogEntry?.dosage ?? 1)
-        self._logEntryDate = State(wrappedValue: existingLogEntry?.date ?? .now)
+        // TODO: let existingLogEntry = medication.wrappedValue.logEntry(date: date, asNeeded: asNeeded)
+        // TODO: self.existingLogEntry = existingLogEntry
+        // TODO: self._logEntryEvent = State(wrappedValue: existingLogEntry?.event)
+        // TODO: self._logEntryDosage = State(wrappedValue: existingLogEntry?.dosage ?? 1)
+        // TODO: self._logEntryDate = State(wrappedValue: existingLogEntry?.date ?? .now)
+        self._logEntryEvent = State(wrappedValue: .skipped)
+        self._logEntryDosage = State(wrappedValue: 1.0)
+        self._logEntryDate = State(wrappedValue: .now)
+        self.existingLogEntry = nil
     }
 }
 

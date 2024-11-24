@@ -11,8 +11,9 @@ import SpeziViews
 import SwiftUI
 
 
-struct AddMedicationSchedule<MI: MedicationInstance>: View {
-    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
+struct AddMedicationSchedule: View {
+    // TODO: private let medicationOption: MI.InstanceType
+    // TODO: private let dosage: MI.InstanceDosage
 
     @Environment(\.dismiss)
     private var dismiss
@@ -20,11 +21,9 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
     @State private var frequency: Frequency = .regularDayIntervals(1)
     @State private var startDate: Date = .now
     @State private var times: [ScheduledTime] = []
-    
-    private let medicationOption: MI.InstanceType
-    private let dosage: MI.InstanceDosage
-    
-    
+
+    @State private var viewModel = CreateScheduleViewModel() // TODO: integrate this new model!
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -38,14 +37,16 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
             VStack(alignment: .center) {
                 AsyncButton(
                     action: {
+                        // TODO: restore!
+                        /*
                         viewModel.medicationInstances.append(
                             viewModel.createMedicationInstance(
                                 medicationOption,
                                 dosage,
                                 Schedule(frequency: frequency, times: times, startDate: startDate)
                             )
-                        )
-                        viewModel.medicationInstances.sort()
+                        )*/
+                        // TODO: viewModel.medicationInstances.sort()
                         dismiss()
                     },
                     label: {
@@ -62,6 +63,7 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                 }
         }
             .navigationTitle("Medication Schedule")
+            .navigationBarTitleDisplayMode(.inline)
     }
     
     private var titleSection: some View {
@@ -72,24 +74,32 @@ struct AddMedicationSchedule<MI: MedicationInstance>: View {
                     Image(systemName: "calendar")
                         .resizable()
                         .accessibilityHidden(true)
-                        .foregroundColor(.accentColor)
+                        .symbolRenderingMode(.multicolor)
                         .scaledToFit()
-                        .frame(width: 70, height: 100)
-                    Text("When will you take \(medicationOption.localizedDescription) (\(dosage.localizedDescription))?", bundle: .module)
+                        .frame(maxWidth: 60, maxHeight: 60)
+                    // TODO: Text("When will you take \(medicationOption.localizedDescription) (\(dosage.localizedDescription))?", bundle: .module)
+                    Text("Set a Schedule", bundle: .module) // TODO: make that meaningful!
                         .multilineTextAlignment(.center)
-                        .font(.title2)
+                        .font(.title)
+                        .bold()
                 }
                 Spacer()
             }
+                .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 0))
+                .listRowBackground(Color.clear)
         }
     }
     
     
-    init(
-        medicationOption: MI.InstanceType,
-        dosage: MI.InstanceDosage
-    ) {
-        self.medicationOption = medicationOption
-        self.dosage = dosage
+    init() {}
+}
+
+
+
+#if DEBUG
+#Preview {
+    NavigationStack {
+        AddMedicationSchedule()
     }
 }
+#endif

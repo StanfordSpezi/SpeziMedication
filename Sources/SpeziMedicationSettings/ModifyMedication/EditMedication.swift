@@ -22,8 +22,8 @@ struct EditMedication<MI: MedicationInstance>: View {
         VStack {
             Form {
                 Section(String(localized: "Dosage", bundle: .module)) {
-                    EditDosage<MI>(dosage: $medicationInstance.dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
-                        .labelsHidden()
+                    // TODO: EditDosage(dosage: $medicationInstance.dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
+                        // TODO: .labelsHidden()
                 }
                 Section(String(localized: "Schedule", bundle: .module)) {
                     EditFrequency(frequency: $medicationInstance.schedule.frequency, startDate: $medicationInstance.schedule.startDate)

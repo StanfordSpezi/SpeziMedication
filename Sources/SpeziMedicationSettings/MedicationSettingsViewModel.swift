@@ -13,6 +13,7 @@ import SpeziMedication
 /// Defines a unified interface to provide data and functionality of the ``MedicationSettings``
 ///
 /// The implementation needs to provide functionalities to manage medication instances and options and persist the medications.
+@available(*, deprecated, message: "This will be removed")
 public protocol MedicationSettingsViewModel<Medications>: Observable {
     /// The ``MedicationInstance`` type that the ``MedicationSettingsViewModel`` implementation supports.
     associatedtype Medications: MedicationInstance

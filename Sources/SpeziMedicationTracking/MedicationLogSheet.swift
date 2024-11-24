@@ -99,7 +99,9 @@ struct MedicationLogSheet<MI: MedicationInstance>: View {
                         print("Could not parse")
                         continue
                     }
-                    
+
+                    /*
+                     TODO: what is this thing?
                     if let existingLogEntry = medication.wrappedValue.logEntry(
                         date: medicationLogRowModel.date ?? .now,
                         asNeeded: medicationLogRowModel.date == nil
@@ -107,7 +109,8 @@ struct MedicationLogSheet<MI: MedicationInstance>: View {
                         medication.logEntries.wrappedValue.removeAll(where: { $0 == existingLogEntry })
                         print("Removed ...")
                     }
-                    
+                    */
+
                     if let logEntry = change.logEntry {
                         medication.logEntries.wrappedValue.append(logEntry)
                         print("Append ...")

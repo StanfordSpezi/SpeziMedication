@@ -11,34 +11,32 @@ import SpeziViews
 import SwiftUI
 
 
-struct AddMedicationDosage<MI: MedicationInstance>: View {
-    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
+struct AddMedicationDosage: View {
+    private let option: MedicationOption
 
-    @State private var dosage: MI.InstanceDosage
-    
-    private let medicationOption: MI.InstanceType
+    @State private var dosage: Dosage?
     
     
     private var isDuplicate: Bool {
-        viewModel.duplicateOf(medication: medicationOption, dosage: dosage)
+        false // TODO: viewModel.duplicateOf(medication: medicationOption, dosage: dosage)
     }
     
     var body: some View {
         VStack(spacing: 0) {
             Form {
-                Section {
-                    EditDosage<MI>(dosage: $dosage, medication: medicationOption)
-                }
+                EditDosage(selection: $dosage, medication: option)
             }
             actionSection
         }
-            .navigationTitle(medicationOption.localizedDescription)
+            .navigationTitle(Text(option.label))
             .onAppear {
+                /*
+                 TODO: duplicate check?
                 if let nonUsedDosage = medicationOption.dosages.first(where: {
                     !viewModel.duplicateOf(medication: medicationOption, dosage: $0)
                 }) {
                     self.dosage = nonUsedDosage
-                }
+                }*/
             }
     }
     
@@ -51,22 +49,24 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
             }
             addMedicationSaveDosageButton
         }
-            .disabled(isDuplicate)
+            .disabled(isDuplicate || dosage == nil)
             .padding()
             .background {
                 Color(uiColor: .systemGroupedBackground)
                     .edgesIgnoringSafeArea(.bottom)
             }
-            .navigationTitle(medicationOption.localizedDescription)
+            .navigationTitle(Text(option.label))
     }
     
     private var addMedicationSaveDosageButton: some View {
         NavigationLink(
             destination: {
+                Text("Not implmented ") // TODO: implement
+                /*
                 AddMedicationSchedule<MI>(
                     medicationOption: medicationOption,
                     dosage: dosage
-                )
+                )*/
             },
             label: {
                 Text("Save Dosage", bundle: .module)
@@ -77,12 +77,29 @@ struct AddMedicationDosage<MI: MedicationInstance>: View {
     }
     
     
-    init(medicationOption: MI.InstanceType) {
-        self.medicationOption = medicationOption
-        
+    init(_ option: MedicationOption) {
+        self.option = option
+        self.dosage = nil
+
+        /*
         guard let initialDosage = medicationOption.dosages.first else {
             fatalError("No dosage options for the medication: \(medicationOption)")
         }
         self._dosage = State(initialValue: initialDosage)
+         */
     }
 }
+
+
+#if DEBUG
+#Preview {
+    let option = MedicationOption(id: "1", label: "Test Medication", dosageOptions: [
+        Dosage(strength: 2, unit: .gramUnit(with: .milli), form: .capsule),
+        Dosage(strength: 5, unit: .gramUnit(with: .milli), form: .capsule)
+        // TODO: strength should be a decimal?
+    ])
+    NavigationStack {
+        AddMedicationDosage(option)
+    }
+}
+#endif

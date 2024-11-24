@@ -8,8 +8,10 @@
 
 import Foundation
 
+// TODO: remove
 
 /// Marks a ``MedicationInstance`` as being initiailzable using ``MedicationInstanceInitializable/init(type:dosage:)``.
+@available(*, deprecated, message: "This will be removed")
 public protocol MedicationInstanceInitializable: MedicationInstance {
     /// - Parameters:
     ///   - type: Type of the medication.

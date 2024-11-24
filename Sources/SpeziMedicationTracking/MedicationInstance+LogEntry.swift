@@ -9,6 +9,8 @@
 import Foundation
 import SpeziMedication
 
+/*
+ // TODO: what is that?
 
 extension MedicationInstance {
     func logEntry(date: Date, asNeeded: Bool = false) -> LogEntry? {
@@ -21,3 +23,4 @@ extension MedicationInstance {
         } ?? logEntries.first(where: { $0.date == date })
     }
 }
+*/

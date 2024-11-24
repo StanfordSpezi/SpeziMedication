@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%llu %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$llu %2$@"
+          }
+        }
+      }
+    },
     "Add a Medication" : {
 
     },
@@ -29,6 +39,9 @@
         }
       }
     },
+    "Change" : {
+
+    },
     "Choose Days" : {
 
     },
@@ -45,9 +58,6 @@
         }
       }
     },
-    "Continue with no Medications" : {
-
-    },
     "Delete" : {
 
     },
@@ -61,9 +71,6 @@
 
     },
     "Dosage Picker" : {
-
-    },
-    "Dosage: %@" : {
 
     },
     "Every" : {
@@ -95,6 +102,9 @@
     "Frequency" : {
 
     },
+    "Hello World" : {
+
+    },
     "Medication Schedule" : {
 
     },
@@ -102,6 +112,9 @@
 
     },
     "Medication with this dosage already exists." : {
+
+    },
+    "Not implmented " : {
 
     },
     "On Specific Days of the Week" : {
@@ -125,21 +138,17 @@
     "Search for a medication" : {
 
     },
+    "Set a Schedule" : {
+
+    },
     "Start Date" : {
 
     },
     "Use the \"+\" button at the top to add all the medications you take." : {
 
     },
-    "When will you take %@ (%@)?" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "When will you take %1$@ (%2$@)?"
-          }
-        }
-      }
+    "When will you take this?" : {
+
     },
     "You are about to leave the medication settings view without saving your settings." : {
 

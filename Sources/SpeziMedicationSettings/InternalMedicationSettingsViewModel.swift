@@ -9,22 +9,22 @@
 import Observation
 import SpeziMedication
 
+// TODO: remove
 
+
+@available(*, deprecated, message: "This will be removed")
 @Observable
 class InternalMedicationSettingsViewModel<MI: MedicationInstance> {
     var medicationInstances: [MI]
     let medicationOptions: Set<MI.InstanceType>
-    let createMedicationInstance: AddMedication<MI>.CreateMedicationInstance
     
     
     init(
         medicationInstances: Set<MI>,
-        medicationOptions: Set<MI.InstanceType>,
-        createMedicationInstance: @escaping AddMedication<MI>.CreateMedicationInstance
+        medicationOptions: Set<MI.InstanceType>
     ) {
         self.medicationInstances = Array(medicationInstances)
         self.medicationOptions = medicationOptions
-        self.createMedicationInstance = createMedicationInstance
     }
 
     
@@ -64,8 +64,7 @@ extension MedicationSettingsViewModel {
         
         return InternalMedicationSettingsViewModel(
             medicationInstances: medicationInstances,
-            medicationOptions: medicationOptions,
-            createMedicationInstance: createMedicationInstance
+            medicationOptions: medicationOptions
         )
     }
 }

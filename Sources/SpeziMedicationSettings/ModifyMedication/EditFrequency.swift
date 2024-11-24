@@ -24,15 +24,18 @@ struct EditFrequency: View {
                 },
                 label: {
                     HStack {
-                        Text("Frequency")
+                        Text(frequency.description)
                             .foregroundStyle(Color.primary)
                         Spacer()
-                        Text(frequency.description)
+                        Text("Change")
                             .foregroundStyle(Color.accentColor)
                     }
                 }
             )
+        } header: {
+            Text("When will you take this?")
         }
+            .headerProminence(.increased) // TODO: bit weird?
             .sheet(isPresented: $showFrequencySheet) {
                 ScheduleFrequencyView(frequency: $frequency, startDate: $startDate)
             }
@@ -44,3 +47,15 @@ struct EditFrequency: View {
         self._startDate = startDate
     }
 }
+
+
+#if DEBUG
+#Preview {
+    @Previewable @State var frequency: Frequency = .regularDayIntervals(1)
+    @Previewable @State var date: Date = .now
+
+    List {
+        EditFrequency(frequency: $frequency, startDate: $date)
+    }
+}
+#endif
