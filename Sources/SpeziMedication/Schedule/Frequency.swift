@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: MIT
 //
 
+import SpeziViews
 import Foundation
 import SpeziScheduler
 
@@ -14,11 +15,37 @@ import SpeziScheduler
 //  - AsNeeded,
 //  - Specific Days of the Week, Cyclical Schedule(used for x days/weeks, pause for y days/weeks)
 
-public enum MedicationScheduleSelection {
-    case asNeeded
+public enum MedicationScheduleSelection: String, PickerValue {
     case daily
-    case interval // TODO: every x days
     case weekdayBased
+    case interval // TODO: every x days
+    case asNeeded
+
+    public var localizedStringResource: LocalizedStringResource {
+        switch self {
+        case .daily:
+            .init("Every Day", bundle: .atURL(from: .module))
+        case .weekdayBased:
+            .init("On Specific Days of the Week", bundle: .atURL(from: .module))
+        case .interval:
+            .init("Every Few Days", bundle: .atURL(from: .module))
+        case .asNeeded:
+            .init("As Needed", bundle: .atURL(from: .module))
+        }
+    }
+
+    public var explanation: LocalizedStringResource? {
+        switch self {
+        case .daily:
+            nil
+        case .weekdayBased:
+            .init("On Mondays, On Weekdays", bundle: .atURL(from: .module))
+        case .interval:
+            .init("Every other day, Every 3 days", bundle: .atURL(from: .module))
+        case .asNeeded:
+            nil
+        }
+    }
 }
 
 extension Locale.Weekday { // TODO: combine and move to Scheduler!
@@ -43,6 +70,27 @@ extension Locale.Weekday { // TODO: combine and move to Scheduler!
         }
     }
 
+    public var portedOrdinal: Int { // TODO: package public in scheduler!
+        switch self {
+        case .sunday:
+            1
+        case .monday:
+            2
+        case .tuesday:
+            3
+        case .wednesday:
+            4
+        case .thursday:
+            5
+        case .friday:
+            6
+        case .saturday:
+            7
+        @unknown default:
+            preconditionFailure("A new weekday appeared we don't know about: \(self)")
+        }
+    }
+
     public init(from date: Date) {
         let weekdayOrdinal = Calendar.current.component(.weekday, from: date)
         guard let weekday = Locale.Weekday(ordinal: weekdayOrdinal) else {
@@ -52,9 +100,20 @@ extension Locale.Weekday { // TODO: combine and move to Scheduler!
     }
 }
 
+
+extension Locale.Weekday: CaseIterable {
+    // TODO: locale, based order?
+    public static let allCases: [Locale.Weekday] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+}
+
+
 public struct CreateScheduleViewModel {
-    public var selection: MedicationScheduleSelection = .daily
-    public var dayInterval = 1
+    // TODO: rename
+    public var selection: MedicationScheduleSelection
+    /// The day interval.
+    ///
+    /// This value only applies if ``selection`` has a value of ``MedicationScheduleSelection/interval``.
+    public var dayInterval: Int
     public var times: [Date] = []
 
     public var weekdays: [Calendar.RecurrenceRule.Weekday] = []
@@ -105,15 +164,21 @@ public struct CreateScheduleViewModel {
         return SpeziScheduler.Schedule(startingAt: start, recurrence: recurrence)
     }
 
-    public init() {
+    public init(
+        selection: MedicationScheduleSelection = .daily,
+        dayInterval: Int = 2,
+        start: Date = .today, // TODO: start of day?
+        end: Date? = nil
+    ) {
         let now = Date.now
-
-        self.start = .today // TODO: start of day?
-        // populate some default selections
-        times.append(now)
-
         let todayWeekday = Locale.Weekday(from: now)
-        self.weekdays.append(.every(todayWeekday))
+
+        self.selection = selection
+        self.dayInterval = dayInterval
+        self.times = [now] // default selected time is now
+        self.weekdays = [.every(todayWeekday)] // default selected weekday is today
+        self.start = start
+        self.end = end
     }
 }
 

@@ -16,12 +16,47 @@ struct EditScheduleTime: View {
     
     
     @Binding private var times: [ScheduledTime]
-    
+    @Binding private var model: CreateScheduleViewModel
+
     
     var body: some View {
-        Section {
+        Section { // swiftlint:disable:this closure_body_length
+            if case .weekdayBased = model.selection {
+                Section {
+                    HStack(spacing: 0) {
+                        ForEach(Locale.Weekday.allCases, id: \.self) { weekday in
+                            let selected = model.weekdays.contains(.every(weekday))
+                            Button {
+                                if model.weekdays.contains(.every(weekday)) {
+                                    model.weekdays.removeAll { day in
+                                        day == .every(weekday)
+                                    }
+                                } else {
+                                    model.weekdays.append(.every(weekday))
+                                }
+                            } label: {
+                                Text(Calendar.current.veryShortWeekdaySymbols[weekday.portedOrdinal - 1])
+                                    .foregroundStyle(selected ? .white : .primary)
+                                    .fontWeight(.semibold)
+                                    .background {
+                                        Circle()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundStyle(selected ? Color.accentColor : .clear)
+                                            // TODO: change color!
+                                    }
+                            }
+                                .buttonStyle(.borderless)
+
+                            if Locale.Weekday.allCases.last != weekday {
+                                Spacer() // TODO: remove last spacer!
+                            }
+                        }
+                    }
+                        .frame(maxWidth: .infinity)
+                }
+            }
             if !times.isEmpty {
-                List($times) { time in
+                ForEach($times) { time in
                     EditScheduleTimeRow(time: time, times: $times)
                 }
             }
@@ -48,8 +83,9 @@ struct EditScheduleTime: View {
     }
     
     
-    init(times: Binding<[ScheduledTime]>) {
+    init(times: Binding<[ScheduledTime]>, model: Binding<CreateScheduleViewModel>) {
         self._times = times
+        self._model = model
     }
     
     
@@ -83,3 +119,24 @@ struct EditScheduleTime: View {
         }
     }
 }
+
+
+#if DEBUG
+#Preview {
+    @Previewable @State var times: [ScheduledTime] = []
+    @Previewable @State var model = CreateScheduleViewModel()
+
+    List {
+        EditScheduleTime(times: $times, model: $model)
+    }
+}
+
+#Preview {
+    @Previewable @State var times: [ScheduledTime] = []
+    @Previewable @State var model = CreateScheduleViewModel(selection: .weekdayBased)
+
+    List {
+        EditScheduleTime(times: $times, model: $model)
+    }
+}
+#endif

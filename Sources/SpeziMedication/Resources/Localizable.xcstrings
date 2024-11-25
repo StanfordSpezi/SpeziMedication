@@ -53,7 +53,13 @@
     "Every Day" : {
 
     },
+    "Every Few Days" : {
+
+    },
     "Every other Day" : {
+
+    },
+    "Every other day, Every 3 days" : {
 
     },
     "gel" : {
@@ -81,6 +87,12 @@
       }
     },
     "Medication" : {
+
+    },
+    "On Mondays, On Weekdays" : {
+
+    },
+    "On Specific Days of the Week" : {
 
     },
     "Skipped" : {

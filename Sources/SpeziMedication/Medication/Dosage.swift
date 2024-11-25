@@ -28,6 +28,11 @@ public struct Dosage {
     /// The form the dosage is delivered (e.g., capsule)
     public var form: MedicationType? // TODO: make a single value container? => must be rawRepresentable then for SwiftData!
 
+    // TODO: FHIR medicatin representation: "DeliveryRoute" e.g., oral!
+    // TODO: look at FHIR coding system (e.g., system (url) + code )
+
+    // TODO: coding system for (strenght, unit) and one with form and delivery route!
+
     public init(strength: UInt, unit: HKUnit, form: MedicationType? = nil) {
         self.strength = strength
         self.unit = unit

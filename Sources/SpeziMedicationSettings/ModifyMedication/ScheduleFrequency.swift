@@ -11,8 +11,11 @@ import SwiftUI
 
 
 struct ScheduleFrequencyView: View {
-    @Environment(\.dismiss) private var dismiss
-    
+    @Environment(\.dismiss)
+    private var dismiss
+
+    @Binding private var model: CreateScheduleViewModel
+
     @Binding private var outsideFrequency: Frequency
     @Binding private var startDate: Date
     
@@ -22,8 +25,27 @@ struct ScheduleFrequencyView: View {
     
     
     var body: some View {
-        NavigationStack {
-            Form {
+        // TODO: remove swiftlint
+        NavigationStack { // swiftlint:disable:this closure_body_length
+            Form {// swiftlint:disable:this closure_body_length
+                // TODO: make this a reusable picker!
+                Picker("Schedule Options", selection: $model.selection) {
+                    ForEach(MedicationScheduleSelection.allCases, id: \.rawValue) { selection in
+                        LabeledContent {
+                            EmptyView()
+                        } label: {
+                            Text(selection.localizedStringResource)
+                            if let explanation = selection.explanation {
+                                Text("\"\(explanation)\"", bundle: .module)
+                                    .font(.footnote)
+                            }
+                        }
+                            .tag(selection)
+                    }
+                }
+                    .pickerStyle(.inline)
+
+                // TODO: remove olld stuff!
                 Section {
                     Picker("Frequency", selection: $frequency) {
                         Text("At Regular Intervals", bundle: .module)
@@ -50,6 +72,7 @@ struct ScheduleFrequencyView: View {
                 toolbar
             }
         }
+        // TODO: inline navigation title for the topic!
     }
     
     @ViewBuilder private var regularDayIntervalsSection: some View {
@@ -117,7 +140,7 @@ struct ScheduleFrequencyView: View {
     }
     
     
-    init(frequency: Binding<Frequency>, startDate: Binding<Date>) {
+    init(frequency: Binding<Frequency>, startDate: Binding<Date>, model: Binding<CreateScheduleViewModel>) {
         self._outsideFrequency = frequency
         self._startDate = startDate
         self._frequency = State(wrappedValue: frequency.wrappedValue)
@@ -130,6 +153,8 @@ struct ScheduleFrequencyView: View {
         case .asNeeded:
             break
         }
+
+        self._model = model
     }
     
     
@@ -158,6 +183,7 @@ struct ScheduleFrequencyView: View {
 #Preview {
     @Previewable @State var frequency: Frequency = .specificDaysOfWeek(.all)
     @Previewable @State var startDate: Date = .now
-    
-    return ScheduleFrequencyView(frequency: $frequency, startDate: $startDate)
+    @Previewable @State var model = CreateScheduleViewModel()
+
+    return ScheduleFrequencyView(frequency: $frequency, startDate: $startDate, model: $model)
 }

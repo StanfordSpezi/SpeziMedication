@@ -29,10 +29,12 @@ struct AddMedicationSchedule: View {
             Form {
                 titleSection
                     .onTapGesture {
+                        // TODO: we can do that with focus states!
                         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                     }
-                EditFrequency(frequency: $frequency, startDate: $startDate)
-                EditScheduleTime(times: $times)
+                EditFrequency(frequency: $frequency, startDate: $startDate, model: $viewModel)
+
+                EditScheduleTime(times: $times, model: $viewModel)
             }
             VStack(alignment: .center) {
                 AsyncButton(

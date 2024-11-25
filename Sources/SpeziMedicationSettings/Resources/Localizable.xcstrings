@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "\"%@\"" : {
+
+    },
     "%llu %@" : {
       "localizations" : {
         "en" : {
@@ -99,10 +102,22 @@
         }
       }
     },
+    "Every %lld Days" : {
+
+    },
+    "Every Other Day" : {
+
+    },
     "Frequency" : {
 
     },
     "Hello World" : {
+
+    },
+    "Interval" : {
+
+    },
+    "M" : {
 
     },
     "Medication Schedule" : {
@@ -130,6 +145,9 @@
 
     },
     "Schedule" : {
+
+    },
+    "Schedule Options" : {
 
     },
     "Schedule Times" : {

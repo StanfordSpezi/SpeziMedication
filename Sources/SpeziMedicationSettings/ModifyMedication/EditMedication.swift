@@ -16,7 +16,9 @@ struct EditMedication<MI: MedicationInstance>: View {
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
     @Binding private var medicationInstance: MI
-    
+
+    @State var model = CreateScheduleViewModel() // TODO: these needs to come from somewhere!
+
     
     var body: some View {
         VStack {
@@ -26,10 +28,14 @@ struct EditMedication<MI: MedicationInstance>: View {
                         // TODO: .labelsHidden()
                 }
                 Section(String(localized: "Schedule", bundle: .module)) {
-                    EditFrequency(frequency: $medicationInstance.schedule.frequency, startDate: $medicationInstance.schedule.startDate)
+                    EditFrequency(
+                        frequency: $medicationInstance.schedule.frequency,
+                        startDate: $medicationInstance.schedule.startDate,
+                        model: $model
+                    )
                 }
                 Section(String(localized: "Schedule Times", bundle: .module)) {
-                    EditScheduleTime(times: $medicationInstance.schedule.times)
+                    EditScheduleTime(times: $medicationInstance.schedule.times, model: $model)
                 }
                 Section {
                     Button(String(localized: "Delete", bundle: .module), role: .destructive) {
