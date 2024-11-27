@@ -37,7 +37,7 @@ public struct MedicationOption: Identifiable { // TODO: how to make identifiable
     public let label: LocalizedStringResource
     public let dosageOptions: [Dosage]
 
-    // TODO: coding system, snomet, ax snome???
+    // TODO: coding system, SNOMED CT, RxNome??? => medication might have multiple codes!
 
     public init(id: String, label: LocalizedStringResource, dosageOptions: [Dosage]) {
         self.id = id

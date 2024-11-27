@@ -23,41 +23,16 @@ struct EditScheduleTime: View {
         Section { // swiftlint:disable:this closure_body_length
             if case .weekdayBased = model.selection {
                 Section {
-                    HStack(spacing: 0) {
-                        ForEach(Locale.Weekday.allCases, id: \.self) { weekday in
-                            let selected = model.weekdays.contains(.every(weekday))
-                            Button {
-                                if model.weekdays.contains(.every(weekday)) {
-                                    model.weekdays.removeAll { day in
-                                        day == .every(weekday)
-                                    }
-                                } else {
-                                    model.weekdays.append(.every(weekday))
-                                }
-                            } label: {
-                                Text(Calendar.current.veryShortWeekdaySymbols[weekday.portedOrdinal - 1])
-                                    .foregroundStyle(selected ? .white : .primary)
-                                    .fontWeight(.semibold)
-                                    .background {
-                                        Circle()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundStyle(selected ? Color.accentColor : .clear)
-                                            // TODO: change color!
-                                    }
-                            }
-                                .buttonStyle(.borderless)
-
-                            if Locale.Weekday.allCases.last != weekday {
-                                Spacer() // TODO: remove last spacer!
-                            }
-                        }
-                    }
-                        .frame(maxWidth: .infinity)
+                    WeekdayPicker(selection: $model.weekdays)
                 }
+            }
+            if !model.times.isEmpty {
+                /*ForEach($model.times) { time in
+                }*/
             }
             if !times.isEmpty {
                 ForEach($times) { time in
-                    EditScheduleTimeRow(time: time, times: $times)
+                    // TODO: EditScheduleTimeRow(time: time, times: $times)
                 }
             }
             if times.count < Self.maxTimesCount {

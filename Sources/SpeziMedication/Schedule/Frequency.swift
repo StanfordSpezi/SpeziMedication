@@ -116,7 +116,7 @@ public struct CreateScheduleViewModel {
     public var dayInterval: Int
     public var times: [Date] = []
 
-    public var weekdays: [Calendar.RecurrenceRule.Weekday] = []
+    public var weekdays: Set<Locale.Weekday> = []
 
     public var start: Date
     public var end: Date?
@@ -144,7 +144,7 @@ public struct CreateScheduleViewModel {
         }
 
         let weekdays: [Calendar.RecurrenceRule.Weekday] = if case .weekdayBased = selection {
-            self.weekdays
+            self.weekdays.map { .every($0) }
         } else {
             []
         }
@@ -176,7 +176,7 @@ public struct CreateScheduleViewModel {
         self.selection = selection
         self.dayInterval = dayInterval
         self.times = [now] // default selected time is now
-        self.weekdays = [.every(todayWeekday)] // default selected weekday is today
+        self.weekdays = [todayWeekday] // default selected weekday is today
         self.start = start
         self.end = end
     }

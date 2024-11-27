@@ -10,9 +10,16 @@ import SpeziMedication
 import SwiftUI
 
 
+struct ScheduleDosage { // TODO: Move to main
+    var time: Date
+    var quantity: Double // TODO: we really want a 10 base number here? (only 2 digits) (only 5,2 digits)
+}
+
+
 struct EditScheduleTimeRow: View {
-    @Binding private var time: ScheduledTime
-    @Binding private var times: [ScheduledTime]
+    private let form: MedicationType?
+
+    @Binding private var scheduledDosage: ScheduleDosage
     
     @FocusState private var dosageFieldIsFocused: Bool
     
@@ -28,7 +35,7 @@ struct EditScheduleTimeRow: View {
         HStack {
             Button(
                 action: {
-                    times.removeAll(where: { $0.id == time.id })
+                    // TODO: times.removeAll(where: { $0.id == time.id })
                 },
                 label: {
                     Image(systemName: "minus.circle.fill")
@@ -37,9 +44,10 @@ struct EditScheduleTimeRow: View {
                 }
             )
                 .buttonStyle(.borderless)
+
             ScheduledTimeDatePicker(
-                date: $time.date.animation(),
-                excludedDates: times.map(\.date)
+                date: $scheduledDosage.time.animation(),
+                excludedDates: [] // TODO: times.map(\.date)
             )
                 .frame(width: 100)
             Spacer()
@@ -54,9 +62,9 @@ struct EditScheduleTimeRow: View {
                     }
                     .padding(-32)
             }
-            .onChange(of: time.date) {
+            .onChange(of: scheduledDosage.time) {
                 withAnimation {
-                    times.sort()
+                    // TODO: times.sort() // TODO: remove that? only sort if you add something new!
                 }
             }
     }
@@ -64,7 +72,7 @@ struct EditScheduleTimeRow: View {
     private var dosageTextField: some View {
         TextField(
             String(localized: "Quantity", bundle: .module),
-            value: $time.dosage,
+            value: $scheduledDosage.quantity,
             formatter: numberOfDosageFormatter
         )
             .focused($dosageFieldIsFocused)
@@ -86,9 +94,20 @@ struct EditScheduleTimeRow: View {
             .frame(maxWidth: 90)
     }
     
-    
-    init(time: Binding<ScheduledTime>, times: Binding<[ScheduledTime]>) {
-        self._time = time
-        self._times = times
+
+    init(scheduledDosage: Binding<ScheduleDosage>, form: MedicationType?) {
+        self.form = form
+        self._scheduledDosage = scheduledDosage
     }
 }
+
+
+#if DEBUG
+#Preview {
+    @Previewable @State var time = ScheduleDosage(time: .now, quantity: 1.0)
+
+    List {
+        EditScheduleTimeRow(scheduledDosage: $time, form: .tablet)
+    }
+}
+#endif

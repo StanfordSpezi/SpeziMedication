@@ -28,7 +28,7 @@ struct ScheduledTimeDatePicker: UIViewRepresentable {
         @objc
         fileprivate func valueChanged(datePicker: UIDatePicker, forEvent event: UIEvent) {
             guard !excludedDates.contains(datePicker.date) else {
-                datePicker.date = lastDate
+                datePicker.date = lastDate // TODO: we just add 5 every time!
                 return
             }
             
