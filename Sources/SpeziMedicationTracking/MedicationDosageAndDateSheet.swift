@@ -21,8 +21,9 @@ private let numberOfDosageFormatter: NumberFormatter = {
 struct MedicationDosageAndDateSheet<MI: MedicationInstance>: View {
     let medicationInstance: MI
     
-    @Environment(\.dismiss) var dismiss
-    
+    @Environment(\.dismiss)
+    private var dismiss
+
     @Binding private var logEntryDosage: Double
     @Binding private var logEntryDate: Date
     

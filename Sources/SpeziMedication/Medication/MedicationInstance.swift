@@ -52,4 +52,3 @@ extension MedicationInstance {
         hasher.combine(id)
     }
 }
-

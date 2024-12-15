@@ -67,27 +67,14 @@ struct AddMedicationSchedule: View {
             .navigationTitle("Medication Schedule")
             .navigationBarTitleDisplayMode(.inline)
     }
-    
-    private var titleSection: some View {
+
+    @ViewBuilder private var titleSection: some View {
         Section {
-            HStack {
-                Spacer()
-                VStack(alignment: .center) {
-                    Image(systemName: "calendar")
-                        .resizable()
-                        .accessibilityHidden(true)
-                        .symbolRenderingMode(.multicolor)
-                        .scaledToFit()
-                        .frame(maxWidth: 60, maxHeight: 60)
-                    // TODO: Text("When will you take \(medicationOption.localizedDescription) (\(dosage.localizedDescription))?", bundle: .module)
-                    Text("Set a Schedule", bundle: .module) // TODO: make that meaningful!
-                        .multilineTextAlignment(.center)
-                        .font(.title)
-                        .bold()
-                }
-                Spacer()
+            ListHeader(systemImage: "calendar") {
+                Text("Set a Schedule", bundle: .module)
             }
-                .listRowInsets(.init(top: 15, leading: 0, bottom: 0, trailing: 0))
+            // TODO: Text("When will you take \(medicationOption.localizedDescription) (\(dosage.localizedDescription))?", bundle: .module)
+                .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
                 .listRowBackground(Color.clear)
         }
     }

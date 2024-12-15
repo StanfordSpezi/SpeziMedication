@@ -105,7 +105,16 @@
     "Every %lld Days" : {
 
     },
+    "Every Day" : {
+
+    },
+    "Every Few Days" : {
+
+    },
     "Every Other Day" : {
+
+    },
+    "Every other day, Every 3 days" : {
 
     },
     "Frequency" : {
@@ -127,6 +136,9 @@
 
     },
     "Not implmented " : {
+
+    },
+    "On Mondays, On Weekdays" : {
 
     },
     "On Specific Days of the Week" : {

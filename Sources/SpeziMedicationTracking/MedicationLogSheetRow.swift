@@ -12,9 +12,10 @@ import SwiftUI
 
 
 #warning("Remove Any once we move to a concrete medication type ...")
-class LogEntryPersistor: Equatable {
+@MainActor
+final class LogEntryPersistor: Equatable, Sendable {
     let medication: AnyObject
-    let logEntry: LogEntry?
+    nonisolated let logEntry: LogEntry?
     
     
     init<MI: MedicationInstance>(medication: Binding<MI>, logEntry: LogEntry?) {
@@ -23,7 +24,7 @@ class LogEntryPersistor: Equatable {
     }
     
     
-    static func == (lhs: LogEntryPersistor, rhs: LogEntryPersistor) -> Bool {
+    static nonisolated func == (lhs: LogEntryPersistor, rhs: LogEntryPersistor) -> Bool {
         lhs.logEntry == rhs.logEntry
     }
 }

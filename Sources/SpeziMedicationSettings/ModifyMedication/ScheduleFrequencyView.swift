@@ -30,7 +30,7 @@ struct ScheduleFrequencyView: View {
             Form {// swiftlint:disable:this closure_body_length
                 // TODO: make this a reusable picker!
                 Picker("Schedule Options", selection: $model.selection) {
-                    ForEach(MedicationScheduleSelection.allCases, id: \.rawValue) { selection in
+                    ForEach(ScheduleFrequencySelection.allCases, id: \.rawValue) { selection in
                         LabeledContent {
                             EmptyView()
                         } label: {

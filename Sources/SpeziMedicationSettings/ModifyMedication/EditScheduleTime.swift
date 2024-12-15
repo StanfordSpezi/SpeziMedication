@@ -20,10 +20,10 @@ struct EditScheduleTime: View {
 
     
     var body: some View {
-        Section { // swiftlint:disable:this closure_body_length
+        Section {
             if case .weekdayBased = model.selection {
                 Section {
-                    WeekdayPicker(selection: $model.weekdays)
+                    WeekdaysPicker(selection: $model.weekdays)
                 }
             }
             if !model.times.isEmpty {

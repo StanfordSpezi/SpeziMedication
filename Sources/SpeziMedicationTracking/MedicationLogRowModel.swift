@@ -91,6 +91,7 @@ final class MedicationLogRowModel<MI: MedicationInstance>: Comparable, Identifia
     
     
     func filter(basedOn medicationInstances: Binding<[MI]>, logEntryEvents: [LogEntryEvent]?) -> MedicationLogRowModel {
+        // swiftlint:disable:previous discouraged_optional_collection
         guard let date else {
             return MedicationLogRowModel(
                 date: nil,

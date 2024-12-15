@@ -27,8 +27,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/StanfordSpezi/SpeziFoundation.git", from: "2.0.0"),
         .package(url: "https://github.com/StanfordSpezi/Spezi.git", from: "1.8.0"),
-        .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", from: "1.7.0"),
-        .package(url: "https://github.com/StanfordSpezi/SpeziScheduler.git", from: "1.1.0")
+        .package(url: "https://github.com/StanfordSpezi/SpeziViews.git", branch: "feature/list-info-button"),
+        .package(url: "https://github.com/StanfordSpezi/SpeziScheduler.git", branch: "feature/scheduler-ui")
     ] + swiftLintPackage(),
     targets: [
         .target(

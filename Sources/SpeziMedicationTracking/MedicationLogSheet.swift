@@ -14,7 +14,8 @@ import SwiftUI
 struct MedicationLogSheet<MI: MedicationInstance>: View {
     private let medicationLogRowModel: MedicationLogRowModel<MI>
     
-    @Environment(\.dismiss) private var dismiss
+    @Environment(\.dismiss)
+    private var dismiss
     @State private var logEntryChanges: [LogEntryPersistor] = []
     
     
@@ -41,7 +42,9 @@ struct MedicationLogSheet<MI: MedicationInstance>: View {
                             }
                         }
                         .onPreferenceChange(LogEntryChangedKey.self) { changedLogEntries in
-                            logEntryChanges = changedLogEntries
+                            _Concurrency.Task { @MainActor in
+                                logEntryChanges = changedLogEntries
+                            }
                         }
                 }
                     .background {
