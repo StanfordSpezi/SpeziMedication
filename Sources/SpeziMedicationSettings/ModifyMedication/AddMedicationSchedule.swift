@@ -24,42 +24,53 @@ struct AddMedicationSchedule: View {
 
     @State private var viewModel = CreateScheduleViewModel() // TODO: integrate this new model!
 
+    @FocusState private var hasFocus: Bool
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
                 titleSection
-                    .onTapGesture {
-                        // TODO: we can do that with focus states!
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    .onTapGesture { // TODO: should we use that?
+                        hasFocus = false
                     }
-                EditFrequency(frequency: $frequency, startDate: $startDate, model: $viewModel)
+
+                Section {
+                    EditFrequencyButton(model: $viewModel)
+
+                    if case .interval = viewModel.selection {
+                        ScheduleIntervalPicker(model: $viewModel)
+                    }
+                } header: {
+                    Text("When will you take this?")
+                }
+                    .headerProminence(.increased) // TODO: use that always?
 
                 EditScheduleTime(times: $times, model: $viewModel)
             }
+                .focused($hasFocus)
+
             VStack(alignment: .center) {
-                AsyncButton(
-                    action: {
-                        // TODO: restore!
-                        /*
-                        viewModel.medicationInstances.append(
-                            viewModel.createMedicationInstance(
-                                medicationOption,
-                                dosage,
-                                Schedule(frequency: frequency, times: times, startDate: startDate)
-                            )
-                        )*/
-                        // TODO: viewModel.medicationInstances.sort()
-                        dismiss()
-                    },
-                    label: {
-                        Text("Add Medication", bundle: .module)
-                            .frame(maxWidth: .infinity, minHeight: 38)
-                    }
-                )
+                AsyncButton {
+                    // TODO: restore!
+                    /*
+                     viewModel.medicationInstances.append(
+                     viewModel.createMedicationInstance(
+                     medicationOption,
+                     dosage,
+                     Schedule(frequency: frequency, times: times, startDate: startDate)
+                     )
+                     )*/
+                    // TODO: viewModel.medicationInstances.sort()
+                    dismiss()
+                } label: {
+                    Text("Add Medication", bundle: .module)
+                        .frame(maxWidth: .infinity, minHeight: 38)
+                }
                     .buttonStyle(.borderedProminent)
             }
                 .padding()
                 .background {
+                    // TODO: weird?
                     Color(uiColor: .systemGroupedBackground)
                         .edgesIgnoringSafeArea(.bottom)
                 }

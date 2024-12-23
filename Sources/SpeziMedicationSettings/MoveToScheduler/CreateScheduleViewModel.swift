@@ -48,7 +48,6 @@ public struct CreateScheduleViewModel {
         } ?? .never
 
 
-
         let (hours, minutes) = times.reduce(into: ([Int](), [Int]())) { partialResult, date in
             partialResult.0.append(Calendar.current.component(.hour, from: date))
             partialResult.1.append(Calendar.current.component(.minute, from: date))

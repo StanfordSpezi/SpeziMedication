@@ -29,9 +29,6 @@
     "As Needed" : {
 
     },
-    "At Regular Intervals" : {
-
-    },
     "Cancel" : {
       "localizations" : {
         "en" : {
@@ -43,12 +40,6 @@
       }
     },
     "Change" : {
-
-    },
-    "Choose Days" : {
-
-    },
-    "Choose Interval" : {
 
     },
     "Close" : {
@@ -74,9 +65,6 @@
 
     },
     "Dosage Picker" : {
-
-    },
-    "Every" : {
 
     },
     "Every %lld days" : {
@@ -166,9 +154,6 @@
 
     },
     "Set a Schedule" : {
-
-    },
-    "Start Date" : {
 
     },
     "Use the \"+\" button at the top to add all the medications you take." : {

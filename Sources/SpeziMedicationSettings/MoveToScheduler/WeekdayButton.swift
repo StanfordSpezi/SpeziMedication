@@ -16,10 +16,13 @@ public struct WeekdayButton: View {
     private let selected: Bool
     private let action: () -> Void
 
+    @Environment(\.isEnabled)
+    private var isEnabled
+
     public var body: some View {
         Button(action: action) {
             Text(Calendar.current.veryShortWeekdaySymbols[weekday.ordinal - 1])
-                .foregroundStyle(selected ? .white : .primary)
+                .foregroundStyle(selected ? .white : (isEnabled ? .primary : .secondary))
                 .fontWeight(.semibold)
                 .background {
                     Group {
@@ -60,6 +63,17 @@ public struct WeekdayButton: View {
         WeekdayButton(weekday: .friday, selected: selected) {
             selected.toggle()
         }
+    }
+}
+
+#Preview {
+    @Previewable @State var selected = false
+
+    List {
+        WeekdayButton(weekday: .friday, selected: selected) {
+            selected.toggle()
+        }
+            .disabled(true)
     }
 }
 #endif

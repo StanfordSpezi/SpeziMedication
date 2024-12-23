@@ -17,7 +17,8 @@ struct EditMedication<MI: MedicationInstance>: View {
     
     @Binding private var medicationInstance: MI
 
-    @State var model = CreateScheduleViewModel() // TODO: these needs to come from somewhere!
+    // TODO: (e.g., $medicationInstance.schedule.frequency)
+    @State var model = CreateScheduleViewModel() // TODO: these needs to come from somewhere! and update it back
 
     
     var body: some View {
@@ -27,12 +28,8 @@ struct EditMedication<MI: MedicationInstance>: View {
                     // TODO: EditDosage(dosage: $medicationInstance.dosage, medication: medicationInstance.type, initialDosage: medicationInstance.dosage)
                         // TODO: .labelsHidden()
                 }
-                Section(String(localized: "Schedule", bundle: .module)) {
-                    EditFrequency(
-                        frequency: $medicationInstance.schedule.frequency,
-                        startDate: $medicationInstance.schedule.startDate,
-                        model: $model
-                    )
+                Section(String(localized: "Schedule", bundle: .module)) { // TODO: e.g., double section!
+                    EditFrequency(model: $model)
                 }
                 Section(String(localized: "Schedule Times", bundle: .module)) {
                     EditScheduleTime(times: $medicationInstance.schedule.times, model: $model)

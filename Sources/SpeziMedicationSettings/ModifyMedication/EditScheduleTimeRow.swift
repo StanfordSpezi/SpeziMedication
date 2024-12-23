@@ -33,16 +33,13 @@ struct EditScheduleTimeRow: View {
     
     var body: some View {
         HStack {
-            Button(
-                action: {
-                    // TODO: times.removeAll(where: { $0.id == time.id })
-                },
-                label: {
-                    Image(systemName: "minus.circle.fill")
-                        .accessibilityLabel(Text("Delete", bundle: .module))
-                        .foregroundStyle(Color.red)
-                }
-            )
+            Button {
+                // TODO: times.removeAll(where: { $0.id == time.id })
+            } label: {
+                Image(systemName: "minus.circle.fill")
+                    .accessibilityLabel(Text("Delete", bundle: .module))
+                    .foregroundStyle(Color.red)
+            }
                 .buttonStyle(.borderless)
 
             ScheduledTimeDatePicker(

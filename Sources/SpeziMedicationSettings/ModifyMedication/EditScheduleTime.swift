@@ -22,9 +22,8 @@ struct EditScheduleTime: View {
     var body: some View {
         Section {
             if case .weekdayBased = model.selection {
-                Section {
-                    WeekdaysPicker(selection: $model.weekdays)
-                }
+                // TODO: disable days, if other day selection is already done.
+                WeekdaysPicker(selection: $model.weekdays)
             }
             if !model.times.isEmpty {
                 /*ForEach($model.times) { time in
@@ -42,19 +41,15 @@ struct EditScheduleTime: View {
     }
     
     private var addTimeButton: some View {
-        Button(
-            action: {
-                addNewTime()
-            },
-            label: {
-                HStack {
-                    Image(systemName: "plus.circle.fill")
-                        .accessibilityHidden(true)
-                        .foregroundStyle(Color.green)
-                    Text("Add a time")
-                }
+        Button(action: addNewTime) {
+            Label {
+                Text("Add a time", bundle: .module)
+            } icon: {
+                Image(systemName: "plus.circle.fill")
+                    .accessibilityHidden(true)
+                    .foregroundStyle(Color.green)
             }
-        )
+        }
     }
     
     

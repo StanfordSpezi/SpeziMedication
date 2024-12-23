@@ -22,7 +22,10 @@ import SwiftUI
 ///     }
 /// }
 /// ```
-public struct WeekdaysPicker: View { // TODO: could also be SpeziViews?
+public struct WeekdaysPicker: View {
+    private let disabledWeekdays: Set<Locale.Weekday>
+    private let allowEmptySelection: Bool
+
     @Binding private var weekdays: Set<Locale.Weekday>
 
     public var body: some View {
@@ -30,11 +33,14 @@ public struct WeekdaysPicker: View { // TODO: could also be SpeziViews?
             ForEach(Locale.Weekday.allCases, id: \.self) { weekday in
                 WeekdayButton(weekday: weekday, selected: weekdays.contains(weekday)) {
                     if weekdays.contains(weekday) {
-                        weekdays.remove(weekday)
+                        if weekdays.count > 1 || allowEmptySelection {
+                            weekdays.remove(weekday)
+                        }
                     } else {
                         weekdays.insert(weekday)
                     }
                 }
+                    .disabled(disabledWeekdays.contains(weekday))
 
                 if Locale.Weekday.allCases.last != weekday {
                     Spacer()
@@ -42,24 +48,35 @@ public struct WeekdaysPicker: View { // TODO: could also be SpeziViews?
             }
         }
             .frame(maxWidth: .infinity)
+            .onChange(of: disabledWeekdays, initial: true) {
+                weekdays.subtract(disabledWeekdays)
+            }
     }
 
     
     /// Create a new weekday picker.
     /// - Parameter weekdays: The weekday selection.
-    public init(selection weekdays: Binding<Set<Locale.Weekday>>) {
+    /// - Parameter disabledWeekdays: The set of weekdays for which selection should be disabled.
+    /// - Parameter allowEmptySelection: If `true` user will be able to de-select the last weekday.
+    public init(
+        selection weekdays: Binding<Set<Locale.Weekday>>,
+        disabled disabledWeekdays: Set<Locale.Weekday> = [],
+        allowEmptySelection: Bool = false
+    ) {
         self._weekdays = weekdays
+        self.disabledWeekdays = disabledWeekdays
+        self.allowEmptySelection = allowEmptySelection
     }
 }
 
 
 #if DEBUG
 #Preview {
-    @Previewable @State var weekdays: Set<Locale.Weekday> = [.monday, .tuesday]
+    @Previewable @State var weekdays: Set<Locale.Weekday> = [.monday, .tuesday, .friday]
 
     List {
         Section("Weekdays") {
-            WeekdaysPicker(selection: $weekdays)
+            WeekdaysPicker(selection: $weekdays, disabled: [.friday, .saturday])
         }
     }
 }
