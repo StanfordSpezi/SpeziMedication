@@ -9,7 +9,7 @@
 import SwiftUI
 
 
-// TODO: why was that needed?
+// TODO: why was that needed? => 5 minute interval
 struct ScheduledTimeDatePicker: UIViewRepresentable {
     @MainActor
     class Coordinator: NSObject {
@@ -28,7 +28,7 @@ struct ScheduledTimeDatePicker: UIViewRepresentable {
         @objc
         fileprivate func valueChanged(datePicker: UIDatePicker, forEvent event: UIEvent) {
             guard !excludedDates.contains(datePicker.date) else {
-                datePicker.date = lastDate // TODO: we just add 5 every time!
+                datePicker.date = lastDate // TODO: we just add 5 every time! (or subtract!)
                 return
             }
             

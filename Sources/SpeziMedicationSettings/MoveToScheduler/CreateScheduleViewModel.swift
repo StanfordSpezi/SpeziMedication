@@ -66,14 +66,19 @@ public struct CreateScheduleViewModel {
         }
 
 
-        // TODO: days and minutes doesn't work right?
+        // TODO: unit tests the setPositions!
         let recurrence = Calendar.RecurrenceRule.daily(
             calendar: .current,
             interval: interval,
             end: end,
             weekdays: weekdays,
-            hours: hours,
-            minutes: minutes
+            hours: hours, // e.g., 13, 15, 16
+            minutes: minutes, // e.g., 30, 40, 50
+            // Without set positions we get 13:30, 13:40, 13:50, 15:30, 15:40, 15:50, 16:30, 16:40 and 16:50 (all permutations)
+            // We would specify setPositions [1, 5, 9] to take the first, fifth and 9th element of all occurrences: 13:30, 15:40, 16:50.
+            setPositions: (0..<times.count).map {
+                ($0 * times.count) + $0 + 1
+            }
         )
 
         return SpeziScheduler.Schedule(startingAt: start, recurrence: recurrence)

@@ -21,9 +21,6 @@ struct EditScheduleTimeRow: View {
 
     @Binding private var scheduledDosage: ScheduleDosage
     
-    @FocusState private var dosageFieldIsFocused: Bool
-    
-    
     private let numberOfDosageFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -42,21 +39,24 @@ struct EditScheduleTimeRow: View {
             }
                 .buttonStyle(.borderless)
 
-            ScheduledTimeDatePicker(
-                date: $scheduledDosage.time.animation(),
-                excludedDates: [] // TODO: times.map(\.date)
-            )
-                .frame(width: 100)
+            ScheduledTimeDatePicker(date: $scheduledDosage.time.animation(), excludedDates: [])
+                .frame(maxWidth: 70)
+            // TODO: excluded: times.map(\.date)
+
             Spacer()
-            dosageTextField
+
+            TextField(value: $scheduledDosage.quantity, formatter: numberOfDosageFormatter) {
+                Text("Quantity", bundle: .module)
+            }
+                .textFieldStyle(.roundedBorder)
+                .keyboardType(.decimalPad)
+                .frame(maxWidth: 90)
         }
             .background {
                 Color.clear
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .contentShape(Rectangle())
-                    .onTapGesture {
-                        dosageFieldIsFocused = false
-                    }
+                    // TODO: add somewhere? .onTapGesture { dosageFieldIsFocused = false }
                     .padding(-32)
             }
             .onChange(of: scheduledDosage.time) {
@@ -65,32 +65,6 @@ struct EditScheduleTimeRow: View {
                 }
             }
     }
-    
-    private var dosageTextField: some View {
-        TextField(
-            String(localized: "Quantity", bundle: .module),
-            value: $scheduledDosage.quantity,
-            formatter: numberOfDosageFormatter
-        )
-            .focused($dosageFieldIsFocused)
-            .textFieldStyle(.roundedBorder)
-            .keyboardType(.decimalPad)
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
-                    Button(
-                        action: {
-                            dosageFieldIsFocused = false
-                        },
-                        label: {
-                            Text("Done")
-                        }
-                    )
-                }
-            }
-            .frame(maxWidth: 90)
-    }
-    
 
     init(scheduledDosage: Binding<ScheduleDosage>, form: MedicationType?) {
         self.form = form

@@ -77,6 +77,17 @@ struct AddMedicationSchedule: View {
         }
             .navigationTitle("Medication Schedule")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button {
+                        hasFocus = false
+                    } label: {
+                        Text("Done", bundle: .module)
+                    }
+                        .bold()
+                }
+            }
     }
 
     @ViewBuilder private var titleSection: some View {
