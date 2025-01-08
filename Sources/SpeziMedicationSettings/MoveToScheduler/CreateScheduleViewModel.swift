@@ -26,7 +26,7 @@ public struct CreateScheduleViewModel {
     /// This value only applies if ``selection`` is equal to ``ScheduleFrequencySelection/weekdayBased``.
     public var weekdays: Set<Locale.Weekday> = []
     /// The timestamps that are selected.
-    public var times: [Date] = []
+    public var times: [ScheduledTime] = []
 
     /// The start date of the schedule.
     public var start: Date
@@ -48,9 +48,9 @@ public struct CreateScheduleViewModel {
         } ?? .never
 
 
-        let (hours, minutes) = times.reduce(into: ([Int](), [Int]())) { partialResult, date in
-            partialResult.0.append(Calendar.current.component(.hour, from: date))
-            partialResult.1.append(Calendar.current.component(.minute, from: date))
+        let (hours, minutes) = times.reduce(into: ([Int](), [Int]())) { partialResult, scheduledTime in
+            partialResult.0.append(Calendar.current.component(.hour, from: scheduledTime.date))
+            partialResult.1.append(Calendar.current.component(.minute, from: scheduledTime.date))
         }
 
         let interval = if case .interval = selection {
@@ -101,7 +101,7 @@ public struct CreateScheduleViewModel {
 
         self.selection = selection
         self.dayInterval = dayInterval
-        self.times = [now] // default selected time is now
+        self.times = [ScheduledTime(date: now, dosage: 1)] // default selected time is now
         self.weekdays = [todayWeekday] // default selected weekday is today
         self.start = start
         self.end = end

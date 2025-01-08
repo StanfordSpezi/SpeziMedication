@@ -15,7 +15,7 @@ struct EditMedication<MI: MedicationInstance>: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     
-    @Binding private var medicationInstance: MI
+    @Binding private var medicationInstance: MI // TODO: remove
 
     // TODO: (e.g., $medicationInstance.schedule.frequency)
     @State var model = CreateScheduleViewModel() // TODO: these needs to come from somewhere! and update it back
@@ -32,7 +32,7 @@ struct EditMedication<MI: MedicationInstance>: View {
                     EditFrequency(model: $model)
                 }
                 Section(String(localized: "Schedule Times", bundle: .module)) {
-                    EditScheduleTime(times: $medicationInstance.schedule.times, model: $model)
+                    EditScheduleTime(model: $model)
                 }
                 Section {
                     Button(String(localized: "Delete", bundle: .module), role: .destructive) {

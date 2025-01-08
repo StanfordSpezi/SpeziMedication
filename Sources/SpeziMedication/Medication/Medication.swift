@@ -70,5 +70,4 @@ public struct MedicationDescription {
 }
 
 extension MedicationDescription: Codable, Equatable, Sendable {
-
 }

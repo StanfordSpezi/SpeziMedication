@@ -75,7 +75,7 @@ struct MedicationLogRow<MI: MedicationInstance>: View {
                 date: Calendar.current.date(bySettingHour: 20, minute: 0, second: 0, of: .now) ?? .now,
                 medications: Mock.medicationInstances
                     .filter { medicationInstance in
-                        medicationInstance.schedule.times.contains { $0.time.hour == 20 }
+                        true // TODO: medicationInstance.schedule.times.contains { $0.time.hour == 20 }
                     }
                     .map {
                         Binding.constant($0)
@@ -87,7 +87,7 @@ struct MedicationLogRow<MI: MedicationInstance>: View {
                 date: Calendar.current.date(bySettingHour: 22, minute: 0, second: 0, of: .now) ?? .now,
                 medications: Mock.medicationInstances
                     .filter { medicationInstance in
-                        medicationInstance.schedule.times.contains { $0.time.hour == 22 }
+                        true // TODO: medicationInstance.schedule.times.contains { $0.time.hour == 22 }
                     }
                     .map {
                         Binding.constant($0)

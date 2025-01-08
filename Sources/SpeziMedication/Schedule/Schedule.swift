@@ -21,7 +21,7 @@ public struct Schedule: Codable, Equatable, Hashable, Sendable {
     /// The frequency of the Schedule, see ``Frequency`.`.
     public var frequency: Frequency
     /// The times of the Schedule, that are associated with the ``Schedule/frequency`.`.
-    public var times: [ScheduledTime]
+    public var times: [Date] // TODO: this is wrong now
     /// Start date of the schedule.
     public var startDate: Date
     
@@ -29,7 +29,7 @@ public struct Schedule: Codable, Equatable, Hashable, Sendable {
     /// - Parameters:
     ///   - frequency: The frequency of the Schedule, see ``Frequency`.`
     ///   - times: The times of the Schedule, that are associated with the ``Schedule/frequency`.`
-    public init(frequency: Frequency = .asNeeded, times: [ScheduledTime] = [], startDate: Date = .now) {
+    public init(frequency: Frequency = .asNeeded, times: [Date] = [], startDate: Date = .now) {
         self.frequency = frequency
         self.times = times
         self.startDate = startDate
@@ -38,7 +38,7 @@ public struct Schedule: Codable, Equatable, Hashable, Sendable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.frequency = try container.decode(Frequency.self, forKey: .frequency)
-        self.times = try container.decodeIfPresent([ScheduledTime].self, forKey: .times) ?? []
+        self.times = try container.decodeIfPresent([Date].self, forKey: .times) ?? []
         self.startDate = try container.decode(Date.self, forKey: .startDate)
     }
     
@@ -64,7 +64,9 @@ public struct Schedule: Codable, Equatable, Hashable, Sendable {
         case .asNeeded:
             break
         }
-        
+
+        return times
+        /*
         return times.compactMap { scheduledTime -> Date? in
             guard let hour = scheduledTime.time.hour, let minute = scheduledTime.time.minute else {
                 return nil
@@ -72,6 +74,7 @@ public struct Schedule: Codable, Equatable, Hashable, Sendable {
             
             return Calendar.current.date(bySettingHour: hour, minute: minute, second: 0, of: date)
         }
+         */
     }
     
     public func hash(into hasher: inout Hasher) {

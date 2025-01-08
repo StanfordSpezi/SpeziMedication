@@ -6,62 +6,48 @@
 // SPDX-License-Identifier: MIT
 //
 
-import SpeziMedication
 import SwiftUI
 
 
 struct EditScheduleTime: View {
     // We assume that a user doesn't take a single medication more than the number of possible times which are 12 * 24 for 5 minute intervals.
     private static let maxTimesCount = (60 / ScheduledTimeDatePicker.minuteInterval) * 24
-    
-    
-    @Binding private var times: [ScheduledTime]
     @Binding private var model: CreateScheduleViewModel
 
     
     var body: some View {
         Section {
             if case .weekdayBased = model.selection {
-                // TODO: disable days, if other day selection is already done.
                 WeekdaysPicker(selection: $model.weekdays)
             }
             if !model.times.isEmpty {
-                /*ForEach($model.times) { time in
-                }*/
-            }
-            if !times.isEmpty {
-                ForEach($times) { time in
-                    // TODO: EditScheduleTimeRow(time: time, times: $times)
+                ForEach($model.times) { time in
+                    EditScheduleTimeRow(time: time, form: nil) // TODO: propagate the form!
                 }
             }
-            if times.count < Self.maxTimesCount {
-                addTimeButton
+            if model.times.count < Self.maxTimesCount {
+                Button(action: addNewTime) {
+                    Label {
+                        Text("Add a time", bundle: .module)
+                    } icon: {
+                        Image(systemName: "plus.circle.fill")
+                            .accessibilityHidden(true)
+                            .foregroundStyle(Color.green)
+                    }
+                }
             }
         }
     }
     
-    private var addTimeButton: some View {
-        Button(action: addNewTime) {
-            Label {
-                Text("Add a time", bundle: .module)
-            } icon: {
-                Image(systemName: "plus.circle.fill")
-                    .accessibilityHidden(true)
-                    .foregroundStyle(Color.green)
-            }
-        }
-    }
     
-    
-    init(times: Binding<[ScheduledTime]>, model: Binding<CreateScheduleViewModel>) {
-        self._times = times
+    init(model: Binding<CreateScheduleViewModel>) {
         self._model = model
     }
     
     
-    private func addNewTime() {
+    private func addNewTime() { // TODO: move to model!
         var endlessLoopCounter = 0
-        let possibleNewTime = times.last?.time.date?.addingTimeInterval(Double(ScheduledTimeDatePicker.minuteInterval) * 60) ?? Date.now
+        let possibleNewTime = model.times.last?.time.date?.addingTimeInterval(Double(ScheduledTimeDatePicker.minuteInterval) * 60) ?? Date.now
         let possibleNewTimeMinute = Calendar.current.dateComponents([.minute], from: possibleNewTime)
         
         guard var newTimeAdded = Calendar.current.date(
@@ -75,15 +61,15 @@ struct EditScheduleTime: View {
         while endlessLoopCounter <= Self.maxTimesCount {
             let newScheduleTime = ScheduledTime(date: newTimeAdded)
             
-            guard !times.contains(newScheduleTime) else {
+            guard !model.times.contains(newScheduleTime) else {
                 newTimeAdded.addTimeInterval(Double(ScheduledTimeDatePicker.minuteInterval) * 60)
                 endlessLoopCounter += 1
                 continue
             }
             
             withAnimation {
-                times.append(newScheduleTime)
-                times.sort()
+                model.times.append(newScheduleTime)
+                model.times.sort()
             }
             return
         }
@@ -93,20 +79,18 @@ struct EditScheduleTime: View {
 
 #if DEBUG
 #Preview {
-    @Previewable @State var times: [ScheduledTime] = []
     @Previewable @State var model = CreateScheduleViewModel()
 
     List {
-        EditScheduleTime(times: $times, model: $model)
+        EditScheduleTime(model: $model)
     }
 }
 
 #Preview {
-    @Previewable @State var times: [ScheduledTime] = []
     @Previewable @State var model = CreateScheduleViewModel(selection: .weekdayBased)
 
     List {
-        EditScheduleTime(times: $times, model: $model)
+        EditScheduleTime(model: $model)
     }
 }
 #endif

@@ -18,10 +18,6 @@ struct AddMedicationSchedule: View {
     @Environment(\.dismiss)
     private var dismiss
 
-    @State private var frequency: Frequency = .regularDayIntervals(1)
-    @State private var startDate: Date = .now
-    @State private var times: [ScheduledTime] = []
-
     @State private var viewModel = CreateScheduleViewModel() // TODO: integrate this new model!
 
     @FocusState private var hasFocus: Bool
@@ -45,7 +41,7 @@ struct AddMedicationSchedule: View {
                 }
                     .headerProminence(.increased) // TODO: use that always?
 
-                EditScheduleTime(times: $times, model: $viewModel)
+                EditScheduleTime(model: $viewModel)
             }
                 .focused($hasFocus)
 

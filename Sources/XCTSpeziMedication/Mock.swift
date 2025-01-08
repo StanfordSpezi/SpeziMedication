@@ -42,12 +42,15 @@ public enum Mock {
             schedule: Schedule(
                 frequency: .specificDaysOfWeek(.all),
                 times: [
+                    /*
+                     // TODO: Do we need the mock data still?
                     ScheduledTime(time: DateComponents(hour: 8, minute: 0), dosage: 1.0),
                     ScheduledTime(time: DateComponents(hour: 12, minute: 0), dosage: 1.0),
                     ScheduledTime(time: DateComponents(hour: 15, minute: 0), dosage: 2.0),
                     ScheduledTime(time: DateComponents(hour: 18, minute: 0), dosage: 1.0),
                     ScheduledTime(time: DateComponents(hour: 20, minute: 0), dosage: 1.0),
                     ScheduledTime(time: DateComponents(hour: 22, minute: 0), dosage: 1.0)
+                     */
                 ],
                 startDate: .now
             ),
@@ -98,12 +101,15 @@ public enum Mock {
             schedule: Schedule(
                 frequency: .regularDayIntervals(2),
                 times: [
+                    /*
+                     // TODO: Do we need the mock data still?
                     ScheduledTime(time: DateComponents(hour: 6, minute: 0), dosage: 1.0),
                     ScheduledTime(time: DateComponents(hour: 8, minute: 0), dosage: 2.0),
                     ScheduledTime(time: DateComponents(hour: 12, minute: 42), dosage: 4.0),
                     ScheduledTime(time: DateComponents(hour: 18, minute: 30), dosage: 1.0),
                     ScheduledTime(time: DateComponents(hour: 20, minute: 0), dosage: 2.0),
                     ScheduledTime(time: DateComponents(hour: 23, minute: 59), dosage: 1.0)
+                     */
                 ],
                 startDate: .now
             ),

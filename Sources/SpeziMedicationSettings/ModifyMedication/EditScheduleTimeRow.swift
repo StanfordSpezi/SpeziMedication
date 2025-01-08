@@ -10,17 +10,12 @@ import SpeziMedication
 import SwiftUI
 
 
-struct ScheduleDosage { // TODO: Move to main
-    var time: Date
-    var quantity: Double // TODO: we really want a 10 base number here? (only 2 digits) (only 5,2 digits)
-}
-
-
 struct EditScheduleTimeRow: View {
     private let form: MedicationType?
 
-    @Binding private var scheduledDosage: ScheduleDosage
-    
+    @Binding private var scheduledDosage: ScheduledTime
+
+    // TODO: we really want a 10 base number here? (only 2 digits) (only 5,2 digits)
     private let numberOfDosageFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -39,13 +34,14 @@ struct EditScheduleTimeRow: View {
             }
                 .buttonStyle(.borderless)
 
-            ScheduledTimeDatePicker(date: $scheduledDosage.time.animation(), excludedDates: [])
+            // TODO: ways that a date already?
+            ScheduledTimeDatePicker(date: $scheduledDosage.date.animation(), excludedDates: [])
                 .frame(maxWidth: 70)
             // TODO: excluded: times.map(\.date)
 
             Spacer()
 
-            TextField(value: $scheduledDosage.quantity, formatter: numberOfDosageFormatter) {
+            TextField(value: $scheduledDosage.dosage, formatter: numberOfDosageFormatter) {
                 Text("Quantity", bundle: .module)
             }
                 .textFieldStyle(.roundedBorder)
@@ -66,19 +62,19 @@ struct EditScheduleTimeRow: View {
             }
     }
 
-    init(scheduledDosage: Binding<ScheduleDosage>, form: MedicationType?) {
+    init(time: Binding<ScheduledTime>, form: MedicationType?) {
         self.form = form
-        self._scheduledDosage = scheduledDosage
+        self._scheduledDosage = time
     }
 }
 
 
 #if DEBUG
 #Preview {
-    @Previewable @State var time = ScheduleDosage(time: .now, quantity: 1.0)
+    @Previewable @State var time = ScheduledTime(date: .now, dosage: 1.0)
 
     List {
-        EditScheduleTimeRow(scheduledDosage: $time, form: .tablet)
+        EditScheduleTimeRow(time: $time, form: .tablet)
     }
 }
 #endif
