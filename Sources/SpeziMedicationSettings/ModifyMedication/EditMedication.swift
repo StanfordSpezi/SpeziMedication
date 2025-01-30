@@ -12,9 +12,11 @@ import SwiftUI
 
 
 struct EditMedication<MI: LegacyMedicationInstance>: View {
-    @Environment(\.dismiss) private var dismiss
-    @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
-    
+    @Environment(\.dismiss)
+    private var dismiss
+    @Environment(InternalMedicationSettingsViewModel<MI>.self)
+    private var viewModel
+
     @Binding private var medicationInstance: MI // TODO: remove
 
     // TODO: (e.g., $medicationInstance.schedule.frequency)

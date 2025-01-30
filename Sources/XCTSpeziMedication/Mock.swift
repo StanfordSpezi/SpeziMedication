@@ -11,6 +11,7 @@ import SpeziMedication
 
 
 public enum Mock {
+    @available(*, deprecated, message: "Removal")
     public static let medications: [MockMedication] = [
         MockMedication(
             localizedDescription: "Medication 1",
@@ -34,7 +35,8 @@ public enum Mock {
             ]
         )
     ]
-    
+
+    @available(*, deprecated, message: "Removal")
     public static let medicationInstances: [MockMedicationInstance] = [
         MockMedicationInstance(
             type: medications.sorted()[0],

@@ -144,6 +144,7 @@ struct MedicationLogSheet<MI: LegacyMedicationInstance>: View {
 }
 
 
+@available(*, deprecated, message: "Removal")
 struct MedicationLogSheet_Previews: PreviewProvider {
     static var previews: some View {
         MedicationLogSheet(

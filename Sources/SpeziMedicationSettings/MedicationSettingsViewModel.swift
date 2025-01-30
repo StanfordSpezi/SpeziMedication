@@ -52,6 +52,7 @@ public protocol MedicationSettingsViewModel<Medications>: Observable {
 }
 
 
+@available(*, deprecated, message: "Removal")
 extension MedicationSettingsViewModel where Medications: LegacyMedicationInstanceInitializable {
     // Swiftlint does unfortunately not pick up on the documentation as we override a protocol requirement.
     // swiftlint:disable:next missing_docs
