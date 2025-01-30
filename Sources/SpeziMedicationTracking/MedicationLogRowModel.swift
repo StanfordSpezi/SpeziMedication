@@ -12,7 +12,7 @@ import SwiftUI
 
 
 @Observable
-final class MedicationLogRowModel<MI: MedicationInstance>: Comparable, Identifiable {
+final class MedicationLogRowModel<MI: LegacyMedicationInstance>: Comparable, Identifiable {
     let date: Date?
     private(set) var medications: [Binding<MI>]
     
@@ -103,24 +103,28 @@ final class MedicationLogRowModel<MI: MedicationInstance>: Comparable, Identifia
         
         switch logEntryEvents {
         case let .some(logEntryEvents):
+            let bindings: [Binding<MI>] = medicationInstances.filter {
+                // TODO:  $0.wrappedValue.schedule.times.contains { $0.time.hour == dateComponents.hour && $0.time.minute == dateComponents.minute }
+                $0.wrappedValue.schedule.times.contains { _ in true }
+                && $0.wrappedValue.logEntries.contains(
+                    where: { logEntry in
+                        logEntry.scheduledTime == date && logEntryEvents.contains { $0 == logEntry.event }
+                    }
+                )
+            }
             return MedicationLogRowModel(
                 date: date,
-                medications: medicationInstances.filter {
-                    $0.wrappedValue.schedule.times.contains { $0.time.hour == dateComponents.hour && $0.time.minute == dateComponents.minute }
-                        && $0.wrappedValue.logEntries.contains(
-                            where: { logEntry in
-                                logEntry.scheduledTime == date && logEntryEvents.contains { $0 == logEntry.event }
-                            }
-                        )
-                }
+                medications: bindings
             )
         case .none:
+            let bindings: [Binding<MI>] = medicationInstances.filter {
+                // TODO: $0.wrappedValue.schedule.times.contains { $0.time.hour == dateComponents.hour && $0.time.minute == dateComponents.minute }
+                $0.wrappedValue.schedule.times.contains { _ in true }
+                && !$0.wrappedValue.logEntries.contains(where: { $0.scheduledTime == date })
+            }
             return MedicationLogRowModel(
                 date: date,
-                medications: medicationInstances.filter {
-                    $0.wrappedValue.schedule.times.contains { $0.time.hour == dateComponents.hour && $0.time.minute == dateComponents.minute }
-                        && !$0.wrappedValue.logEntries.contains(where: { $0.scheduledTime == date })
-                }
+                medications: bindings
             )
         }
     }

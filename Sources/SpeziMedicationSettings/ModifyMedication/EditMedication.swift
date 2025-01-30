@@ -11,7 +11,7 @@ import SpeziViews
 import SwiftUI
 
 
-struct EditMedication<MI: MedicationInstance>: View {
+struct EditMedication<MI: LegacyMedicationInstance>: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(InternalMedicationSettingsViewModel<MI>.self) private var viewModel
     

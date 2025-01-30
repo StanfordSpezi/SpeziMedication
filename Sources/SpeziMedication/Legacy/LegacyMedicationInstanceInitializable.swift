@@ -10,9 +10,9 @@ import Foundation
 
 // TODO: remove
 
-/// Marks a ``MedicationInstance`` as being initiailzable using ``MedicationInstanceInitializable/init(type:dosage:)``.
+/// Marks a ``LegacyMedicationInstance`` as being initiailzable using ``LegacyMedicationInstanceInitializable/init(type:dosage:)``.
 @available(*, deprecated, message: "This will be removed")
-public protocol MedicationInstanceInitializable: MedicationInstance {
+public protocol LegacyMedicationInstanceInitializable: LegacyMedicationInstance {
     /// - Parameters:
     ///   - type: Type of the medication.
     ///   - dosage: Dosage of the medication.

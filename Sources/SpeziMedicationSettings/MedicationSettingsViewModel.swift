@@ -15,8 +15,8 @@ import SpeziMedication
 /// The implementation needs to provide functionalities to manage medication instances and options and persist the medications.
 @available(*, deprecated, message: "This will be removed")
 public protocol MedicationSettingsViewModel<Medications>: Observable {
-    /// The ``MedicationInstance`` type that the ``MedicationSettingsViewModel`` implementation supports.
-    associatedtype Medications: MedicationInstance
+    /// The ``LegacyMedicationInstance`` type that the ``MedicationSettingsViewModel`` implementation supports.
+    associatedtype Medications: LegacyMedicationInstance
     
     /// Medication instances managed by the ``MedicationSettings`` view.
     ///
@@ -52,7 +52,7 @@ public protocol MedicationSettingsViewModel<Medications>: Observable {
 }
 
 
-extension MedicationSettingsViewModel where Medications: MedicationInstanceInitializable {
+extension MedicationSettingsViewModel where Medications: LegacyMedicationInstanceInitializable {
     // Swiftlint does unfortunately not pick up on the documentation as we override a protocol requirement.
     // swiftlint:disable:next missing_docs
     public func createMedicationInstance(

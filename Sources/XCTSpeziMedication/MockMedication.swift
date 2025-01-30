@@ -9,6 +9,7 @@
 import SpeziMedication
 
 
+@available(*, deprecated, message: "Removed")
 public struct MockMedication: LegacyMedication, Comparable, Sendable {
     public var localizedDescription: String
     public var dosages: [MockDosage]

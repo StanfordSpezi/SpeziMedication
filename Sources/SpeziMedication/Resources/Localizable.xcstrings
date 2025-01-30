@@ -16,6 +16,9 @@
         }
       }
     },
+    "Capsule" : {
+
+    },
     "drops" : {
       "comment" : "Medication Type",
       "extractionState" : "extracted_with_value",
@@ -27,6 +30,9 @@
           }
         }
       }
+    },
+    "Drops" : {
+
     },
     "Every %lld days" : {
       "localizations" : {
@@ -68,6 +74,9 @@
         }
       }
     },
+    "Gel" : {
+
+    },
     "liquid" : {
       "comment" : "Medication Type",
       "extractionState" : "extracted_with_value",
@@ -80,7 +89,25 @@
         }
       }
     },
+    "Liquid" : {
+
+    },
     "Medication" : {
+
+    },
+    "Oral capsule" : {
+
+    },
+    "Oral drops" : {
+
+    },
+    "Oral gel" : {
+
+    },
+    "Oral pure liquid" : {
+
+    },
+    "Oral tablet" : {
 
     },
     "Skipped" : {
@@ -97,6 +124,9 @@
           }
         }
       }
+    },
+    "Tablet" : {
+
     },
     "Taken" : {
 

@@ -9,7 +9,7 @@
 import SpeziFoundation
 import SpeziMedication
 import SwiftUI
-@_implementationOnly import XCTSpeziMedication
+internal import XCTSpeziMedication
 
 
 private let dateFormatter: DateFormatter = {
@@ -20,7 +20,7 @@ private let dateFormatter: DateFormatter = {
 }()
 
 
-public struct MedicationTrackingView<MI: MedicationInstance>: View {
+public struct MedicationTrackingView<MI: LegacyMedicationInstance>: View {
     @Binding private var medicationInstances: [MI]
     @State private var selectedDate: Date = .now
     

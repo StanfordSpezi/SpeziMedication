@@ -8,7 +8,7 @@
 
 import SpeziMedication
 import SwiftUI
-@_implementationOnly import XCTSpeziMedication
+internal import XCTSpeziMedication
 
 
 #warning("Remove Any once we move to a concrete medication type ...")
@@ -18,7 +18,7 @@ final class LogEntryPersistor: Equatable, Sendable {
     nonisolated let logEntry: LogEntry?
     
     
-    init<MI: MedicationInstance>(medication: Binding<MI>, logEntry: LogEntry?) {
+    init<MI: LegacyMedicationInstance>(medication: Binding<MI>, logEntry: LogEntry?) {
         self.medication = medication as AnyObject
         self.logEntry = logEntry
     }
@@ -41,7 +41,7 @@ struct LogEntryChangedKey: PreferenceKey {
 }
 
 
-struct MedicationLogSheetRow<MI: MedicationInstance>: View {
+struct MedicationLogSheetRow<MI: LegacyMedicationInstance>: View {
     private let asNeeded: Bool
     private let date: Date
     private let existingLogEntry: LogEntry?

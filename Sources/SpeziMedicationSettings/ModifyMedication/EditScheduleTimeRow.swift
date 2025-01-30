@@ -11,7 +11,7 @@ import SwiftUI
 
 
 struct EditScheduleTimeRow: View {
-    private let form: MedicationType?
+    private let form: MedicationForm?
 
     @Binding private var scheduledDosage: ScheduledTime
 
@@ -62,7 +62,7 @@ struct EditScheduleTimeRow: View {
             }
     }
 
-    init(time: Binding<ScheduledTime>, form: MedicationType?) {
+    init(time: Binding<ScheduledTime>, form: MedicationForm?) {
         self.form = form
         self._scheduledDosage = time
     }

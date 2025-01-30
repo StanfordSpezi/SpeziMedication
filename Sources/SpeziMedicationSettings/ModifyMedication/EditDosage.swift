@@ -18,9 +18,9 @@ struct EditDosage: View {
     @Binding private var selection: Dosage?
 
     // TODO: make custom picker with multiple sections?
-    private var dosageGroups: OrderedDictionary<MedicationType?, [Dosage]> {
+    private var dosageGroups: OrderedDictionary<MedicationForm?, [Dosage]> {
         OrderedDictionary(grouping: medication.dosageOptions) { dosage in
-            dosage.form
+            dosage.form?.form // TODO: weird lookup
         }
     }
 
@@ -31,7 +31,7 @@ struct EditDosage: View {
                 EmptyView()
             } label: {
                 Text("\(dosage.strength) \(dosage.unit.unitString)")
-                if let form = dosage.form {
+                if let form = dosage.form?.form {
                     Text(form.description)
                 }
             }

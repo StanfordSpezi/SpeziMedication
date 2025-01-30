@@ -8,7 +8,7 @@
 
 import SpeziMedication
 import SwiftUI
-@_implementationOnly import XCTSpeziMedication
+internal import XCTSpeziMedication
 
 
 private let numberOfDosageFormatter: NumberFormatter = {
@@ -18,7 +18,7 @@ private let numberOfDosageFormatter: NumberFormatter = {
 }()
 
 
-struct MedicationDosageAndDateSheet<MI: MedicationInstance>: View {
+struct MedicationDosageAndDateSheet<MI: LegacyMedicationInstance>: View {
     let medicationInstance: MI
     
     @Environment(\.dismiss)

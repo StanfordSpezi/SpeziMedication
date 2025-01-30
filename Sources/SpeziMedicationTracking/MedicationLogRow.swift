@@ -8,10 +8,10 @@
 
 import SpeziMedication
 import SwiftUI
-@_implementationOnly import XCTSpeziMedication
+internal import XCTSpeziMedication
 
 
-struct MedicationLogRow<MI: MedicationInstance>: View {
+struct MedicationLogRow<MI: LegacyMedicationInstance>: View {
     private let medicationLogRowModel: MedicationLogRowModel<MI>
     
     @State var presentMedicationLogSheet = false

@@ -10,7 +10,8 @@ import Foundation
 import SpeziMedication
 
 
-public struct MockMedicationInstance: MedicationInstance, MedicationInstanceInitializable, Sendable {
+@available(*, deprecated, message: "Unavailable")
+public struct MockMedicationInstance: LegacyMedicationInstance, LegacyMedicationInstanceInitializable, Sendable {
     public let id: UUID
     public let type: MockMedication
     public var dosage: MockDosage

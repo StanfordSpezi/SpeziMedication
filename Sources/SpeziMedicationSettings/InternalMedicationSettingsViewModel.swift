@@ -14,7 +14,7 @@ import SpeziMedication
 
 @available(*, deprecated, message: "This will be removed")
 @Observable
-class InternalMedicationSettingsViewModel<MI: MedicationInstance> {
+class InternalMedicationSettingsViewModel<MI: LegacyMedicationInstance> {
     var medicationInstances: [MI]
     let medicationOptions: Set<MI.InstanceType>
     

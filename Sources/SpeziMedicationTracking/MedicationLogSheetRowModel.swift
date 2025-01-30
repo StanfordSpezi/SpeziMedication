@@ -12,7 +12,7 @@ import SwiftUI
 
 
 @Observable
-class MedicationLogSheetRowModel<MI: MedicationInstance>: Identifiable {
+class MedicationLogSheetRowModel<MI: LegacyMedicationInstance>: Identifiable {
     let date: Date?
     let medication: Binding<MI>
     var logEntry: LogEntry?

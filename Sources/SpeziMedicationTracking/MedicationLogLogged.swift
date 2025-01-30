@@ -8,10 +8,10 @@
 
 import SpeziMedication
 import SwiftUI
-@_implementationOnly import XCTSpeziMedication
+internal import XCTSpeziMedication
 
 
-struct MedicationLogLoggedRow<MI: MedicationInstance>: View {
+struct MedicationLogLoggedRow<MI: LegacyMedicationInstance>: View {
     private let medicationLogRowModel: MedicationLogRowModel<MI>
 
     @State var presentMedicationLogSheet = false
@@ -79,7 +79,7 @@ struct MedicationLogLoggedRow<MI: MedicationInstance>: View {
 }
 
 
-struct MedicationLogLogged<MI: MedicationInstance>: View {
+struct MedicationLogLogged<MI: LegacyMedicationInstance>: View {
     @Binding private var medicationInstances: [MI]
     private let selectedDate: Date
     

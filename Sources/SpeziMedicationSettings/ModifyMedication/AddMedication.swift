@@ -24,7 +24,6 @@ struct AddMedication: View {
         // TODO: make it sorted again!
         if isSearching && !searchText.isEmpty {
             options.filter {
-                // TODO: what locale is used here?
                 String(localized: $0.label).contains(searchText)
             }
         } else {

@@ -9,6 +9,7 @@
 import SpeziMedication
 
 
+@available(*, deprecated, message: "Unavailable")
 public struct MockDosage: LegacyDosage, Sendable {
     public var localizedDescription: String
 }

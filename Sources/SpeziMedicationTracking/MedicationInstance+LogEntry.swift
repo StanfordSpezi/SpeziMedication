@@ -12,7 +12,7 @@ import SpeziMedication
 /*
  // TODO: what is that?
 
-extension MedicationInstance {
+extension LegacyMedicationInstance {
     func logEntry(date: Date, asNeeded: Bool = false) -> LogEntry? {
         logEntries.first {
             if asNeeded {

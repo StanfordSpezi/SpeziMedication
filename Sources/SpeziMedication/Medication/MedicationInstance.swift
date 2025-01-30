@@ -1,54 +1,35 @@
 //
 // This source file is part of the Stanford Spezi open-source project
 //
-// SPDX-FileCopyrightText: 2022 Stanford University and the project authors (see CONTRIBUTORS.md)
+// SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 //
 // SPDX-License-Identifier: MIT
 //
 
-import Foundation
+import SwiftUI // TODO: extension?
 
-/// Instance of a ``Medication``.
-///
-/// The ``MedicationInstance``'s identifier (`id`) must be stable across chances to the dosage and therefore should not be derived from a combination of values including the dosage.
-///
-/// > Important: We recommend making the Medication Instance a value type (`struct`) to best work within the ``MedicationSettings``.
-@available(*, deprecated, message: "This will be removed")
-public protocol MedicationInstance: Codable, Identifiable, Comparable, Hashable where InstanceType.MedicationDosage == InstanceDosage {
-    /// Associated dosage.
-    associatedtype InstanceDosage: LegacyDosage
-    /// Associated medication type.
-    associatedtype InstanceType: LegacyMedication
-    
-    
-    /// Type of the medication instance.
-    var type: InstanceType { get }
-    /// Dosage of the medication instance.
-    var dosage: InstanceDosage { get set }
-    /// Schedule of the medication.
-    var schedule: Schedule { get set }
-    /// Log entries of the medication
-    var logEntries: [LogEntry] { get set }
+
+/// A specific instance of an medication.
+public struct MedicationDescription { // TODO: specific instance, right?
+    // TODO: let id: UUID?
+    // TODO: dosages!
+    let description: String.LocalizationValue? // TODO: do we need Hashable?
+    let name: String?
+
+    var label: Text {
+        if let name {
+            Text(name)
+        } else if let description {
+            Text(LocalizedStringResource(description)) // TODO: which bundle? we assume main bundle?
+        } else {
+            Text("Medication", bundle: .module) // TODO: generic label!???
+        }
+    }
+
+    let dosage: Dosage
+
+    // TODO: schedule is part of the task!
 }
 
-
-extension MedicationInstance {
-    /// See Equatable
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.type == rhs.type && lhs.dosage == rhs.dosage && lhs.schedule == rhs.schedule && lhs.logEntries == rhs.logEntries
-    }
-    
-    /// See Comparable
-    public static func < (lhs: Self, rhs: Self) -> Bool {
-        guard lhs.type.localizedDescription != rhs.type.localizedDescription else {
-            return lhs.type.localizedDescription < rhs.type.localizedDescription
-        }
-        
-        return lhs.dosage.localizedDescription < rhs.dosage.localizedDescription
-    }
-    
-    /// See Hashable
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
+extension MedicationDescription: Codable, Equatable, Sendable {
 }

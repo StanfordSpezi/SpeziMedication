@@ -8,9 +8,6 @@
 
 import Foundation
 
-// TODO: where do we store everything?
-//  => should we maintain a custom storage databse, or do we store it alongisde the Task and Outcome?
-
 
 public struct LogEntry: Codable, Equatable, Sendable {
     public let scheduledTime: Date?
